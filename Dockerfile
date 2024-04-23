@@ -1,5 +1,5 @@
 FROM node:20
-WORKDIR /apps
+WORKDIR /app
 COPY package.json .
 RUN yarn install
 COPY . .
