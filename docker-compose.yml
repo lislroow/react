@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+
+  prod.web-admin:
+    image: web-admin:latest
+    restart: always
+    networks:
+      - prod-default
+
+  dev.web-admin:
+    image: web-admin:latest
+    restart: always
+    networks:
+      - dev-default
+
+  local.web-admin:
+    image: web-admin:latest
+    restart: always
+    networks:
+      - local-default
+
+networks:
+  prod-default:
+    external: true
+  dev-default:
+    external: true
+  local-default:
+    external: true
