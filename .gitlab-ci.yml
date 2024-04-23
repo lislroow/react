@@ -27,7 +27,7 @@ deploy-docker:
     - docker image tag ${APP_NAME}:latest ${DOCKER_REGISTRY_USER}/${APP_NAME}:latest
     - docker push ${REGISTRY_HOST}/${DOCKER_REGISTRY_USER}/${APP_NAME}:latest
     - docker rmi -f $(docker images -f "dangling=true" -q) || true
-    - docker ps | grep ${CI_COMMIT_REF_NAME}.${APP_NAME} && docker-compose -p ${CI_COMMIT_REF_NAME} down ${CI_COMMIT_REF_NAME}.${APP_NAME}
+    - if [ $(docker ps | grep "${CI_COMMIT_REF_NAME}.${APP_NAME}" | wc -l) == 1 ];then docker-compose -p ${CI_COMMIT_REF_NAME} down ${CI_COMMIT_REF_NAME}.${APP_NAME}; else echo "is not running"; fi
     - docker-compose -p ${CI_COMMIT_REF_NAME} up ${CI_COMMIT_REF_NAME}.${APP_NAME} -d
   after_script:
     - docker logout
