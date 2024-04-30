@@ -18,6 +18,12 @@
       ]
    },
    {
+      "title":"planet",
+      "itemId":"planet",
+      "pathname":"/planet/program",
+      "subNav":[]
+   },
+   {
       "title":"example",
       "itemId":"PE000",
       "pathname": "",
