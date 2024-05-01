@@ -19,13 +19,13 @@ type LayoutProps = {
 export const Layout: React.FC<LayoutProps> = (props) => {
   return (
     <div>
-      <main className='flex' style={{width: '100%', height: '100vh'}}>
+      <main className='flex' style={{width: '100%', minHeight: '100vh', height: 'auto'}}>
         {
           props && props.emptyLayout 
             ? ''
             : <AsideLayout />
         }
-        <section className='content' style={{ flex: 1, overflowY: 'auto' }}>
+        <section className='content' style={{ flex: 1 }}>
           {
             //window.location.pathname === '/' || props && props.emptyLayout ? 
             props && props.emptyLayout ? 
