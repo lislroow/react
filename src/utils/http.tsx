@@ -10,7 +10,7 @@ export type TypeHttpCallback = (res?: Response) => void;
 
 export const asyncGET = (url: string, callback: TypeHttpCallback, searchParam?: URLSearchParams) => {
   const fetchData = async() => {
-    const api = searchParam && searchParam.size === 0
+    const api = searchParam === undefined || searchParam.size === 0
        ? `${url}`
        : `${url}?${searchParam}`;
     const res: Response = await fetch(api);

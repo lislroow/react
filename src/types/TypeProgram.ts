@@ -37,10 +37,10 @@ export type TypeProgramFlat = {
 }
 
 export const ColProgram: GridColDef[] = [
-  {field: 'name', headerName: 'Program Name', width: 200, headerAlign: 'left', description: 'NASA Program Name'},
-  {field: 'probeName', headerName: 'Probe Name', width: 120, headerAlign: 'left', description: 'Probe Name'},
+  {field: 'name', headerName: 'Program Name', width: 200, headerAlign: 'center', description: 'NASA Program Name'},
+  {field: 'probeName', headerName: 'Probe Name', width: 200, headerAlign: 'center', description: 'NASA Program Name'},
   {field: 'startDt', headerName: 'Start Date', width: 100, headerAlign: 'center', align: 'center', description: 'Exploration Start Date'},
   {field: 'endDt', headerName: 'End Date', width: 100, headerAlign: 'center', align: 'center', description: 'Exploration End Date'},
-  {field: 'planetName', headerName: 'Planet', width: 120, headerAlign: 'left', description: 'Planet Name'},
+  {field: 'planetName', headerName: 'Planet', width: 120, headerAlign: 'center', align: 'center', description: 'Planet Name'},
   {field: 'distance', headerName: 'Distance From', width: 120, headerAlign: 'center', align: 'right', description: 'Distance From Sun(AU)'},
 ]

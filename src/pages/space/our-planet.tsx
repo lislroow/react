@@ -9,46 +9,17 @@ import { DataGrid } from "@mui/x-data-grid";
 import Grid from '@mui/material/Grid';
 
 import { asyncGET } from 'utils/http';
-import { TypeProgram, TypeProgramFlat, ColProgram } from "types/TypeProgram";
+import { TypePlanet, ColPlanet } from "types/TypePlanet";
 import { Container } from "@mui/material";
 
-const A01 = () => {
-  const [ rows, setRows ] = useState<TypeProgramFlat[]>([]);
+const Page = () => {
+  const [ rows, setRows ] = useState<TypePlanet[]>([]);
   const [ searchParam, setSearchParam ] = useSearchParams();
-  const [ srchProgramName, setProgramName ] = useState<string>('');
   const [ srchPlanetName, setPlanetName ] = useState<string>('');
 
   const srch = () => {
-    if (srchProgramName !== null) {
-      searchParam.set('programName', srchProgramName || '');
-    }
-    if (srchPlanetName !== null) {
-      searchParam.set('planetName', srchPlanetName || '');
-    }
-    asyncGET('/api/admin/sample/planet/program/all', callback);
-  };
-const flattenData = (data: TypeProgram[]) => {
-    let flattenedData: TypeProgramFlat[] = [];
-    data.forEach((program) => {
-      program.planets.forEach((planet) => {
-        flattenedData.push({
-          id: program.id,
-          name: program.name,
-          startDt: program.startDt,
-          endDt: program.endDt,
-          probeName: program.probeName,
-          planetName: planet.name,
-          planetId: planet.id,
-          seq: planet.seq,
-          radius: planet.radius,
-          distance: planet.distance,
-          density: planet.density,
-          gravity: planet.gravity,
-          satelliteYn: planet.satelliteYn,
-        });
-      });
-    });
-    return flattenedData;
+    srchPlanetName && searchParam.set('planetName', srchPlanetName);
+    asyncGET('/api/admin/sample/planet/program/all', callback, searchParam);
   };
   const callback = (res?: Response) => {
     if (res === undefined || !res.ok) {
@@ -56,33 +27,20 @@ const flattenData = (data: TypeProgram[]) => {
     }
     res.json()
       .then(json => 
-        json.map((row: TypeProgram, idx: number) => ({
+        json.map((row: TypePlanet, idx: number) => ({
           ...row, id: idx
         }))
       )
-      .then(json => flattenData(json))
       .then(json => setRows(json));
   };
   useEffect(() => {
-    asyncGET('/api/admin/sample/planet/program/all', callback);
+    asyncGET('/api/admin/sample/planet/all', callback);
   }, []);
   
   return (
     <Layout>
       <div>
         <Grid container spacing={1} justifyContent='flex-end'>
-          <Grid item xs={12} sm={4} md={3} lg={2}>
-            <TextField fullWidth value={srchProgramName} 
-              onKeyDown={(e) => {
-                if (e.key === 'Enter') {srch();}
-                }
-              }
-              onChange={(e) => {
-                setProgramName(e.target.value);
-                }
-              }
-              label="program" helperText="NASA Program Name" type="search" size='small' />
-          </Grid>
           <Grid item xs={12} sm={4} md={3} lg={2}>
             <TextField fullWidth value={srchPlanetName}
               onKeyDown={(e) => {
@@ -102,7 +60,7 @@ const flattenData = (data: TypeProgram[]) => {
         <Grid container marginTop={2}>
           <Grid item xs={12}>
             <DataGrid
-              columns={ColProgram}
+              columns={ColPlanet}
               rows={rows}
               rowCount={rows.length}
               paginationMode='client'
@@ -123,4 +81,4 @@ const flattenData = (data: TypeProgram[]) => {
   )
 }
 
-export default A01;
+export default Page;

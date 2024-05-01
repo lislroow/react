@@ -1,88 +1,12 @@
 [
    {
-      "title":"customer",
-      "itemId":"P01",
-      "pathname":"/showcase/P01",
-      "subNav":[]
+      "title":"Our Planet",
+      "itemId":"planet",
+      "pathname":"/space/our-planet"
    },
    {
-      "title":"planet",
-      "itemId":"program",
-      "pathname":"/planet/program",
-      "subNav":[]
-   },
-   {
-      "title":"admin",
-      "itemId":"A00",
-      "pathname":"",
-      "subNav":[
-         {
-            "title":"사용자 관리",
-            "itemId":"A01",
-            "pathname":"/admin/A01"
-         }
-      ]
-   },
-   {
-      "title":"example",
-      "itemId":"PE000",
-      "pathname": "",
-      "subNav":[
-         {
-            "title":"fetch",
-            "itemId":"P01_1",
-            "pathname":"/example/P01_1"
-         },
-         {
-            "title":"x-data-grid",
-            "itemId":"P01_2",
-            "pathname":"/example/P01_2"
-         },
-         {
-            "title":"redux",
-            "itemId":"P01_3",
-            "pathname":"/example/P01_3"
-         },
-         {
-            "title":"paging(client)",
-            "itemId":"P01_4",
-            "pathname":"/example/P01_4"
-         },
-         {
-            "title":"fetch post",
-            "itemId":"P01_5",
-            "pathname":"/example/P01_5"
-         },
-         {
-            "title":"redis",
-            "itemId":"P01_6",
-            "pathname":"/example/P01_6"
-         },
-         {
-            "title":"counter",
-            "itemId":"EX01",
-            "pathname":"/example/EX01"
-         },
-         {
-            "title":"menu-data",
-            "itemId":"EX02",
-            "pathname":"/example/EX02"
-         },
-         {
-            "title":"map-array",
-            "itemId":"EX03",
-            "pathname":"/example/EX03"
-         },
-         {
-            "title":"cookie",
-            "itemId":"EX04",
-            "pathname":"/example/EX04"
-         },
-         {
-            "title":"logout timer",
-            "itemId":"EX05",
-            "pathname":"/example/EX05"
-         }
-      ]
+      "title":"Nasa Program",
+      "itemId":"nasa-program",
+      "pathname":"/space/nasa-program"
    }
  ]
