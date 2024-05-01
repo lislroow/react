@@ -19,7 +19,7 @@ const Page = () => {
 
   const srch = () => {
     srchPlanetName && searchParam.set('planetName', srchPlanetName);
-    asyncGET('/api/admin/sample/planet/program/all', callback, searchParam);
+    asyncGET('/api/admin/sample/planet/list', callback, searchParam);
   };
   const callback = (res?: Response) => {
     if (res === undefined || !res.ok) {
@@ -34,7 +34,7 @@ const Page = () => {
       .then(json => setRows(json));
   };
   useEffect(() => {
-    asyncGET('/api/admin/sample/planet/all', callback);
+    asyncGET('/api/admin/sample/planet/list', callback);
   }, []);
   
   return (
@@ -44,11 +44,11 @@ const Page = () => {
           <Grid item xs={12} sm={4} md={3} lg={2}>
             <TextField fullWidth value={srchPlanetName}
               onKeyDown={(e) => {
-                if (e.key === 'Enter') {srch();}
+                  if (e.key === 'Enter') srch();
                 }
               }
               onChange={(e) => {
-                setPlanetName(e.target.value);
+                  setPlanetName(e.target.value);
                 }
               }
               label="planet" helperText="Planet Name" type="search" size='small' />

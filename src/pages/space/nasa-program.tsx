@@ -70,11 +70,11 @@ const flattenData = (data: TypeProgram[]) => {
           <Grid item xs={12} sm={4} md={3} lg={2}>
             <TextField fullWidth value={srchProgramName} 
               onKeyDown={(e) => {
-                if (e.key === 'Enter') {srch();}
+                  if (e.key === 'Enter') srch();
                 }
               }
               onChange={(e) => {
-                setProgramName(e.target.value);
+                  setProgramName(e.target.value);
                 }
               }
               label="program" helperText="NASA Program Name" type="search" size='small' />

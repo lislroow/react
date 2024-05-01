@@ -16,6 +16,6 @@ export const ColPlanet: GridColDef[] = [
   {field: 'radius', headerName: 'radius', width: 100, headerAlign: 'right', align: 'right'},
   {field: 'distance', headerName: 'distance', width: 80, headerAlign: 'right', align: 'right', description: 'Distance From Sun(AU)'},
   {field: 'density', headerName: 'density', width: 80, headerAlign: 'right', align: 'right'},
-  {field: 'gravity', headerName: 'Planet', width: 80, headerAlign: 'right', align: 'right'},
+  {field: 'gravity', headerName: 'gravity', width: 80, headerAlign: 'right', align: 'right'},
   {field: 'satelliteYn', headerName: 'satellite', width: 80, headerAlign: 'center', align: 'center'},
 ]
