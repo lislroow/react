@@ -72,6 +72,20 @@ const Page = () => {
                   },
                 },
               }}
+              sx={{
+                '.MuiDataGrid-columnSeparator': {
+                  display: 'none',
+                },
+                '&.MuiDataGrid-root': {
+                  border: 'none',
+                },
+                "& .MuiDataGrid-sortIcon": {
+                  opacity: 'inherit !important',
+                },
+                "& .MuiDataGrid-cell:focus-within": {
+                  outline: 'none !important'
+                },
+              }}
               pageSizeOptions={[5, 10, 20, 100]}
             />
           </Grid>

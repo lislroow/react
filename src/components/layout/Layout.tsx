@@ -25,7 +25,7 @@ export const Layout: React.FC<LayoutProps> = (props) => {
         }
         </div>
       </header>
-      <main className='flex h-screen' style={{width: '100%'}}>
+      <main className='flex' style={{width: '100%', height: '90vh'}}>
         {
           props && props.emptyLayout 
             ? ''
