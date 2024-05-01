@@ -29,7 +29,6 @@ const UserMenu = styled.div`
   top: 6vh;
   right: 10px;
   z-index: 1;
-  border: 1px solid lightgray;
 `;
 
 const HeaderLayout = () => {
@@ -116,11 +115,11 @@ const HeaderLayout = () => {
         onClick={(e) => {
           storeAside.dispatch(actAsideShow())
         }}>
-        <MenuIcon sx={{ fontSize: '20px', color: 'gray' }} />
+        <MenuIcon sx={{ fontSize: '20px' }} />
       </IconButton>
       {
         loginIconVisible &&
-          <IconButton size="medium" color="primary" aria-label="medium-button" style={{float: 'right', right: '10px', padding: '8px'}} 
+          <IconButton size="medium" color="primary" aria-label="medium-button" style={{float: 'right'}} 
             onClick={(e) => {openLoginDialog()}}>
             <AccountCircleOutlinedIcon />
             <Typography>Login</Typography>
@@ -129,7 +128,7 @@ const HeaderLayout = () => {
       {
         avatarVisible && 
           <React.Fragment>
-            <IconButton ref={avatarButtonRef} size="medium" color="primary" aria-label="medium-button" style={{float: 'right', right: '10px', padding: '1px', marginTop: '2px'}} 
+            <IconButton ref={avatarButtonRef} size="medium" color="primary" aria-label="medium-button" style={{float: 'right'}} 
               onClick={(e) => {openUserMenu()}}>
               <Avatar sx={{ width: 32, height: 32 }}></Avatar>
             </IconButton>

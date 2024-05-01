@@ -7,6 +7,9 @@ import AsideLayout from './AsideLayout';
 import ContentLayout from './ContentLayout';
 import FooterLayout from './FooterLayout';
 
+import storeAside, { actAsideShow } from 'redux-store/store-aside';
+import IconButton from '@mui/material/IconButton';
+import MenuIcon from '@mui/icons-material/Menu';
 
 type LayoutProps = {
   children: JSX.Element,
@@ -16,16 +19,7 @@ type LayoutProps = {
 export const Layout: React.FC<LayoutProps> = (props) => {
   return (
     <div>
-      <header>
-        <div style={{background: 'lightgray', width: '100%', minHeight: '5vh', zIndex: '100', padding: '2px'}}>
-        {
-          props && props.emptyLayout 
-              ? ''
-              : <HeaderLayout />
-        }
-        </div>
-      </header>
-      <main className='flex' style={{width: '100%', height: '87vh'}}>
+      <main className='flex' style={{width: '100%', height: '100vh'}}>
         {
           props && props.emptyLayout 
             ? ''
@@ -36,15 +30,24 @@ export const Layout: React.FC<LayoutProps> = (props) => {
             window.location.pathname === '/' || props && props.emptyLayout ? 
               '' : 
               <div style={{padding: '14px'}}>
-                ◻ {getTitleByPathname(menuList, window.location.pathname)}
+                <header>
+                  <div style={{width: '100%', minHeight: '5vh', zIndex: '100'}}>
+                  {
+                    props && props.emptyLayout 
+                        ? ''
+                        : <HeaderLayout />
+                  }
+                  </div>
+                </header>
+                {getTitleByPathname(menuList, window.location.pathname)}
               </div>
           }
           <ContentLayout children={props.children} />
         </section>
+        <footer style={{display: 'none'}}>
+          <FooterLayout />
+        </footer>
       </main>
-      <footer>
-        <FooterLayout />
-      </footer>
     </div>
   )
 };
