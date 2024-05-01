@@ -6,6 +6,12 @@
       "subNav":[]
    },
    {
+      "title":"planet",
+      "itemId":"program",
+      "pathname":"/planet/program",
+      "subNav":[]
+   },
+   {
       "title":"admin",
       "itemId":"A00",
       "pathname":"",
@@ -16,12 +22,6 @@
             "pathname":"/admin/A01"
          }
       ]
-   },
-   {
-      "title":"planet",
-      "itemId":"planet",
-      "pathname":"/planet/program",
-      "subNav":[]
    },
    {
       "title":"example",

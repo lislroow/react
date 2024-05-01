@@ -10,6 +10,7 @@ import Grid from '@mui/material/Grid';
 
 import { asyncGET } from 'utils/http';
 import { TypeProgram, TypeProgramFlat, ColProgram } from "types/TypeProgram";
+import { Container } from "@mui/material";
 
 const A01 = () => {
   const [ rows, setRows ] = useState<TypeProgramFlat[]>([]);
@@ -68,14 +69,32 @@ const flattenData = (data: TypeProgram[]) => {
   return (
     <Layout>
       <div>
-        <Grid container alignItems='center' justifyContent='flex-end'>
-          <Grid item marginRight={2}>
-            <TextField value={srchProgramName} onKeyDown={(e) => { if (e.key === 'Enter') {srch();}}} onChange={(e) => { setProgramName(e.target.value); } } label="program name" type="search" variant="outlined" size='small' />
+        <Grid container spacing={1} justifyContent='flex-end'>
+          <Grid item xs={12} sm={4} md={3} lg={2}>
+            <TextField fullWidth value={srchProgramName} 
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {srch();}
+                }
+              }
+              onChange={(e) => {
+                setProgramName(e.target.value);
+                }
+              }
+              label="program" helperText="NASA Program Name" type="search" size='small' />
           </Grid>
-          <Grid item marginRight={2}>
-            <TextField value={srchPlanetName} onKeyDown={(e) => { if (e.key === 'Enter') {srch();}}} onChange={(e) => { setPlanetName(e.target.value); } } label="planet name" type="search" variant="outlined" size='small' />
+          <Grid item xs={12} sm={4} md={3} lg={2}>
+            <TextField fullWidth value={srchPlanetName}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter') {srch();}
+                }
+              }
+              onChange={(e) => {
+                setPlanetName(e.target.value);
+                }
+              }
+              label="planet" helperText="Planet Name" type="search" size='small' />
           </Grid>
-          <Grid item>
+          <Grid item xs={12} style={{textAlign: 'right'}}>
             <Button onClick={(e) => srch()} variant="contained">search</Button>
           </Grid>
         </Grid>
@@ -94,10 +113,7 @@ const flattenData = (data: TypeProgram[]) => {
                   },
                 },
               }}
-              rowHeight={40}
-              columnHeaderHeight={50}
               pageSizeOptions={[5, 10, 20, 100]}
-              autoHeight={true}
             />
           </Grid>
         </Grid>
