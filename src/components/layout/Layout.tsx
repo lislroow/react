@@ -27,7 +27,8 @@ export const Layout: React.FC<LayoutProps> = (props) => {
         }
         <section className='content' style={{ flex: 1, overflowY: 'auto' }}>
           {
-            window.location.pathname === '/' || props && props.emptyLayout ? 
+            //window.location.pathname === '/' || props && props.emptyLayout ? 
+            props && props.emptyLayout ? 
               '' : 
               <div style={{padding: '14px'}}>
                 <header>
