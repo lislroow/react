@@ -5,6 +5,7 @@ export type TypeProgram = {
   "name": string,
   "startDt": string,
   "endDt": string,
+  "probeName": string,
   "planets": [
     {
       "id": number,
@@ -24,6 +25,7 @@ export type TypeProgramFlat = {
   "name": string,
   "startDt": string,
   "endDt": string,
+  "probeName": string,
   "planetId": number,
   "planetName": string,
   "seq": number,
@@ -35,16 +37,10 @@ export type TypeProgramFlat = {
 }
 
 export const ColProgram: GridColDef[] = [
-  {field: 'id'},
-  {field: 'name'},
-  {field: 'startDt'},
-  {field: 'endDt'},
-  {field: 'planetId'},
-  {field: 'planetName'},
-  {field: 'seq'},
-  {field: 'radius'},
-  {field: 'distance'},
-  {field: 'density'},
-  {field: 'gravity'},
-  {field: 'satelliteYn'},
+  {field: 'name', headerName: 'Program Name', width: 200, headerAlign: 'left', description: 'NASA Program Name'},
+  {field: 'probeName', headerName: 'Probe Name', width: 120, headerAlign: 'left', description: 'Probe Name'},
+  {field: 'startDt', headerName: 'Start Date', width: 100, headerAlign: 'center', align: 'center', description: 'Exploration Start Date'},
+  {field: 'endDt', headerName: 'End Date', width: 100, headerAlign: 'center', align: 'center', description: 'Exploration End Date'},
+  {field: 'planetName', headerName: 'Planet', width: 120, headerAlign: 'left', description: 'Planet Name'},
+  {field: 'distance', headerName: 'Distance From', width: 120, headerAlign: 'center', align: 'right', description: 'Distance From Sun(AU)'},
 ]

@@ -36,6 +36,7 @@ const flattenData = (data: TypeProgram[]) => {
           name: program.name,
           startDt: program.startDt,
           endDt: program.endDt,
+          probeName: program.probeName,
           planetName: planet.name,
           planetId: planet.id,
           seq: planet.seq,
