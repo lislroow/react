@@ -19,7 +19,7 @@ const Page = () => {
 
   const srch = () => {
     srchPlanetName && searchParam.set('planetName', srchPlanetName);
-    asyncGET('/api/admin/sample/planet/list', callback, searchParam);
+    asyncGET('/api/admin/sample/planet/all', callback, searchParam);
   };
   const callback = (res?: Response) => {
     if (res === undefined || !res.ok) {
@@ -34,7 +34,7 @@ const Page = () => {
       .then(json => setRows(json));
   };
   useEffect(() => {
-    asyncGET('/api/admin/sample/planet/list', callback);
+    asyncGET('/api/admin/sample/planet/all', callback);
   }, []);
   
   return (

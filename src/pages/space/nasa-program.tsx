@@ -26,22 +26,20 @@ const Page = () => {
 const flattenData = (data: TypeProgram[]) => {
     let flattenedData: TypeProgramFlat[] = [];
     data.forEach((program) => {
-      program.planets.forEach((planet) => {
-        flattenedData.push({
-          id: program.id,
-          name: program.name,
-          startDt: program.startDt,
-          endDt: program.endDt,
-          probeName: program.probeName,
-          planetName: planet.name,
-          planetId: planet.id,
-          seq: planet.seq,
-          radius: planet.radius,
-          distance: planet.distance,
-          density: planet.density,
-          gravity: planet.gravity,
-          satelliteYn: planet.satelliteYn,
-        });
+      flattenedData.push({
+        id: program.id,
+        name: program.name,
+        startDt: program.startDt,
+        endDt: program.endDt,
+        probeName: program.probeName,
+        planetName: program.planet && program.planet.name,
+        planetId: program.planet && program.planet.id,
+        seq: program.planet && program.planet.seq,
+        radius: program.planet && program.planet.radius,
+        distance: program.planet && program.planet.distance,
+        density: program.planet && program.planet.density,
+        gravity: program.planet && program.planet.gravity,
+        satelliteYn: program.planet && program.planet.satelliteYn,
       });
     });
     return flattenedData;

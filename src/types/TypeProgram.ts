@@ -6,18 +6,16 @@ export type TypeProgram = {
   "startDt": string,
   "endDt": string,
   "probeName": string,
-  "planets": [
-    {
-      "id": number,
-      "name": string,
-      "seq": number,
-      "radius": number,
-      "distance": number,
-      "density": number,
-      "gravity": number,
-      "satelliteYn": string
-    }
-  ]
+  "planet": {
+    "id": number,
+    "name": string,
+    "seq": number,
+    "radius": number,
+    "distance": number,
+    "density": number,
+    "gravity": number,
+    "satelliteYn": string
+  }
 }
 
 export type TypeProgramFlat = {
