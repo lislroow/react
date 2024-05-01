@@ -12,10 +12,10 @@ export type TypePlanet = {
 }
 
 export const ColPlanet: GridColDef[] = [
-  {field: 'name', headerName: 'Planet Name', width: 200, headerAlign: 'left'},
-  {field: 'radius', headerName: 'radius', width: 150, headerAlign: 'right', align: 'right'},
-  {field: 'distance', headerName: 'distance', width: 130, headerAlign: 'right', align: 'right', description: 'Distance From Sun(AU)'},
-  {field: 'density', headerName: 'density', width: 130, headerAlign: 'right', align: 'right'},
-  {field: 'gravity', headerName: 'gravity', width: 130, headerAlign: 'right', align: 'right'},
-  {field: 'satelliteYn', headerName: 'satellite', width: 130, headerAlign: 'center', align: 'center'},
+  {field: 'name', headerName: 'Planet Name', flex: 0.5, headerAlign: 'left'},
+  {field: 'radius', headerName: 'radius', flex: 0.4, headerAlign: 'right', align: 'right'},
+  {field: 'distance', headerName: 'distance', flex: 0.4, headerAlign: 'right', align: 'right', description: 'Distance From Sun(AU)'},
+  {field: 'density', headerName: 'density', flex: 0.4, headerAlign: 'right', align: 'right'},
+  {field: 'gravity', headerName: 'gravity', flex: 0.4, headerAlign: 'right', align: 'right'},
+  {field: 'satelliteYn', headerName: 'satellite', flex: 0.4, headerAlign: 'center', align: 'center'},
 ]

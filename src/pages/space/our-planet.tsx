@@ -41,7 +41,7 @@ const Page = () => {
     <Layout>
       <div>
         <Grid container spacing={1} justifyContent='flex-end'>
-          <Grid item xs={12} sm={4} md={3} lg={2}>
+          <Grid item xs={12} sm={4}>
             <TextField fullWidth value={srchPlanetName}
               onKeyDown={(e) => {
                   if (e.key === 'Enter') srch();
@@ -53,7 +53,7 @@ const Page = () => {
               }
               label="planet" helperText="Planet Name" type="search" size='small' />
           </Grid>
-          <Grid item xs={12} style={{textAlign: 'right'}}>
+          <Grid item xs={12} sm={4} style={{textAlign: 'right'}}>
             <Button onClick={(e) => srch()} variant="contained">search</Button>
           </Grid>
         </Grid>
@@ -72,20 +72,20 @@ const Page = () => {
                   },
                 },
               }}
-              sx={{
-                '.MuiDataGrid-columnSeparator': {
-                  display: 'none',
-                },
-                '&.MuiDataGrid-root': {
-                  border: 'none',
-                },
-                "& .MuiDataGrid-sortIcon": {
-                  opacity: 'inherit !important',
-                },
-                "& .MuiDataGrid-cell:focus-within": {
-                  outline: 'none !important'
-                },
-              }}
+              // sx={{
+              //   '.MuiDataGrid-columnSeparator': {
+              //     display: 'none',
+              //   },
+              //   '&.MuiDataGrid-root': {
+              //     border: 'none',
+              //   },
+              //   "& .MuiDataGrid-sortIcon": {
+              //     opacity: 'inherit !important',
+              //   },
+              //   "& .MuiDataGrid-cell:focus-within": {
+              //     outline: 'none !important'
+              //   },
+              // }}
               pageSizeOptions={[5, 10, 20, 100]}
             />
           </Grid>
