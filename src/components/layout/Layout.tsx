@@ -45,9 +45,9 @@ export const Layout: React.FC<LayoutProps> = (props) => {
           }
           <ContentLayout children={props.children} />
         </section>
-        <footer style={{display: 'none'}}>
+        {/* <footer style={{display: 'none'}}>
           <FooterLayout />
-        </footer>
+        </footer> */}
       </main>
     </div>
   )

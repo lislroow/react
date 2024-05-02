@@ -9,8 +9,19 @@ import { DataGrid } from "@mui/x-data-grid";
 import Grid from '@mui/material/Grid';
 
 import { asyncGET } from 'utils/http';
-import { TypePlanet, ColPlanet } from "types/TypePlanet";
+//import { TypePlanet, ColPlanet } from "types/TypePlanet";
 import { Container } from "@mui/material";
+
+type TypePlanet = {
+  "id": number,
+  "name": string,
+  "seq": number,
+  "radius": string,
+  "distance": string,
+  "density": string,
+  "gravity": string,
+  "satelliteYn": string,
+}
 
 const Page = () => {
   const [ rows, setRows ] = useState<TypePlanet[]>([]);
@@ -41,7 +52,7 @@ const Page = () => {
     <Layout>
       <div>
         <Grid container spacing={1} justifyContent='flex-end'>
-          <Grid item xs={12} sm={4}>
+          <Grid item xs={12} sm={3}>
             <TextField fullWidth value={srchPlanetName}
               onKeyDown={(e) => {
                   if (e.key === 'Enter') srch();
@@ -53,14 +64,22 @@ const Page = () => {
               }
               label="planet" helperText="Planet Name" type="search" size='small' />
           </Grid>
-          <Grid item xs={12} sm={4} style={{textAlign: 'right'}}>
+          <Grid item xs={12} sm={1.5} style={{textAlign: 'right'}}>
             <Button onClick={(e) => srch()} variant="contained">search</Button>
           </Grid>
         </Grid>
         <Grid container marginTop={2}>
           <Grid item xs={12}>
             <DataGrid
-              columns={ColPlanet}
+              //columns={ColPlanet}
+              columns={[
+                {field: 'name', headerName: 'Planet Name', headerAlign: 'left'},
+                {field: 'radius', headerName: 'radius', headerAlign: 'right', align: 'right'},
+                {field: 'distance', headerName: 'distance', headerAlign: 'right', align: 'right', description: 'Distance From Sun(AU)'},
+                {field: 'density', headerName: 'density', headerAlign: 'right', align: 'right'},
+                {field: 'gravity', headerName: 'gravity', headerAlign: 'right', align: 'right'},
+                {field: 'satelliteYn', headerName: 'satellite', headerAlign: 'center', align: 'center'},
+              ]}
               rows={rows}
               rowCount={rows.length}
               paginationMode='client'
