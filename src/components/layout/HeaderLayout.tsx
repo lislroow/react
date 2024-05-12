@@ -129,16 +129,16 @@ const HeaderLayout = () => {
       {
         avatarVisible && 
           <React.Fragment>
-            <div style={{float: 'right'}}>
+            {/* <div style={{float: 'right'}}>
               <Typography sx={{ marginLeft: '5px' }} onClick={(e) => {openUserMenu()}}>
-                {user && user.email === null ? user.uid : user && user.email}
+                {user && user.nickname === null ? user.email : user && user.nickname}
               </Typography>
-            </div>
-            {/* <IconButton ref={avatarButtonRef} size="medium" color="primary" style={{float: 'right'}} 
+            </div> */}
+            <IconButton ref={avatarButtonRef} size="medium" color="primary" style={{float: 'right'}} 
               onClick={(e) => {openUserMenu()}}>
-              <Typography sx={{ marginLeft: '5px' }}>{user && user.email === null ? user.uid : user && user.email}</Typography>
+              <Typography sx={{ marginLeft: '5px' }}>{user && user.nickname === null ? user.email : user && user.nickname}</Typography>
               <Avatar sx={{ width: 32, height: 32 }}></Avatar>
-            </IconButton> */}
+            </IconButton>
             <ExpireTimer />
           </React.Fragment>
       }

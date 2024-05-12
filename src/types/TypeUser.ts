@@ -1,6 +1,5 @@
 export type TypeUser = {
-  uid?: string,
-  userId?: string,
+  id?: string,
   email?: string,
   nickname?: string,
   picture?: string
