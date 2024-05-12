@@ -2,6 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { Cookies } from 'react-cookie';
 import { Buffer } from 'buffer';
 import { TypeUser } from 'types/TypeUser';
+import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -35,7 +36,8 @@ const HeaderLayout = () => {
   const [ user, setUser ] = useState<TypeUser>({});
   const [ loginDialogOpen, setLoginDialogOpen ] = useState(false);
   const openLoginDialog = () => {
-    setLoginDialogOpen(true);
+    // setLoginDialogOpen(true);
+    window.location.replace('/login');
   };
   const closeLoginDialog = () => {
     setLoginDialogOpen(false);
@@ -48,7 +50,6 @@ const HeaderLayout = () => {
   const openUserMenu = () => {
     setUserMenuVisible(true);
   }
-  
 
   useEffect(() => {
     // * LOGINED 상태 체크
@@ -128,10 +129,16 @@ const HeaderLayout = () => {
       {
         avatarVisible && 
           <React.Fragment>
-            <IconButton ref={avatarButtonRef} size="medium" color="primary" aria-label="medium-button" style={{float: 'right'}} 
+            <div style={{float: 'right'}}>
+              <Typography sx={{ marginLeft: '5px' }} onClick={(e) => {openUserMenu()}}>
+                {user && user.email === null ? user.uid : user && user.email}
+              </Typography>
+            </div>
+            {/* <IconButton ref={avatarButtonRef} size="medium" color="primary" style={{float: 'right'}} 
               onClick={(e) => {openUserMenu()}}>
+              <Typography sx={{ marginLeft: '5px' }}>{user && user.email === null ? user.uid : user && user.email}</Typography>
               <Avatar sx={{ width: 32, height: 32 }}></Avatar>
-            </IconButton>
+            </IconButton> */}
             <ExpireTimer />
           </React.Fragment>
       }
@@ -144,7 +151,7 @@ const HeaderLayout = () => {
                   <ListItem disablePadding>
                     <ListItemButton>
                       <Avatar sx={{ width: 32, height: 32 }}></Avatar>
-                      <Typography sx={{ marginLeft: '5px' }}>@{user && user.nickname === null ? user.uid : user && user.nickname}</Typography>
+                      <Typography sx={{ marginLeft: '5px' }}>사용자 정보</Typography>
                     </ListItemButton>
                   </ListItem>
                 </List>

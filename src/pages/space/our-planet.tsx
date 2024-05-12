@@ -8,7 +8,7 @@ import { useSearchParams } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
 import Grid from '@mui/material/Grid';
 
-import { asyncGET } from 'utils/http';
+import { asyncGET, asyncPOST } from 'utils/http';
 //import { TypePlanet, ColPlanet } from "types/TypePlanet";
 import { Container } from "@mui/material";
 
