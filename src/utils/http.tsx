@@ -156,6 +156,7 @@ export const selectUser = (callback: TypeSelectUserCallback) => {
         callback(obj);
       } else {
         // TODO await sleep(2000);
+        logout();
       }
     })
     .catch((error) => {})
