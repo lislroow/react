@@ -139,7 +139,8 @@ export const getLastActiveTime = (): number => {
 export type TypeSelectUserCallback = (user?: any) => void;
 export const selectUser = (callback: TypeSelectUserCallback) => {
   const call = async() => {
-    const res = await fetch(`/api/auth/user`);
+    // const res = await fetch(`/api/auth/user`);
+    const res = await fetch(`/api/market/customer/my-info`);
     setLastAccess();
     return res;
   };

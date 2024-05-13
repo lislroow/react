@@ -1,6 +1,6 @@
 export type TypeUser = {
   id?: string,
   email?: string,
-  nickname?: string,
+  name?: string,
   picture?: string
 };
