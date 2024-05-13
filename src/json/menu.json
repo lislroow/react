@@ -1,5 +1,10 @@
 [
    {
+      "title":"customer-mgr",
+      "itemId":"customer-mgr",
+      "pathname":"/customer/customer-mgr"
+   },
+   {
       "title":"Order",
       "itemId":"order-products",
       "pathname":"/order/order-products"

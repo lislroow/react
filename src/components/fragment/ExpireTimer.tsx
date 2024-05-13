@@ -9,15 +9,20 @@ const ExpireTimer = () => {
     const lastAccess = getLastAccess();
     const expire = Math.floor((lastAccess - Date.now()) / 1000) + 1800;
     if (expire < 0) {
-      logout();
       return -1;
     }
     return expire;
   };
   const [ expireTime, setExpireTime ] = useState<number>(calc());
   useEffect(() => {
+    if (expireTime < 0) {
+      return;
+    }
     const timer = setInterval(() => {
       const time = calc();
+      if (time < 0) {
+        clearInterval(timer);
+      }
       setExpireTime(time);
     }, 1000);
     return () => {
