@@ -148,12 +148,15 @@ export const selectUser = (callback: TypeSelectUserCallback) => {
     .then((res) => {
       const obj = !res.ok ? {} : res.json();
       console.log(`response: ${JSON.stringify(obj)}`);
-      if (res.ok) {
+      return obj;
+    })
+    .then((obj) => {
+      console.log(`response[2]: ${JSON.stringify(obj)}`)
+      if (Object.keys(obj).length > 0) {
         callback(obj);
       } else {
         // TODO await sleep(2000);
       }
-      //return obj;
     })
     .catch((error) => {})
     .finally()
