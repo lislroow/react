@@ -76,6 +76,42 @@ export const asyncPOST = (url: string, callback: TypeHttpCallback, data: any) =>
     .then(res => callback(res))
     ;
 };
+  
+export const asyncPUT = (url: string, callback: TypeHttpCallback, data: any) => {
+  const fetchData = async() => {
+    const api = url;
+    const body = JSON.stringify(data);
+    const res = await fetch(api, {
+      method: 'put',
+      headers: {
+        "Content-Type":"application/json; charset=utf-8"
+      },
+      body: body
+    });
+    setLastAccess();
+    return res;
+  };
+  fetchData()
+    .then(res => {
+      const contentType = res.headers.get('Content-Type');
+      if (res.ok) {
+        storeFooter.dispatch(actFooterMessage(`STATUS: ${res.status}`));
+      } else {
+        if (res.status === 403) {
+          const [title, message] = ['ERROR', '사용자 권한 혹은 로그인 상태를 확인해주세요.'];
+          storeAlert.dispatch(actAlertShow(title, message));
+        }
+        if (res.status === 405) {
+          const [title, message] = ['ERROR', 'HTTP 메소드 혹은 endpoint 의 파라미터를 확인해주세요.'];
+          storeAlert.dispatch(actAlertShow(title, message));
+        }
+        storeFooter.dispatch(actFooterMessage(`STATUS: ${res.status}, ${res.statusText}`));
+      }
+      return res;
+    })
+    .then(res => callback(res))
+    ;
+};
 
 export const logout = () => {
   const cookies = new Cookies();
