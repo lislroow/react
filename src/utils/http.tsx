@@ -148,13 +148,18 @@ export const selectUser = (callback: TypeSelectUserCallback) => {
     .then((res) => {
       const obj = !res.ok ? {} : res.json();
       console.log(`response: ${JSON.stringify(obj)}`);
-      return obj;
-    })
-    .then((obj) => {
-      console.log(`response[2]: ${JSON.stringify(obj)}`)
-      callback(obj);
+      if (res.ok) {
+        callback(obj);
+      } else {
+        // TODO await sleep(2000);
+      }
+      //return obj;
     })
     .catch((error) => {})
     .finally()
     ;
 };
+
+// function sleep(ms: number) {
+//   return new Promise(resolve => setTimeout(resolve, ms));
+// }
