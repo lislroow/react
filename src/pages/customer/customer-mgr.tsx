@@ -50,29 +50,6 @@ const Page = () => {
     asyncPUT('/api/market/customer/save-basic-info', callbackSaveBasic, req);
   };
 
-  // 기본정보 조회
-  const callbackRetrieveBasic = (res?: Response) => {
-    if (res === undefined || !res.ok) {
-      return;
-    }
-    res.json()
-      .then(json => {
-        setCustomer(json);
-      });
-  };
-
-  // 배송지 조회
-  const callbackRetrieveDeliveryList = (res?: Response) => {
-    if (res === undefined || !res.ok) {
-      return;
-    }
-    res.json()
-      .then(json => {
-        setDeliveryList(json);
-        console.log(JSON.stringify(deliveryList));
-      });
-  };
-
   // 배송지 추가
   const handleAddDelivery = () => {
     setDeliveryList([ ...deliveryList, {}]);
@@ -111,6 +88,28 @@ const Page = () => {
     setDeliveryList(updatedList);
   };
 
+  // 기본정보 조회
+  const callbackRetrieveBasic = (res?: Response) => {
+    if (res === undefined || !res.ok) {
+      return;
+    }
+    res.json()
+      .then(json => {
+        setCustomer(json);
+      });
+  };
+
+  // 배송지 조회
+  const callbackRetrieveDeliveryList = (res?: Response) => {
+    if (res === undefined || !res.ok) {
+      return;
+    }
+    res.json()
+      .then(json => {
+        setDeliveryList(json);
+      });
+  };
+
   useEffect(() => {
     if (isLogin()) {
       asyncGET('/api/market/customer/my-info', callbackRetrieveBasic);
@@ -145,7 +144,7 @@ const Page = () => {
                     id="id"
                     name="id"
                     label="id"
-                    value={customer.id}
+                    value={customer.id || ''}
                   />
                 </Grid>
                 <Grid item xs={12} sm={4}>
@@ -160,7 +159,7 @@ const Page = () => {
                     id="email"
                     name="email"
                     label="email"
-                    value={customer.email}
+                    value={customer.email || ''}
                   />
                 </Grid>
                 <Grid item xs={12} sm={4}>
@@ -172,7 +171,7 @@ const Page = () => {
                     id="name"
                     name="name"
                     label="name"
-                    value={customer.name}
+                    value={customer.name || ''}
                     onChange={(event) => setCustomer({ ...customer, name: event.target.value })}
                   />
                 </Grid>
