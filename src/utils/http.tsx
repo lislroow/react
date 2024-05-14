@@ -121,7 +121,7 @@ export const logout = () => {
   });
   localStorage.clear();
   sessionStorage.clear();
-  window.location.href = `/auth/logout?redirect_uri=${window.location.pathname}`;
+  window.location.href = `/auth/logout?redirect_uri=/`;
 };
 
 export const getLastActiveTime = (): number => {

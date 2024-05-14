@@ -22,8 +22,10 @@ const ExpireTimer = () => {
       const time = calc();
       if (time < 0) {
         clearInterval(timer);
+        logout();
+      } else {
+        setExpireTime(time);
       }
-      setExpireTime(time);
     }, 1000);
     return () => {
       clearInterval(timer);
