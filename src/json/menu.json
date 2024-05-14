@@ -5,18 +5,8 @@
       "pathname":"/customer/customer-mgr"
    },
    {
-      "title":"Order",
-      "itemId":"order-products",
-      "pathname":"/order/order-products"
-   },
-   {
-      "title":"Our Planet",
-      "itemId":"planet",
-      "pathname":"/space/our-planet"
-   },
-   {
-      "title":"Nasa Program",
-      "itemId":"nasa-program",
-      "pathname":"/space/nasa-program"
+      "title":"product-mgr",
+      "itemId":"product-mgr",
+      "pathname":"/product/product-mgr"
    }
  ]
