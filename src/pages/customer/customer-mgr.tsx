@@ -4,8 +4,10 @@ import Grid from '@mui/material/Grid';
 import { Box, Button, TextField, FormControl, Checkbox, FormControlLabel } from '@mui/material';
 
 import storeAlert, { actAlertShow } from 'redux-store/store-alert';
+import storeUser, { actUpdate } from 'redux-store/store-user';
+import { TypeUser } from 'types/TypeUser';
 import { Layout } from 'components/layout/Layout';
-import { asyncGET, asyncPUT } from 'utils/http';
+import { isLogin, asyncGET, asyncPUT } from 'utils/http';
 
 type Customer = {
   "id": string,
@@ -37,6 +39,11 @@ const Page = () => {
     }
     const [title, message] = ['SUCCESS', `기본 정보가 저장 되었습니다.`];
     storeAlert.dispatch(actAlertShow(title, message));
+    
+    res.json()
+      .then(json => {
+        storeUser.dispatch(actUpdate(json));
+      });
   };
   const handleSaveBasic = () => {
     const req: CustomerREQ = { id: customer.id, name: customer.name };
@@ -104,8 +111,10 @@ const Page = () => {
   };
 
   useEffect(() => {
-    asyncGET('/api/market/customer/my-info', callbackRetrieveBasic);
-    asyncGET('/api/market/customer/my-delivery-address', callbackRetrieveDeliveryList);
+    if (isLogin()) {
+      asyncGET('/api/market/customer/my-info', callbackRetrieveBasic);
+      asyncGET('/api/market/customer/my-delivery-address', callbackRetrieveDeliveryList);
+    }
   }, []);
   
   return (

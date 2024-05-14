@@ -16,8 +16,8 @@ import ListItemButton from '@mui/material/ListItemButton';
 import Divider from '@mui/material/Divider';
 
 import storeAside, { actAsideShow } from 'redux-store/store-aside';
-import storeAlert, { actAlertShow } from 'redux-store/store-alert';
-import { asyncPOST, logout, selectUser } from 'utils/http';
+import storeUser from 'redux-store/store-user';
+import { isLogin, asyncPOST, logout, selectUser } from 'utils/http';
 
 import LoginDialog from 'components/dialog/LoginDialog';
 import AlertDialog from 'components/dialog/AlertDialog';
@@ -34,9 +34,14 @@ const UserMenu = styled.div`
 
 const HeaderLayout = () => {
   const [ user, setUser ] = useState<TypeUser>({});
+  const subscribeUser = () => {
+    setUser(storeUser.getState().user);
+    localStorage.setItem('user', JSON.stringify(storeUser.getState().user));
+  };
+  storeUser.subscribe(subscribeUser);
+
   const [ loginDialogOpen, setLoginDialogOpen ] = useState(false);
   const openLoginDialog = () => {
-    // setLoginDialogOpen(true);
     window.location.replace('/login');
   };
   const closeLoginDialog = () => {
@@ -57,8 +62,7 @@ const HeaderLayout = () => {
     //     T) localstorage 사용자 저장
     //     F) 사용자 조회
     //   F) 사용자 조회(/auth/user)
-    const logined = new Cookies().get('LOGINED');
-    if (logined) {
+    if (isLogin()) {
       if (Object.keys(user).length > 0) {
         let storageStr = localStorage.getItem('user');
         if (!storageStr) {
@@ -79,13 +83,13 @@ const HeaderLayout = () => {
       setLoginIconVisible(true);
     }
 
-    if (!logined) {
+    if (isLogin()) {
+      setLoginIconVisible(false);
+      setAvatarVisible(true);
+    } else {
       setLoginIconVisible(true);
       setAvatarVisible(false);
       setUserMenuVisible(false);
-    } else {
-      setLoginIconVisible(false);
-      setAvatarVisible(true);
     }
 
     const userMenuOutClick = (event: MouseEvent) => {
@@ -104,6 +108,7 @@ const HeaderLayout = () => {
   const handleLogout = (e: React.MouseEvent) => {
     logout();
   }
+  
   
   return (
     <React.Fragment>
@@ -129,11 +134,6 @@ const HeaderLayout = () => {
       {
         avatarVisible && 
           <React.Fragment>
-            {/* <div style={{float: 'right'}}>
-              <Typography sx={{ marginLeft: '5px' }} onClick={(e) => {openUserMenu()}}>
-                {user && user.nickname === null ? user.email : user && user.nickname}
-              </Typography>
-            </div> */}
             <IconButton ref={avatarButtonRef} size="medium" color="primary" style={{float: 'right'}} 
               onClick={(e) => {openUserMenu()}}>
               <Typography sx={{ marginLeft: '5px' }}>{user && user.name === null ? user.email : user && user.name}</Typography>
@@ -146,7 +146,7 @@ const HeaderLayout = () => {
         userMenuVisible && <div ref={userMenuRef}>
           <UserMenu>
             <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-              <nav>
+              {/* <nav>
                 <List dense={true}>
                   <ListItem disablePadding>
                     <ListItemButton>
@@ -155,7 +155,7 @@ const HeaderLayout = () => {
                     </ListItemButton>
                   </ListItem>
                 </List>
-              </nav>
+              </nav> */}
               <Divider />
               <nav>
                 <List>

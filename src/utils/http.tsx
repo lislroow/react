@@ -146,14 +146,12 @@ export const selectUser = (callback: TypeSelectUserCallback) => {
   };
   call()
     .then((res) => {
-      const obj = !res.ok ? {} : res.json();
-      console.log(`response: ${JSON.stringify(obj)}`);
-      return obj;
+      const json = !res.ok ? {} : res.json();
+      return json;
     })
-    .then((obj) => {
-      console.log(`response[2]: ${JSON.stringify(obj)}`)
-      if (Object.keys(obj).length > 0) {
-        callback(obj);
+    .then((json) => {
+      if (Object.keys(json).length > 0) {
+        callback(json);
       } else {
         // TODO await sleep(2000);
         logout();
@@ -163,6 +161,13 @@ export const selectUser = (callback: TypeSelectUserCallback) => {
     .finally()
     ;
 };
+
+export const isLogin = (): Boolean => {
+  const logined = new Cookies().get('LOGINED');
+  const res = logined === true;
+  return res;
+};
+
 
 // function sleep(ms: number) {
 //   return new Promise(resolve => setTimeout(resolve, ms));
