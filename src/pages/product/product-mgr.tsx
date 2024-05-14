@@ -23,7 +23,7 @@ const Page = () => {
   };
   
   // 배송지 저장
-  const callbackSaveDelivery = (res?: Response) => {
+  const callbackSaveProductList = (res?: Response) => {
     if (res === undefined || !res.ok) {
       const [title, message] = ['ERROR', `상품 목록 저장 중 오류가 발생했습니다.`];
       storeAlert.dispatch(actAlertShow(title, message));
@@ -36,10 +36,10 @@ const Page = () => {
         setProductList(json);
       });
   };
-  const handleSaveDeliveryList = () => {
+  const handleSaveProductList = () => {
     const req = productList.filter(product => product.name);
     console.log(JSON.stringify(req));
-    asyncPUT('/api/market/customer/save-delivery-address', callbackSaveDelivery, req);
+    asyncPUT('/api/market/product/save-product-list', callbackSaveProductList, req);
   };
 
   // 상품 목록 조회
