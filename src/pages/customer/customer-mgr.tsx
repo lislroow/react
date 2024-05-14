@@ -77,6 +77,7 @@ const Page = () => {
   const handleAddDelivery = () => {
     setDeliveryList([ ...deliveryList, {}]);
   };
+  
   // 배송지 저장
   const callbackSaveDelivery = (res?: Response) => {
     if (res === undefined || !res.ok) {
