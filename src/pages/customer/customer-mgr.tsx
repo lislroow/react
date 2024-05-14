@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import Grid from '@mui/material/Grid';
-import { Box, Button, TextField } from '@mui/material';
+import { Box, Button, TextField, FormControl, Checkbox, FormControlLabel } from '@mui/material';
 
 import storeAlert, { actAlertShow } from 'redux-store/store-alert';
 import { Layout } from 'components/layout/Layout';
@@ -20,23 +20,31 @@ type CustomerREQ = {
   "name"?: string,
 }
 
+type Delivery = {
+  "id"?: string,
+  "address"?: string,
+  "primaryYn"?: string,
+}
 
 const Page = () => {
   const [customer, setCustomer] = useState<Customer>({ id: '' });
-  const handleBasicSave = () => {
-    const req: CustomerREQ = { id: customer.id, name: customer.name };
-    asyncPUT('/api/market/customer/save-basic-info', callbackBasicSave, req);
-  };
+  const [deliveryList, setDeliveryList] = useState<Delivery[]>([]);
 
-  const callbackBasicSave = (res?: Response) => {
+  // 기본정보 저장
+  const callbackSaveBasic = (res?: Response) => {
     if (res === undefined || !res.ok) {
       return;
     }
-    const [title, message] = ['SUCCESS', `저장 되었습니다.`];
+    const [title, message] = ['SUCCESS', `기본 정보가 저장 되었습니다.`];
     storeAlert.dispatch(actAlertShow(title, message));
   };
+  const handleSaveBasic = () => {
+    const req: CustomerREQ = { id: customer.id, name: customer.name };
+    asyncPUT('/api/market/customer/save-basic-info', callbackSaveBasic, req);
+  };
 
-  const callback = (res?: Response) => {
+  // 기본정보 조회
+  const callbackRetrieveBasic = (res?: Response) => {
     if (res === undefined || !res.ok) {
       return;
     }
@@ -45,8 +53,59 @@ const Page = () => {
         setCustomer(json);
       });
   };
+
+  // 배송지 조회
+  const callbackRetrieveDeliveryList = (res?: Response) => {
+    if (res === undefined || !res.ok) {
+      return;
+    }
+    res.json()
+      .then(json => {
+        setDeliveryList(json);
+        console.log(JSON.stringify(deliveryList));
+      });
+  };
+
+  // 배송지 추가
+  const handleAddDelivery = () => {
+    setDeliveryList([ ...deliveryList, {}]);
+  };
+  // 배송지 저장
+  const callbackSaveDelivery = (res?: Response) => {
+    if (res === undefined || !res.ok) {
+      const [title, message] = ['ERROR', `배송지 저장 중 오류가 발생했습니다.`];
+      storeAlert.dispatch(actAlertShow(title, message));
+      return;
+    }
+    const [title, message] = ['SUCCESS', `배송지가 저장 되었습니다.`];
+    storeAlert.dispatch(actAlertShow(title, message));
+    
+    res.json()
+      .then(json => {
+        setDeliveryList(json);
+      });
+  };
+
+  const handleSaveDeliveryList = () => {
+    const req = deliveryList.filter(delivery => delivery.address);
+    console.log(JSON.stringify(req));
+    asyncPUT('/api/market/customer/save-delivery-address', callbackSaveDelivery, req);
+  };
+
+  const handleCheckboxChange = (index: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
+    const updatedList = deliveryList.map((delivery, i) => {
+      if (index === i) {
+        return { ...delivery, primaryYn: 'Y' };
+      } else {
+        return { ...delivery, primaryYn: 'N' };
+      }
+    });
+    setDeliveryList(updatedList);
+  };
+
   useEffect(() => {
-    asyncGET('/api/market/customer/my-info', callback);
+    asyncGET('/api/market/customer/my-info', callbackRetrieveBasic);
+    asyncGET('/api/market/customer/my-delivery-address', callbackRetrieveDeliveryList);
   }, []);
   
   return (
@@ -58,7 +117,7 @@ const Page = () => {
         <div>
           <Grid container spacing={1} justifyContent='flex-end' alignItems='center'>
             <Grid item xs={12} sm={4} md={3} lg={2} style={{textAlign: 'right'}}>
-              <Button onClick={(e) => handleBasicSave()} variant="contained">save</Button>
+              <Button onClick={(e) => handleSaveBasic()} variant="contained">기본정보 저장</Button>
             </Grid>
           </Grid>
           <Grid container spacing={1} alignItems='center'>
@@ -138,6 +197,53 @@ const Page = () => {
             </Grid>
           </Grid> */}
           
+          <Grid container spacing={1} justifyContent='flex-end' alignItems='center' direction='row' style={{marginTop: '8px'}}>
+            <Grid item xs={12} sm={4} md={3} lg={2} style={{textAlign: 'right'}}>
+              <Button onClick={(e) => handleAddDelivery()} variant="contained" style={{marginRight: '8px'}}>추가</Button>
+              <Button onClick={(e) => handleSaveDeliveryList()} variant="contained">저장</Button>
+            </Grid>
+          </Grid>
+          {
+            deliveryList.map((delivery, index) => (
+              <Grid container key={index} spacing={1} alignItems='center'>
+                <Grid item xs={12}>
+                  <Grid container spacing={1} alignItems='center'>
+                    <Grid item>
+                      <FormControl>
+                        <FormControlLabel
+                          control={
+                            <Checkbox
+                              checked={delivery.primaryYn === 'Y'}
+                              onChange={handleCheckboxChange(index)}
+                              color="primary"
+                            />
+                          }
+                          label=""
+                        />
+                      </FormControl>
+                    </Grid>
+                    <Grid item>
+                      <TextField
+                        margin="normal"
+                        InputLabelProps={{ shrink: true }}
+                        variant="standard"
+                        fullWidth
+                        id={`delivery_${index}`}
+                        name={`delivery_${index}`}
+                        label={delivery.primaryYn === 'Y' ? '기본 배송지' : '배송지'}
+                        value={delivery.address}
+                        onChange={(e) => {
+                          const updatedList = [...deliveryList];
+                          updatedList[index].address = e.target.value;
+                          setDeliveryList(updatedList);
+                        }}
+                      />
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Grid>
+            ))
+          }
         </div>
       </Box>
     </Layout>
