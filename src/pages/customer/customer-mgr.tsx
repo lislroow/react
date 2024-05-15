@@ -219,7 +219,7 @@ const Page = () => {
                             id={`delivery_${index}`}
                             name={`delivery_${index}`}
                             label={delivery.primaryYn === 'Y' ? '기본 배송지' : '배송지'}
-                            value={delivery.address}
+                            value={delivery.address || ''}
                             onChange={(e) => {
                               const updatedList = [...deliveryList];
                               updatedList[index].address = e.target.value;
