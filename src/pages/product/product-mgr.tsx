@@ -11,7 +11,7 @@ type Product = {
   "id"?: number,
   "name"?: string,
   "imgThumbUrl"?: string
-  "createDate"?: string
+  "createDate"?: Date
 }
 
 
@@ -64,7 +64,11 @@ const Page = () => {
     }
     res.json()
       .then(json => {
-        setProductList(json);
+        const list: Product[] = json.map((item: any) => ({
+          ...item,
+          createDate: new Date(item.createDate)
+        }));
+        setProductList(list);
       });
   };
   useEffect(() => {
@@ -103,8 +107,7 @@ const Page = () => {
                           style={{float: 'left', width: '140px'}} />
                         <div style={{ marginLeft: '8px' }}>
                           <Typography>{product.name || ''}</Typography>
-                          <Typography>등록일: {product.createDate}</Typography>
-                          <Typography>재고: 10</Typography>
+                          <Typography>등록일: {new Intl.DateTimeFormat('ko-KR', { dateStyle: 'medium' }).format(product.createDate)}</Typography>
                         </div>
                       </div>
                     </Grid>
