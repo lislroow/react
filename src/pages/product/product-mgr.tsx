@@ -47,7 +47,13 @@ const Page = () => {
         res.json()
           .then(json => {
             setSelectedProduct(json);
-            setProductList([...productList, json]);
+            setProductList(productList.map(item => {
+              if (item.id === json.id) {
+                return json;
+              } else {
+                return item;
+              }
+            }));
           });
       });
   };
@@ -107,14 +113,13 @@ const Page = () => {
                           style={{float: 'left', width: '140px'}} />
                         <div style={{ marginLeft: '8px' }}>
                           <Typography>{product.name || ''}</Typography>
-                          <Typography>등록일: {new Intl.DateTimeFormat('ko-KR', { dateStyle: 'medium' }).format(product.createDate)}</Typography>
                         </div>
                       </div>
                     </Grid>
                   </Grid>
                 ))
               }
-
+              {/* <Typography>등록일: {new Intl.DateTimeFormat('ko-KR', { dateStyle: 'medium' }).format(product.createDate)}</Typography> */}
               {
                 productList.length === 0 && 
                 <Grid container alignItems='center' style={{marginTop: '8px'}}>
