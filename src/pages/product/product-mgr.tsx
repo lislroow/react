@@ -6,12 +6,14 @@ import { Box, Button, TextField, FormControl, Checkbox, FormControlLabel, Typogr
 import storeAlert, { actAlertShow } from 'redux-store/store-alert';
 import { Layout } from 'components/layout/Layout';
 import { isLogin, asyncGET, asyncPUT } from 'utils/http';
+import { formatDate } from 'utils/date';
+import { setLastAccess } from 'utils/storage';
 
 type Product = {
   "id"?: number,
   "name"?: string,
   "imgThumbUrl"?: string
-  "createDate"?: Date
+  "createDate"?: string
 }
 
 
@@ -20,19 +22,19 @@ const Page = () => {
 
   const [selectedProduct, setSelectedProduct] = useState<Product>({});
   const [selectedProductImgThumb, setSelectedProductImgThumb] = useState<File>();
-    
+
   // 상품 정보 저장
   const handleSaveProduct = async () => {
     const url = '/api/market/product/save-product';
     const fetchData = async() => {
       const formData = new FormData();
-      console.log(JSON.stringify(selectedProduct));
       formData.append('req', new Blob([JSON.stringify(selectedProduct)], { type: 'application/json' }));
       selectedProductImgThumb && formData.append('imgThumb', selectedProductImgThumb);
       const res = await fetch(url, {
         method: 'PUT',
         body: formData
       });
+      setLastAccess();
       return res;
     };
     fetchData()
@@ -47,6 +49,8 @@ const Page = () => {
         res.json()
           .then(json => {
             setSelectedProduct(json);
+            // console.log('1>>'+JSON.stringify(json));
+            // console.log('2>>'+JSON.stringify({...json, createDate: new Date(json.createDate)}));
             setProductList(productList.map(item => {
               if (item.id === json.id) {
                 return json;
@@ -58,10 +62,46 @@ const Page = () => {
       });
   };
 
-  // 신규 클릭
-  const handleNewProduct = () => {
-    setSelectedProduct({});
-  };
+  // 상품 삭제
+  const handleDeleteProduct = async () => {
+    const url = '/api/market/product/delete-product';
+    const fetchData = async() => {
+      const api = url;
+      const body = JSON.stringify(selectedProduct);
+      const res = await fetch(api, {
+        method: 'delete',
+        headers: {
+          "Content-Type":"application/json; charset=utf-8"
+        },
+        body: body
+      });
+      setLastAccess();
+      return res;
+    };
+    fetchData()
+      .then(res => {
+        if (res === undefined || !res.ok) {
+          const [title, message] = ['ERROR', `상품 정보 삭제 중 오류가 발생했습니다.`];
+          storeAlert.dispatch(actAlertShow(title, message));
+          return;
+        }
+        const [title, message] = ['SUCCESS', `상품 정보가 삭제 되었습니다.`];
+        storeAlert.dispatch(actAlertShow(title, message));
+        res.json()
+          .then(json => {
+            setSelectedProduct(json);
+            // console.log('1>>'+JSON.stringify(json));
+            // console.log('2>>'+JSON.stringify({...json, createDate: new Date(json.createDate)}));
+            setProductList(productList.map(item => {
+              if (item.id === json.id) {
+                return json;
+              } else {
+                return item;
+              }
+            }));
+          });
+      });
+  }
 
   // 상품 목록 조회
   const callbackRetrieveProductList = (res?: Response) => {
@@ -99,12 +139,12 @@ const Page = () => {
                 productList.map((product: Product, index: number) => (
                   <Grid container key={index} spacing={1} alignItems='center'
                     style={{
-                      marginTop: '8px', 
-                      border: selectedProduct === product ? '1px solid gray' : 'none'
+                      marginTop: '8px'
                     }}>
-                    <Grid item sm={12}>
+                    <Grid item xs={12}>
                       <div 
-                        style={{cursor: 'pointer', display: 'flex'}}
+                        style={{cursor: 'pointer', display: 'flex', width: '100%',
+                        border: selectedProduct === product ? '1px solid gray' : 'none'}}
                         onClick={() => {
                           setSelectedProduct(product);
                         }}>
@@ -113,13 +153,48 @@ const Page = () => {
                           style={{float: 'left', width: '140px'}} />
                         <div style={{ marginLeft: '8px' }}>
                           <Typography>{product.name || ''}</Typography>
+                          <Typography>등록일: { formatDate(product.createDate!) }</Typography>
                         </div>
                       </div>
                     </Grid>
+                    {
+                      product.id === selectedProduct.id && 
+                      <Grid container alignItems='center' style={{marginTop: '8px'}}>
+                        <Grid item xs={12} sm={4} md={3} lg={2}>
+                          <TextField
+                            margin="normal"
+                            InputLabelProps={{ shrink: true }}
+                            variant="standard"
+                            fullWidth
+                            id={`selectedProduct`}
+                            name={`selectedProduct`}
+                            label={`상품명`}
+                            value={selectedProduct.name || ''}
+                            onChange={(e) => {
+                              setSelectedProduct({...selectedProduct, name:  e.target.value});
+                            }} />
+                        </Grid>
+                        <Grid item xs={12} sm={4} md={3} lg={2}>
+                          <Input
+                            type="file"
+                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                              if (e.target.files && e.target.files.length > 0) {
+                                setSelectedProductImgThumb(e.target.files[0]);
+                              } else {
+                                setSelectedProductImgThumb(undefined);
+                              }
+                            }}
+                            inputProps={{ accept: '.png, .jpg, .jpeg, .jfif' }} />
+                        </Grid>
+                        <Grid item xs={12} sm={4} md={3} lg={2} style={{textAlign: 'right'}}>
+                          <Button onClick={(e) => handleDeleteProduct()} variant="contained">삭제</Button>
+                          <Button onClick={(e) => handleSaveProduct()} variant="contained">저장</Button>
+                        </Grid>
+                      </Grid>
+                    }
                   </Grid>
                 ))
               }
-              {/* <Typography>등록일: {new Intl.DateTimeFormat('ko-KR', { dateStyle: 'medium' }).format(product.createDate)}</Typography> */}
               {
                 productList.length === 0 && 
                 <Grid container alignItems='center' style={{marginTop: '8px'}}>
@@ -128,50 +203,6 @@ const Page = () => {
                   </Grid>
                 </Grid>
               }
-              
-              <Grid container alignItems='center' style={{marginTop: '20px'}}>
-                <Grid item xs={12}>
-                  <Typography>- 상품</Typography>
-                </Grid>
-              </Grid>
-              
-              
-              <Grid container alignItems='center' style={{marginTop: '8px'}}>
-                <Grid item xs={12} sm={4} md={3} lg={2}>
-                  <TextField
-                    margin="normal"
-                    InputLabelProps={{ shrink: true }}
-                    variant="standard"
-                    fullWidth
-                    id={`selectedProduct`}
-                    name={`selectedProduct`}
-                    label={`상품명`}
-                    value={selectedProduct.name || ''}
-                    onChange={(e) => {
-                      setSelectedProduct({...selectedProduct, name:  e.target.value});
-                    }} />
-                </Grid>
-                <Grid item xs={12} sm={4} md={3} lg={2}>
-                  <Input
-                    type="file"
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
-                      if (e.target.files && e.target.files.length > 0) {
-                        setSelectedProductImgThumb(e.target.files[0]);
-                      } else {
-                        setSelectedProductImgThumb(undefined);
-                      }
-                    }}
-                    inputProps={{ accept: '.png, .jpg, .jpeg, .jfif' }} />
-                </Grid>
-              </Grid>
-              
-              <Grid container justifyContent='flex-end' alignItems='center' direction='row' style={{marginTop: '8px'}}>
-                <Grid item xs={12} sm={4} md={3} lg={2} style={{textAlign: 'right'}}>
-                  <Button onClick={(e) => handleNewProduct()} variant="contained">신규</Button>
-                  <Button onClick={(e) => handleSaveProduct()} variant="contained">저장</Button>
-                </Grid>
-              </Grid>
-
             </Grid>
           </Grid>
         </div>
