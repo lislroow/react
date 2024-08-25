@@ -25,7 +25,7 @@ const Page = () => {
 
   // 상품 정보 저장
   const handleSaveProduct = async () => {
-    const url = '/api/market/product/save-product';
+    const url = '/product/v1/save-product';
     const fetchData = async() => {
       const formData = new FormData();
       formData.append('req', new Blob([JSON.stringify(selectedProduct)], { type: 'application/json' }));
@@ -64,7 +64,7 @@ const Page = () => {
 
   // 상품 삭제
   const handleDeleteProduct = async () => {
-    const url = '/api/market/product/delete-product';
+    const url = '/product/v1/delete-product';
     const fetchData = async() => {
       const api = url;
       const body = JSON.stringify(selectedProduct);
@@ -118,7 +118,7 @@ const Page = () => {
       });
   };
   useEffect(() => {
-    asyncGET('/api/market/product/list', callbackRetrieveProductList);
+    asyncGET('/product/v1/list', callbackRetrieveProductList);
   }, []);
   
   return (

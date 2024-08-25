@@ -47,7 +47,7 @@ const Page = () => {
   };
   const handleSaveBasic = () => {
     const req: CustomerREQ = { id: customer.id, name: customer.name };
-    asyncPUT('/api/market/customer/save-basic-info', callbackSaveBasic, req);
+    asyncPUT('/customer/v1/save-basic-info', callbackSaveBasic, req);
   };
 
   // 배송지 추가
@@ -74,7 +74,7 @@ const Page = () => {
   const handleSaveDeliveryList = () => {
     const req = deliveryList.filter(delivery => delivery.address);
     console.log(JSON.stringify(req));
-    asyncPUT('/api/market/customer/save-delivery-address', callbackSaveDelivery, req);
+    asyncPUT('/customer/v1/save-delivery-address', callbackSaveDelivery, req);
   };
 
   const handleCheckboxChange = (index: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -112,8 +112,8 @@ const Page = () => {
 
   useEffect(() => {
     if (isLogin()) {
-      asyncGET('/api/market/customer/my-info', callbackRetrieveBasic);
-      asyncGET('/api/market/customer/my-delivery-address', callbackRetrieveDeliveryList);
+      asyncGET('/customer/v1/my-info', callbackRetrieveBasic);
+      asyncGET('/customer/v1/my-delivery-address', callbackRetrieveDeliveryList);
     }
   }, []);
   

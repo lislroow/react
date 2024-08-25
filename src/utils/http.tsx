@@ -127,7 +127,7 @@ export const logout = () => {
 export const getLastActiveTime = (): number => {
   let lastActiveTime = localStorage.getItem('lastActiveTime');
   if (!lastActiveTime) {
-    fetch(`/api/auth/user`)
+    fetch(`/auth/v1/session`)
       .then((res) => res.json())
       .then((user) => console.log(JSON.stringify(user)));
     localStorage.setItem('lastActiveTime', Date.now().toString());
@@ -139,8 +139,8 @@ export const getLastActiveTime = (): number => {
 export type TypeSelectUserCallback = (user?: any) => void;
 export const selectUser = (callback: TypeSelectUserCallback) => {
   const call = async() => {
-    // const res = await fetch(`/api/auth/user`);
-    const res = await fetch(`/api/market/customer/my-info`);
+    // const res = await fetch(`/auth/v1/session`);
+    const res = await fetch(`/v1/customer/my-info`);
     setLastAccess();
     return res;
   };
