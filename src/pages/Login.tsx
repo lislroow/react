@@ -27,7 +27,7 @@ const Login = () => {
     formData.append('username', username);
     formData.append('password', password);
     const fetchData = async() => {
-      const res: Response = await fetch('/auth/login/process', 
+      const res: Response = await fetch('/auth/v1/login/process', 
         {
           method: 'post',
           body: formData
