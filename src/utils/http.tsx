@@ -140,7 +140,7 @@ export type TypeSelectUserCallback = (user?: any) => void;
 export const selectUser = (callback: TypeSelectUserCallback) => {
   const call = async() => {
     // const res = await fetch(`/auth/v1/session`);
-    const res = await fetch(`/v1/customer/my-info`);
+    const res = await fetch(`/customer/v1/my/info`);
     setLastAccess();
     return res;
   };

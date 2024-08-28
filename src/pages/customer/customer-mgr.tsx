@@ -33,7 +33,7 @@ const Page = () => {
   const [deliveryList, setDeliveryList] = useState<Delivery[]>([]);
 
   // 기본정보 저장
-  const callbackSaveBasic = (res?: Response) => {
+  const callbackSaveMyinfo = (res?: Response) => {
     if (res === undefined || !res.ok) {
       return;
     }
@@ -45,9 +45,9 @@ const Page = () => {
         storeUser.dispatch(actUpdate(json));
       });
   };
-  const handleSaveBasic = () => {
+  const handleSaveMyinfo = () => {
     const req: CustomerREQ = { id: customer.id, name: customer.name };
-    asyncPUT('/customer/v1/save-basic-info', callbackSaveBasic, req);
+    asyncPUT('/customer/v1/my/info', callbackSaveMyinfo, req);
   };
 
   // 배송지 추가
@@ -74,7 +74,7 @@ const Page = () => {
   const handleSaveDeliveryList = () => {
     const req = deliveryList.filter(delivery => delivery.address);
     console.log(JSON.stringify(req));
-    asyncPUT('/customer/v1/save-delivery-address', callbackSaveDelivery, req);
+    asyncPUT('/customer/v1/my/delivery-address', callbackSaveDelivery, req);
   };
 
   const handleCheckboxChange = (index: number) => (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,7 +89,7 @@ const Page = () => {
   };
 
   // 기본정보 조회
-  const callbackRetrieveBasic = (res?: Response) => {
+  const callbackRetrieveMyinfo = (res?: Response) => {
     if (res === undefined || !res.ok) {
       return;
     }
@@ -112,8 +112,8 @@ const Page = () => {
 
   useEffect(() => {
     if (isLogin()) {
-      asyncGET('/customer/v1/my-info', callbackRetrieveBasic);
-      asyncGET('/customer/v1/my-delivery-address', callbackRetrieveDeliveryList);
+      asyncGET('/customer/v1/my/info', callbackRetrieveMyinfo);
+      asyncGET('/customer/v1/my/delivery-address', callbackRetrieveDeliveryList);
     }
   }, []);
   
@@ -179,7 +179,7 @@ const Page = () => {
               <Grid item xs={12}>
                 <Grid container spacing={1} justifyContent='flex-end' alignItems='center'>
                   <Grid item xs={12} sm={4} md={3} lg={2} style={{textAlign: 'right'}}>
-                    <Button onClick={(e) => handleSaveBasic()} variant="contained">기본정보 저장</Button>
+                    <Button onClick={(e) => handleSaveMyinfo()} variant="contained">기본정보 저장</Button>
                   </Grid>
                 </Grid>
               </Grid>
