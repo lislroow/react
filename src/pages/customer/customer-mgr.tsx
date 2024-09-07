@@ -42,7 +42,7 @@ const Page = () => {
     
     res.json()
       .then(json => {
-        storeUser.dispatch(actUpdate(json));
+        storeUser.dispatch(actUpdate(json.body));
       });
   };
   const handleSaveMyinfo = () => {
@@ -67,7 +67,7 @@ const Page = () => {
     
     res.json()
       .then(json => {
-        setDeliveryList(json);
+        setDeliveryList(json.body);
       });
   };
 
@@ -95,7 +95,7 @@ const Page = () => {
     }
     res.json()
       .then(json => {
-        setCustomer(json);
+        setCustomer(json.body);
       });
   };
 
@@ -106,7 +106,7 @@ const Page = () => {
     }
     res.json()
       .then(json => {
-        setDeliveryList(json);
+        setDeliveryList(json.body);
       });
   };
 
