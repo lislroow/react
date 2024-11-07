@@ -47,7 +47,7 @@ const Page = () => {
   };
   const handleSaveMyinfo = () => {
     const req: CustomerREQ = { id: customer.id, name: customer.name };
-    asyncPUT('/customer/v1/my/info', callbackSaveMyinfo, req);
+    asyncPUT('/customer/v1/my/user', callbackSaveMyinfo, req);
   };
 
   // 배송지 추가
@@ -112,7 +112,7 @@ const Page = () => {
 
   useEffect(() => {
     if (isLogin()) {
-      asyncGET('/customer/v1/my/info', callbackRetrieveMyinfo);
+      asyncGET('/customer/v1/my/user', callbackRetrieveMyinfo);
       asyncGET('/customer/v1/my/delivery-address', callbackRetrieveDeliveryList);
     }
   }, []);

@@ -8,7 +8,7 @@ import { Container, Typography, Box, Button, TextField } from '@mui/material';
 
 const Login = () => {
   const [username, setUsername] = useState('mgkim.net@gmail.com');
-  const [password, setPassword] = useState('123');
+  const [password, setPassword] = useState('1');
 
   const handleGoogleLogin = () => {
     window.location.replace('/oauth2/authorization/google');
