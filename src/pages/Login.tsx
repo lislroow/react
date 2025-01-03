@@ -11,15 +11,15 @@ const Login = () => {
   const [password, setPassword] = useState('1');
 
   const handleGoogleLogin = () => {
-    window.location.replace('/oauth2/authorization/google');
+    window.location.replace('/auth-api/oauth2/authorization/google');
   };
 
   const handleKakaoLogin = () => {
-    window.location.replace('/oauth2/authorization/kakao');
+    window.location.replace('/auth-api/oauth2/authorization/kakao');
   };
 
   const handleNaverLogin = () => {
-    window.location.replace('/oauth2/authorization/naver');
+    window.location.replace('/auth-api/oauth2/authorization/naver');
   };
 
   const handleFormSubmit = async () => {
@@ -27,7 +27,7 @@ const Login = () => {
     formData.append('username', username);
     formData.append('password', password);
     const fetchData = async() => {
-      const res: Response = await fetch('/auth/v1/login/process', 
+      const res: Response = await fetch('/auth-api/v1/login/process', 
         {
           method: 'post',
           body: formData

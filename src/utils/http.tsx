@@ -13,7 +13,13 @@ export const asyncGET = (url: string, callback: TypeHttpCallback, searchParam?: 
     const api = searchParam === undefined || searchParam.size === 0
        ? `${url}`
        : `${url}?${searchParam}`;
-    const res: Response = await fetch(api);
+    const headers = new Headers({
+      "X-ATKID": "379dae6e83b7462fa97e01dd2cc4c29c"
+    });
+    const res: Response = await fetch(api, {
+      method: "GET",
+      headers: headers
+    });
     setLastAccess();
     return res;
   };

@@ -1,12 +1,7 @@
 [
    {
-      "title":"customer-mgr",
-      "itemId":"customer-mgr",
-      "pathname":"/customer/customer-mgr"
-   },
-   {
-      "title":"product-mgr",
-      "itemId":"product-mgr",
-      "pathname":"/product/product-mgr"
+      "title":"scientist",
+      "itemId":"scientist",
+      "pathname":"/scientist/scientist-mgr"
    }
  ]
