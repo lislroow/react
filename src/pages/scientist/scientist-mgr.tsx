@@ -22,8 +22,11 @@ const Page = () => {
   const [ srchName, setName ] = useState<string>('');
 
   const srch = () => {
-    //srchName && searchParam.set('name', srchName);
-    asyncGET(`/auth-api/v1/mybatis-crud/scientist/list/${srchName}`, callback);
+    //asyncGET(`/auth-api/v1/mybatis-crud/scientists/${srchName}`, callback);
+    const searchParam = new URLSearchParams();
+    searchParam.append('name', srchName);
+    asyncGET('/auth-api/v1/mybatis-crud/scientists/search', callback, searchParam);
+    // asyncGET('/story-app/v1/mybatis-crud/scientists/search', callback, searchParam);
   };
   const callback = (res?: Response) => {
     if (res === undefined || !res.ok) {
@@ -38,8 +41,9 @@ const Page = () => {
       })
       .then(json => setRows(json));
   };
+  // asyncGET('/auth-api/v1/mybatis-crud/scientists', callback);
   useEffect(() => {
-    asyncGET('/auth-api/v1/mybatis-crud/scientists', callback);
+    asyncGET('/auth-api/v1/mybatis-crud/scientists/search', callback);
   }, []);
   
   return (
@@ -47,7 +51,8 @@ const Page = () => {
       <div>
         <Grid container spacing={1} justifyContent='flex-end'>
           <Grid item xs={12} sm={3}>
-            <TextField fullWidth value={srchName}
+            <TextField fullWidth 
+              value={srchName}
               onKeyDown={(e) => {
                   if (e.key === 'Enter') srch();
                 }
@@ -67,7 +72,7 @@ const Page = () => {
             <DataGrid
               columns={[
                 {field: 'id', headerName: 'id', headerAlign: 'left'},
-                {field: 'name', headerName: 'name', headerAlign: 'center', align: 'left', flex: 1, minWidth: 150}
+                {field: 'name', headerName: 'name', headerAlign: 'center', align: 'left', width: 300}
               ]}
               rows={rows}
               rowCount={rows.length}
