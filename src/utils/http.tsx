@@ -205,9 +205,7 @@ export const selectUser = (callback: TypeSelectUserCallback) => {
 };
 
 export const isLogin = (): Boolean => {
-  const logined = new Cookies().get('LOGINED');
-  const res = logined === true;
-  return res;
+  return localStorage.getItem('X-RTKID') !== null;
 };
 
 
