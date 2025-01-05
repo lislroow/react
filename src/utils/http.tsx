@@ -37,7 +37,6 @@ export const asyncGET = (url: string, callback: TypeHttpCallback, searchParam?: 
         .then(json => {
           if (json.header.code === 'S000') {
             callback(res);
-            // refreshToken(() => asyncGET(url, callback, searchParam));
           } else if (json.header.code === 'A002') {
             refreshToken(() => asyncGET(url, callback, searchParam));
           } else {
@@ -181,26 +180,30 @@ export const getLastActiveTime = (): number => {
 export type TypeSelectUserCallback = (user?: any) => void;
 export const selectUser = (callback: TypeSelectUserCallback) => {
   const call = async() => {
-    // const res = await fetch(`/auth/v1/session`);
-    const res = await fetch(`/customer/v1/my/user`);
+    const headers = new Headers({
+      "Authorization": "Bearer " + localStorage.getItem('X-ATKID')
+    });
+    const res: Response = await fetch('/auth-api/v1/member/info', {
+      method: "GET",
+      headers: headers
+    });
     setLastAccess();
     return res;
   };
   call()
-    .then((res) => {
-      const json = !res.ok ? {} : res.json();
-      return json;
+    .then(res => {
+      const originRes = res.clone();
+      originRes.json()
+        .then(json => {
+          if (json.header.code === 'S000') {
+            callback(json.body);
+          } else if (json.header.code === 'A002') {
+            refreshToken(() => selectUser(callback));
+          } else {
+            console.log('error!!' + JSON.stringify(json));
+          }
+        });
     })
-    .then((json) => {
-      if (Object.keys(json).length > 0) {
-        callback(json);
-      } else {
-        // TODO await sleep(2000);
-        logout();
-      }
-    })
-    .catch((error) => {})
-    .finally()
     ;
 };
 

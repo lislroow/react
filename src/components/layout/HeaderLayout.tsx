@@ -136,7 +136,7 @@ const HeaderLayout = () => {
           <React.Fragment>
             <IconButton ref={avatarButtonRef} size="medium" color="primary" style={{float: 'right'}} 
               onClick={(e) => {openUserMenu()}}>
-              <Typography sx={{ marginLeft: '5px' }}>{user && user.name === null ? user.email : user && user.name}</Typography>
+              <Typography sx={{ marginLeft: '5px' }}>{user && user.nickname === null ? user.email : user && user.nickname}</Typography>
               <Avatar sx={{ width: 32, height: 32 }}></Avatar>
             </IconButton>
             <ExpireTimer />
