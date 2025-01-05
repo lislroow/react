@@ -44,14 +44,19 @@ function App() {
       }>
         <Routes>
           <Route
-            key='1000'
+            key='1'
             path='/'
             Component={loadPages('/Main')}
           />
           <Route
-            key='1001'
+            key='2'
             path='/Login'
             Component={loadPages('/Login')}
+          />
+          <Route
+            key='3'
+            path='/login_after'
+            Component={loadPages('/login_after')}
           />
           {
             menuData.map((menu, idx) => {

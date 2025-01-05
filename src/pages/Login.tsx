@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useCookies } from 'react-cookie';
 
 import storeAlert, { actAlertShow } from 'redux-store/store-alert';
 
@@ -7,8 +8,11 @@ import AlertDialog from 'components/dialog/AlertDialog';
 import { Container, Typography, Box, Button, TextField } from '@mui/material';
 
 const Login = () => {
+  const [cookies] = useCookies(['X-RTKID', 'X-ATKID']);
   const [username, setUsername] = useState('mgkim.net@gmail.com');
   const [password, setPassword] = useState('1');
+  const [rtkUuid, setRtkUuid] = useState('');
+  const [atkUuid, setAtkUuid] = useState('');
 
   const handleGoogleLogin = () => {
     window.location.replace('/auth-api/oauth2/authorization/google');
@@ -37,11 +41,13 @@ const Login = () => {
     }
     fetchData().then(res => {
       if (res.ok) {
+        localStorage.setItem('rtkUuid', rtkUuid);
+        localStorage.setItem('atkUuid', atkUuid);
         window.location.replace('/');
       } else {
-        res.json().then(data => {
+        res.json().then(json => {
           if (res.status === 403) {
-            const [title, message] = ['ERROR', data.result];
+            const [title, message] = ['ERROR', json.result];
             storeAlert.dispatch(actAlertShow(title, message));
           } else {
             const [title, message] = ['ERROR', '로그인 처리 중 오류가 발생했습니다.'];
@@ -51,6 +57,11 @@ const Login = () => {
       }
     });
   };
+
+  useEffect(() => {
+    setRtkUuid(cookies['X-RTKID'] || '');
+    setAtkUuid(cookies['X-ATKID'] || '');
+  }, [cookies]);
 
   return (
     <Container maxWidth="sm">
