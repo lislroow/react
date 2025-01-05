@@ -28,8 +28,8 @@ const Login = () => {
       }
       res.json()
         .then(json => {
-          localStorage.setItem('rtkUuid', json.body.rtkUuid);
-          localStorage.setItem('atkUuid', json.body.atkUuid);
+          localStorage.setItem('X-RTKID', json.body.rtkUuid);
+          localStorage.setItem('X-ATKID', json.body.atkUuid);
           window.location.replace('/');
         });
     };
