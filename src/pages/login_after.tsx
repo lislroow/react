@@ -1,14 +1,4 @@
-import { useSearchParams } from 'react-router-dom';
-import { useCookies } from 'react-cookie';
-
-import { asyncPOST } from 'utils/http';
-
 const LoginAfter = () => {
-  const [searchParams] = useSearchParams();
-  // const rtkUuid = searchParams.get('rtkUuid');
-  const [cookies] = useCookies();
-  const rtkUuid = cookies['X-RTKID'];
-  
   const refreshToken = (reqDto: { rtkUuid: string }) => {
     const callback = (res?: Response) => {
       if (res === undefined || !res.ok) {
@@ -21,13 +11,44 @@ const LoginAfter = () => {
           window.location.replace('/');
         });
     };
-    asyncPOST('/auth-api/v1/token/refresh', callback, reqDto);
+    const fetchData = async() => {
+      const api = '/auth-api/v1/token/refresh';
+      const body = JSON.stringify(reqDto);
+      const res = await fetch(api, {
+        method: 'post',
+        headers: {
+          "Content-Type":"application/json; charset=utf-8"
+        },
+        body: body
+      });
+      return res;
+    };
+    fetchData()
+      .then(res => {
+        const contentType = res.headers.get('Content-Type');
+        if (res.ok) {
+        } else {
+          if (res.status === 403) {
+          }
+        }
+        return res;
+      })
+      .then(res => callback(res))
+      ;
   };
-  
+  const cookies = document.cookie
+    .split('; ')
+    .reduce<Record<string, string>>((acc, cookie) => {
+      const [key, value] = cookie.split('=');
+      acc[key] = value;
+      return acc;
+    }, {});
+  const rtkUuid = cookies['X-RTKID'];
+  console.log(rtkUuid);
   if (rtkUuid) {
-    refreshToken({
-      "rtkUuid" : rtkUuid
-    });
+    refreshToken({"rtkUuid":rtkUuid});
+  } else {
+    console.log('X-RTKID is null');
   }
 
   return (
