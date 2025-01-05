@@ -3,9 +3,12 @@ import { Container, Typography, Box, Button, TextField } from '@mui/material';
 
 import storeAlert, { actAlertShow } from 'redux-store/store-alert';
 import AlertDialog from 'components/dialog/AlertDialog';
-import { refreshToken } from 'utils/http';
+import { refreshToken, isLogin } from 'utils/http';
 
 const Login = () => {
+  if (isLogin()) {
+    window.location.replace('/');
+  }
   const [username, setUsername] = useState('mgkim.net@gmail.com');
   const [password, setPassword] = useState('1');
 
