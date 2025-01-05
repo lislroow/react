@@ -1,9 +1,9 @@
 import { useState } from 'react';
+import { Container, Typography, Box, Button, TextField } from '@mui/material';
 
 import storeAlert, { actAlertShow } from 'redux-store/store-alert';
-
 import AlertDialog from 'components/dialog/AlertDialog';
-import { Container, Typography, Box, Button, TextField } from '@mui/material';
+import { refreshToken } from 'utils/http';
 
 const Login = () => {
   const [username, setUsername] = useState('mgkim.net@gmail.com');
@@ -19,46 +19,6 @@ const Login = () => {
 
   const handleNaverLogin = () => {
     window.location.replace('/auth-api/oauth2/authorization/naver');
-  };
-
-  const refreshToken = (reqDto: { rtkUuid: string }) => {
-    const callback = (res?: Response) => {
-      if (res === undefined || !res.ok) {
-        return;
-      }
-      res.json()
-        .then(json => {
-          localStorage.setItem('X-RTKID', json.body.rtkUuid);
-          localStorage.setItem('X-ATKID', json.body.atkUuid);
-          window.location.replace('/');
-        });
-    };
-    const fetchData = async() => {
-      const api = '/auth-api/v1/token/refresh';
-      const body = JSON.stringify(reqDto);
-      const res = await fetch(api, {
-        method: 'post',
-        headers: {
-          "Content-Type":"application/json; charset=utf-8"
-        },
-        body: body
-      });
-      return res;
-    };
-    fetchData()
-      .then(res => {
-        const contentType = res.headers.get('Content-Type');
-        if (res.ok) {
-        } else {
-          if (res.status === 403) {
-            const [title, message] = ['ERROR', '사용자 권한 혹은 로그인 상태를 확인해주세요.'];
-            storeAlert.dispatch(actAlertShow(title, message));
-          }
-        }
-        return res;
-      })
-      .then(res => callback(res))
-      ;
   };
 
   const handleFormSubmit = async () => {
@@ -84,9 +44,9 @@ const Login = () => {
             return acc;
           }, {});
         const rtkUuid = cookies['X-RTKID'];
-        console.log(rtkUuid);
         if (rtkUuid) {
-          refreshToken({"rtkUuid":rtkUuid});
+          localStorage.setItem('X-RTKID', rtkUuid);
+          refreshToken(() => window.location.replace('/'));
         } else {
           console.log('X-RTKID is null');
         }
