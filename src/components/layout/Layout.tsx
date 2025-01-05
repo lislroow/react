@@ -1,15 +1,10 @@
 import React from 'react';
 
-import { menuList, getTitleByPathname } from '../../utils/menu';
+import { menuList, getTitleByPathname } from 'utils/menu';
 
-import HeaderLayout from './HeaderLayout';
-import AsideLayout from './AsideLayout';
-import ContentLayout from './ContentLayout';
-import FooterLayout from './FooterLayout';
-
-import storeAside, { actAsideShow } from 'redux-store/store-aside';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
+import HeaderLayout from 'components/layout/HeaderLayout';
+import AsideLayout from 'components/layout/AsideLayout';
+import ContentLayout from 'components/layout/ContentLayout';
 
 type LayoutProps = {
   children: JSX.Element,

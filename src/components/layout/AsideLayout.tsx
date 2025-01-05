@@ -4,9 +4,9 @@ import { Navigation } from 'react-minimal-side-navigation';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import 'react-minimal-side-navigation/lib/ReactMinimalSideNavigation.css';
 
-import storeAside from '../../redux-store/store-aside';
+import storeAside from 'redux-store/store-aside';
 
-import { menuList, getMenuIdByPathname, getPathnameByMenuId } from '../../utils/menu';
+import { menuList, getMenuIdByPathname, getPathnameByMenuId } from 'utils/menu';
 
 const AsideLayout = () => {
   const navigate = useNavigate();

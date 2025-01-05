@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import storeFooter from '../../redux-store/store-footer';
+import storeFooter from 'redux-store/store-footer';
 
 const FooterLayout = () => {
   const [ footerMessage, setFooterMessage ] = useState(''); 

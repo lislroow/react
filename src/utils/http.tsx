@@ -2,9 +2,7 @@ import { Cookies } from 'react-cookie';
 
 import storeAlert, { actAlertShow } from 'redux-store/store-alert';
 import storeFooter, { actFooterMessage } from 'redux-store/store-footer';
-import { setLastAccess, getLastAccess } from './storage';
-
-import { TypeUser } from '../types/TypeUser';
+import { setLastAccess, getLastAccess } from 'utils/storage';
 
 export type TypeHttpCallback = (res?: Response) => void;
 

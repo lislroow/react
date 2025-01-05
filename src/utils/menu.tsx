@@ -1,4 +1,4 @@
-import { TypeMenu } from '../types/TypeMenu';
+import { TypeMenu } from 'types/TypeMenu';
 
 export const menuList: TypeMenu[] = JSON.parse(localStorage.getItem('menu') || '{}');
 
