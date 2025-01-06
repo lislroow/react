@@ -23,24 +23,18 @@ export const asyncGET = (url: string, callback: TypeHttpCallback, searchParam?: 
   };
   fetchData()
     .then(res => {
-      const contentType = res.headers.get('Content-Type');
-      if (res.ok) {
-        storeFooter.dispatch(actFooterMessage(`STATUS: ${res.status}`));
-      } else {
-        console.log('error');
-      }
-      return res;
-    })
-    .then(res => {
       const originRes = res.clone();
       originRes.json()
         .then(json => {
-          if (json.header.code === 'S000') {
+          if (!res.ok) {
+            if (json.title === 'A002') {
+              refreshToken(() => asyncGET(url, callback, searchParam));
+            } else {
+              console.log(JSON.stringify(json));
+              storeAlert.dispatch(actAlertShow(json.title, json.detail));
+            }
+          } else if (res.ok) {
             callback(res);
-          } else if (json.header.code === 'A002') {
-            refreshToken(() => asyncGET(url, callback, searchParam));
-          } else {
-            console.log('error!!' + JSON.stringify(json));
           }
         });
     });
@@ -61,18 +55,15 @@ export const refreshToken = (onSuccess: () => void) => {
   };
   fetchData()
     .then(res => {
-      if (!res.ok) {
-        console.log('error');
-      }
-      return res;
-    })
-    .then(res => {
       res.json()
         .then(json => {
-          if (json.header.code === 'S000') {
-            localStorage.setItem('X-RTKID', json.body.rtkUuid);
-            localStorage.setItem('X-ATKID', json.body.atkUuid);
+          if (res.ok) {
+            localStorage.setItem('X-RTKID', json.rtkUuid);
+            localStorage.setItem('X-ATKID', json.atkUuid);
             if (onSuccess) onSuccess();
+          } else {
+            console.log(JSON.stringify(json));
+            storeAlert.dispatch(actAlertShow(json.title, json.detail));
           }
         });
     })
@@ -96,25 +87,21 @@ export const asyncPOST = (url: string, callback: TypeHttpCallback, data: any) =>
   };
   fetchData()
     .then(res => {
-      const contentType = res.headers.get('Content-Type');
-      if (res.ok) {
-        if (!contentType?.includes('application/json')) {
-          const [title, message] = ['ERROR', `응답 header 의 Content-Type 은 'application/json' 이 되어야 합니다.`];
-          storeAlert.dispatch(actAlertShow(title, message));
-          return undefined;
-        }
-        storeFooter.dispatch(actFooterMessage(`STATUS: ${res.status}`));
-      } else {
-        if (res.status === 403) {
-          const [title, message] = ['ERROR', '사용자 권한 혹은 로그인 상태를 확인해주세요.'];
-          storeAlert.dispatch(actAlertShow(title, message));
-        }
-        storeFooter.dispatch(actFooterMessage(`STATUS: ${res.status}, ${res.statusText}`));
-      }
-      return res;
-    })
-    .then(res => callback(res))
-    ;
+      const originRes = res.clone();
+      originRes.json()
+        .then(json => {
+          if (!res.ok) {
+            if (json.title === 'A002') {
+              refreshToken(() => asyncPOST(url, callback, data));
+            } else {
+              console.log(JSON.stringify(json));
+              storeAlert.dispatch(actAlertShow(json.title, json.detail));
+            }
+          } else if (res.ok) {
+            callback(res);
+          }
+        });
+    });
 };
   
 export const asyncPUT = (url: string, callback: TypeHttpCallback, data: any) => {
@@ -134,24 +121,21 @@ export const asyncPUT = (url: string, callback: TypeHttpCallback, data: any) => 
   };
   fetchData()
     .then(res => {
-      const contentType = res.headers.get('Content-Type');
-      if (res.ok) {
-        storeFooter.dispatch(actFooterMessage(`STATUS: ${res.status}`));
-      } else {
-        if (res.status === 403) {
-          const [title, message] = ['ERROR', '사용자 권한 혹은 로그인 상태를 확인해주세요.'];
-          storeAlert.dispatch(actAlertShow(title, message));
-        }
-        if (res.status === 405) {
-          const [title, message] = ['ERROR', 'HTTP 메소드 혹은 endpoint 의 파라미터를 확인해주세요.'];
-          storeAlert.dispatch(actAlertShow(title, message));
-        }
-        storeFooter.dispatch(actFooterMessage(`STATUS: ${res.status}, ${res.statusText}`));
-      }
-      return res;
-    })
-    .then(res => callback(res))
-    ;
+      const originRes = res.clone();
+      originRes.json()
+        .then(json => {
+          if (!res.ok) {
+            if (json.title === 'A002') {
+              refreshToken(() => asyncPUT(url, callback, data));
+            } else {
+              console.log(JSON.stringify(json));
+              storeAlert.dispatch(actAlertShow(json.title, json.detail));
+            }
+          } else if (res.ok) {
+            callback(res);
+          }
+        });
+    });
 };
 
 export const logout = () => {
@@ -179,7 +163,7 @@ export const getLastActiveTime = (): number => {
 
 export type TypeSelectUserCallback = (user?: any) => void;
 export const selectUser = (callback: TypeSelectUserCallback) => {
-  const call = async() => {
+  const fetchData = async() => {
     const headers = new Headers({
       "Authorization": "Bearer " + localStorage.getItem('X-ATKID')
     });
@@ -190,21 +174,23 @@ export const selectUser = (callback: TypeSelectUserCallback) => {
     setLastAccess();
     return res;
   };
-  call()
+  fetchData()
     .then(res => {
       const originRes = res.clone();
       originRes.json()
         .then(json => {
-          if (json.header.code === 'S000') {
-            callback(json.body);
-          } else if (json.header.code === 'A002') {
-            refreshToken(() => selectUser(callback));
-          } else {
-            console.log('error!!' + JSON.stringify(json));
+          if (!res.ok) {
+            if (json.title === 'A002') {
+              refreshToken(() => selectUser(callback));
+            } else {
+              console.log(JSON.stringify(json));
+              storeAlert.dispatch(actAlertShow(json.title, json.detail));
+            }
+          } else if (res.ok) {
+            callback(json);
           }
         });
-    })
-    ;
+    });
 };
 
 export const isLogin = (): Boolean => {
