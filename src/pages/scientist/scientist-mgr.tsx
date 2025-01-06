@@ -25,8 +25,8 @@ const Page = () => {
     //asyncGET(`/auth-api/v1/mybatis-crud/scientists/${srchName}`, callback);
     const searchParam = new URLSearchParams();
     searchParam.append('name', srchName);
-    asyncGET('/story-app/v1/mybatis-crud/scientists/search', callback, searchParam);
-    // asyncGET('/story-app/v1/mybatis-crud/scientists/search', callback, searchParam);
+    asyncGET('/story-api/v1/mybatis-crud/scientists/search', callback, searchParam);
+    // asyncGET('/story-api/v1/mybatis-crud/scientists/search', callback, searchParam);
   };
   const callback = (res?: Response) => {
     if (res === undefined || !res.ok) {
@@ -34,14 +34,14 @@ const Page = () => {
     }
     res.json()
       .then(json => {
-        return json.list.map((row: TypeScientist, idx: number) => ({
+        return json.pageData.map((row: TypeScientist, idx: number) => ({
           ...row, id: idx
         }))
       })
       .then(json => setRows(json));
   };
   useEffect(() => {
-    asyncGET('/story-app/v1/mybatis-crud/scientists/search', callback);
+    asyncGET('/story-api/v1/mybatis-crud/scientists/search', callback);
   }, []);
   
   return (

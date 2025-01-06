@@ -146,7 +146,7 @@ export const logout = () => {
   });
   localStorage.clear();
   sessionStorage.clear();
-  window.location.href = `/auth/v1/logout?redirect_uri=/`;
+  window.location.href = `/auth-api/v1/logout?redirect_uri=/`;
 };
 
 export const getLastActiveTime = (): number => {
