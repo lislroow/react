@@ -22,11 +22,10 @@ const Page = () => {
   const [ srchName, setName ] = useState<string>('');
 
   const srch = () => {
-    //asyncGET(`/auth-api/v1/mybatis-crud/scientists/${srchName}`, callback);
     const searchParam = new URLSearchParams();
     searchParam.append('name', srchName);
+    // asyncGET('/auth-api/v1/mybatis-crud/scientists/search', callback, searchParam);
     asyncGET('/story-api/v1/mybatis-crud/scientists/search', callback, searchParam);
-    // asyncGET('/story-api/v1/mybatis-crud/scientists/search', callback, searchParam);
   };
   const callback = (res?: Response) => {
     if (res === undefined || !res.ok) {

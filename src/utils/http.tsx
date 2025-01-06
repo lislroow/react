@@ -167,7 +167,7 @@ export const selectUser = (callback: TypeSelectUserCallback) => {
     const headers = new Headers({
       "Authorization": "Bearer " + localStorage.getItem('X-ATKID')
     });
-    const res: Response = await fetch('/auth-api/v1/member/info', {
+    const res: Response = await fetch('/story-api/v1/member/info', {
       method: "GET",
       headers: headers
     });
