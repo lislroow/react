@@ -29,7 +29,7 @@ const Login = () => {
     formData.append('username', username);
     formData.append('password', password);
     const fetchData = async() => {
-      const res: Response = await fetch('/auth-api/v1/login/process', 
+      const res: Response = await fetch('/auth-api/v1/login', 
         {
           method: 'post',
           body: formData
@@ -55,13 +55,9 @@ const Login = () => {
         }
       } else {
         res.json().then(json => {
-          if (res.status === 403) {
-            const [title, message] = ['ERROR', json.result];
-            storeAlert.dispatch(actAlertShow(title, message));
-          } else {
-            const [title, message] = ['ERROR', '로그인 처리 중 오류가 발생했습니다.'];
-            storeAlert.dispatch(actAlertShow(title, message));
-          }
+          console.log(JSON.stringify(json));
+          const [title, message] = [json.title, json.detail];
+          storeAlert.dispatch(actAlertShow(title, message));
         });
       }
     });

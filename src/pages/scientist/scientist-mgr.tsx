@@ -34,7 +34,7 @@ const Page = () => {
     res.json()
       .then(json => {
         return json.pageData.map((row: TypeScientist, idx: number) => ({
-          ...row, id: idx
+          ...row, id: (json.pageInfo.total - idx)
         }))
       })
       .then(json => setRows(json));
