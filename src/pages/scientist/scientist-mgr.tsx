@@ -24,8 +24,8 @@ const Page = () => {
   const srch = () => {
     const searchParam = new URLSearchParams();
     searchParam.append('name', srchName);
-    // asyncGET('/auth-api/v1/mybatis-crud/scientists/search', callback, searchParam);
-    asyncGET('/story-api/v1/mybatis-crud/scientists/search', callback, searchParam);
+    // asyncGET('/auth-api/v1/mybatis-sample/scientists/search', callback, searchParam);
+    asyncGET('/story-api/v1/mybatis-sample/scientists/search', callback, searchParam);
   };
   const callback = (res?: Response) => {
     if (res === undefined || !res.ok) {
@@ -40,7 +40,7 @@ const Page = () => {
       .then(json => setRows(json));
   };
   useEffect(() => {
-    asyncGET('/story-api/v1/mybatis-crud/scientists/search', callback);
+    asyncGET('/story-api/v1/mybatis-sample/scientists/search', callback);
   }, []);
   
   return (
