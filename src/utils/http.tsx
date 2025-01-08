@@ -61,6 +61,9 @@ export const refreshToken = (onSuccess: () => void) => {
             localStorage.setItem('X-RTKID', json.rtkUuid);
             localStorage.setItem('X-ATKID', json.atkUuid);
             if (onSuccess) onSuccess();
+          } else if (json.title === 'A004') {
+            storeAlert.dispatch(actAlertShow(json.title, '세션이 만료되었습니다.'));
+            logout();
           } else {
             console.log(JSON.stringify(json));
             storeAlert.dispatch(actAlertShow(json.title, json.detail));
