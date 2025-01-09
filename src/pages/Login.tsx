@@ -9,7 +9,8 @@ const Login = () => {
   if (isLogin()) {
     window.location.replace('/');
   }
-  const [username, setUsername] = useState('mgkim.net@gmail.com');
+  // const [username, setUsername] = useState('mgkim.net@gmail.com');
+  const [username, setUsername] = useState('myeonggu.kim@kakao.com');
   const [password, setPassword] = useState('1');
 
   const handleGoogleLogin = () => {
