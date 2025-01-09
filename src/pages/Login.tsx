@@ -13,15 +13,15 @@ const Login = () => {
   const [password, setPassword] = useState('1');
 
   const handleGoogleLogin = () => {
-    window.location.replace('/auth-api/oauth2/authorization/google');
+    window.location.replace('/auth-api/v1/member/oauth2/authorization/google');
   };
 
   const handleKakaoLogin = () => {
-    window.location.replace('/auth-api/oauth2/authorization/kakao');
+    window.location.replace('/auth-api/v1/member/oauth2/authorization/kakao');
   };
 
   const handleNaverLogin = () => {
-    window.location.replace('/auth-api/oauth2/authorization/naver');
+    window.location.replace('/auth-api/v1/member/oauth2/authorization/naver');
   };
 
   const handleFormSubmit = async () => {
@@ -29,7 +29,7 @@ const Login = () => {
     formData.append('username', username);
     formData.append('password', password);
     const fetchData = async() => {
-      const res: Response = await fetch('/auth-api/v1/login', 
+      const res: Response = await fetch('/auth-api/v1/member/login', 
         {
           method: 'post',
           body: formData
