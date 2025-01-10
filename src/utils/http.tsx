@@ -4,6 +4,9 @@ import storeAlert, { actAlertShow } from 'redux-store/store-alert';
 import storeFooter, { actFooterMessage } from 'redux-store/store-footer';
 import { setLastAccess, getLastAccess } from 'utils/storage';
 
+import axios, { AxiosInstance, AxiosResponse, AxiosError, AxiosRequestConfig, InternalAxiosRequestConfig } from 'axios';
+import { error } from 'console';
+
 export type TypeHttpCallback = (res?: Response) => void;
 
 export const asyncGET = (url: string, callback: TypeHttpCallback, searchParam?: URLSearchParams) => {
@@ -214,3 +217,57 @@ export const isLogin = (): Boolean => {
 // function sleep(ms: number) {
 //   return new Promise(resolve => setTimeout(resolve, ms));
 // }
+
+const transformResponse = function (res: any) {
+  if (res) {
+    if (typeof res === 'object') {
+      return res;
+    }
+    if (res.type === 'ms-vnd/excel') {
+      return res;
+    } else {
+      return JSON.parse(res);
+    }
+  } else {
+    return res;
+  }
+};
+
+export const http = axios.create({
+  baseURL: `http://localhost`,
+  timeout: 30000,
+  transformResponse,
+  headers: {
+    'Content-type': 'application/json',
+  },
+  withCredentials: true,
+});
+
+const interceptor = (axiosInstance: AxiosInstance) => (error: AxiosError<AxiosRequestConfig>) => {
+  const _axios = axiosInstance;
+  const originalRequest = error.config;
+  return Promise.reject(error);
+};
+
+http.interceptors.request.use(
+  (config: InternalAxiosRequestConfig) => {
+    const tokenId = localStorage.getItem('X-ATKID');
+    if (tokenId) {
+      config.headers['Authorization'] = 'Bearer ' + tokenId;
+      console.log('Authorization 추가');
+    }
+    return config;
+  },
+  (error: AxiosError) => {
+    Promise.reject(error);
+  }
+);
+
+http.interceptors.response.use((res: AxiosResponse) => {
+  if (res.status < 400) {
+    return res;
+  } else {
+    storeAlert.dispatch(actAlertShow(res.data.title, res.data.detail));
+    return Promise.reject(res);
+  }
+}, interceptor(http));

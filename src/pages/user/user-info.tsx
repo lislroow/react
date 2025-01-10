@@ -8,6 +8,8 @@ import storeUser, { actUpdate } from 'redux-store/store-user';
 import { Layout } from 'components/layout/Layout';
 import { isLogin, asyncGET, asyncPUT } from 'utils/http';
 
+import UserService from 'services/UserService';
+
 type UserInfo = {
   "email"?: string,
   "nickname"?: string,
@@ -35,19 +37,12 @@ const Page = () => {
   };
   
   // 기본정보 조회
-  const callbackFind = (res?: Response) => {
-    if (res === undefined || !res.ok) {
-      return;
-    }
-    res.json()
-      .then(json => {
-        setUserInfo(json);
-      });
-  };
-
   useEffect(() => {
     if (isLogin()) {
-      asyncGET('/auth-api/v1/user/member/info', callbackFind);
+      //asyncGET('/auth-api/v1/user/member/info', callbackFind);
+      UserService.getMemberInfo().then((response) => {
+        setUserInfo(response.data);
+      })
     }
   }, []);
   

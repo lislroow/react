@@ -18,6 +18,7 @@
     "@types/react-redux": "^7.1.33",
     "@types/styled-components": "^5.1.34",
     "awesome-react-icons": "^1.4.8",
+    "axios": "^1.7.9",
     "buffer": "^6.0.3",
     "cross-env": "^7.0.3",
     "react": "^18.2.0",
@@ -57,5 +58,8 @@
       "last 1 safari version"
     ]
   },
-  "npm.packageManager": "npm"
+  "npm.packageManager": "npm",
+  "devDependencies": {
+    "@types/axios": "^0.14.4"
+  }
 }
