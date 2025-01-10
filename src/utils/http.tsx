@@ -30,7 +30,7 @@ export const asyncGET = (url: string, callback: TypeHttpCallback, searchParam?: 
       originRes.json()
         .then(json => {
           if (!res.ok) {
-            if (json.title === 'A002') {
+            if (json.title === 'A100') {
               refreshToken(() => asyncGET(url, callback, searchParam));
             } else {
               console.log(JSON.stringify(json));
@@ -64,12 +64,12 @@ export const refreshToken = (onSuccess: () => void) => {
             localStorage.setItem('X-RTKID', json.rtkUuid);
             localStorage.setItem('X-ATKID', json.atkUuid);
             if (onSuccess) onSuccess();
-          } else if (json.title === 'A004') {
+          } else if (json.title === 'A200') {
             storeAlert.dispatch(actAlertShow(json.title, '세션이 만료되었습니다.'));
             logout();
           } else {
-            console.log(JSON.stringify(json));
             storeAlert.dispatch(actAlertShow(json.title, json.detail));
+            logout();
           }
         });
     })
@@ -97,7 +97,7 @@ export const asyncPOST = (url: string, callback: TypeHttpCallback, data: any) =>
       originRes.json()
         .then(json => {
           if (!res.ok) {
-            if (json.title === 'A002') {
+            if (json.title === 'A100') {
               refreshToken(() => asyncPOST(url, callback, data));
             } else {
               console.log(JSON.stringify(json));
@@ -131,7 +131,7 @@ export const asyncPUT = (url: string, callback: TypeHttpCallback, data: any) => 
       originRes.json()
         .then(json => {
           if (!res.ok) {
-            if (json.title === 'A002') {
+            if (json.title === 'A100') {
               refreshToken(() => asyncPUT(url, callback, data));
             } else {
               console.log(JSON.stringify(json));
@@ -177,10 +177,10 @@ export const selectUser = (callback: TypeSelectUserCallback) => {
     let url = '';
     switch (userType) {
     case 'member':
-      url = '/story-api/v1/user/member/info';
+      url = '/auth-api/v1/user/member/info';
       break;
     case 'manager':
-      url = '/story-api/v1/user/manager/info';
+      url = '/auth-api/v1/user/manager/info';
       break;
     }
     const res: Response = await fetch(url, {
@@ -196,7 +196,7 @@ export const selectUser = (callback: TypeSelectUserCallback) => {
       originRes.json()
         .then(json => {
           if (!res.ok) {
-            if (json.title === 'A002') {
+            if (json.title === 'A100') {
               refreshToken(() => selectUser(callback));
             } else {
               console.log(JSON.stringify(json));
