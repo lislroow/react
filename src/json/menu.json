@@ -3,5 +3,10 @@
       "title":"scientist",
       "itemId":"scientist",
       "pathname":"/scientist/scientist-mgr"
+   },
+   {
+      "title":"userinfo",
+      "itemId":"userinfo",
+      "pathname":"/user/user-info"
    }
  ]

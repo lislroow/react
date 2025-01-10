@@ -170,7 +170,17 @@ export const selectUser = (callback: TypeSelectUserCallback) => {
     const headers = new Headers({
       "Authorization": "Bearer " + localStorage.getItem('X-ATKID')
     });
-    const res: Response = await fetch('/story-api/v1/member/info', {
+    const userType = localStorage.getItem('X-ATKID')?.split(':')[0];
+    let url = '';
+    switch (userType) {
+    case 'member':
+      url = '/story-api/v1/user/member/info';
+      break;
+    case 'manager':
+      url = '/story-api/v1/user/manager/info';
+      break;
+    }
+    const res: Response = await fetch(url, {
       method: "GET",
       headers: headers
     });

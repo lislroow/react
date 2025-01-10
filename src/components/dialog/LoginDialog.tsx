@@ -25,13 +25,13 @@ export default function LoginDialog(props: LoginDialogProps) {
   const handleListItemClick = (value: string) => {
     switch (value) {
       case 'google':
-        window.location.replace('/auth-api/v1/member/oauth2/authorization/google');
+        window.location.replace('/auth-api/v1/member/login/oauth2/authorization/google');
         break;
       case 'kakao':
-        window.location.replace('/auth-ap/v1/member/oauth2/authorization/kakao');
+        window.location.replace('/auth-ap/v1/member/login/oauth2/authorization/kakao');
         break;
       case 'naver':
-        window.location.replace('/auth-api/v1/member/oauth2/authorization/naver');
+        window.location.replace('/auth-api/v1/member/login/oauth2/authorization/naver');
         break;
       default:
         break;
