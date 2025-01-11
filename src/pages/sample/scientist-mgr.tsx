@@ -18,7 +18,7 @@ import SampleService from 'services/SampleService';
 
 const Page = () => {
   const pageSizeOptions = [5, 10, 20, 100];
-  const [ reqPageInfo, setReqPageInfo ] = useState<ReqPageInfo>({ page: 0, size: pageSizeOptions[0]});
+  const [ reqPageInfo, setReqPageInfo ] = useState<ReqPageInfo>({ page: 1, size: pageSizeOptions[0]});
   const [ resPageInfo, setResPageInfo ] = useState<ResPageInfo>();
   const [ data, setData ] = useState<resScientists[]>([]);
   const [ name, setName ] = useState<string>('');

@@ -60,6 +60,7 @@
   },
   "npm.packageManager": "npm",
   "devDependencies": {
-    "@types/axios": "^0.14.4"
+    "@types/axios": "^0.14.4",
+    "@types/styled-jsx": "^3.4.4"
   }
 }

@@ -29,7 +29,7 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    "types": ["@types/styled-components"]
+    "types": ["@types/styled-components", "node", "styled-jsx"]
   },
   "include": [
     "**/*.js",
