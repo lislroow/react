@@ -1,8 +1,10 @@
-import { TypeMenu } from 'types/TypeMenu';
+import { MenuInfo } from 'types/CommonType';
 
-export const menuList: TypeMenu[] = JSON.parse(localStorage.getItem('menu') || '{}');
+const getMenuList = (): MenuInfo[] => {
+  return JSON.parse(localStorage.getItem('menu') || '{}');
+}
 
-export const getPathnameByMenuId = function(mlist: TypeMenu[], itemId: string): string {
+const getPathnameByMenuId = function(mlist: MenuInfo[], itemId: string): string {
   for (let menu of mlist) {
     if (menu.itemId === itemId) {
       return menu.pathname || '';
@@ -16,10 +18,11 @@ export const getPathnameByMenuId = function(mlist: TypeMenu[], itemId: string): 
   return '';
 }
 
-export const getTitleByPathname = function(mlist: TypeMenu[], pathname: string): string {
+const getTitleByPathname = function(mlist: MenuInfo[], pathname: string): string {
   for (let menu of mlist) {
     if (menu.pathname === pathname) {
-      return `[ ${menu.itemId} ] ${menu.title}`;
+      // return `[ ${menu.itemId} ] ${menu.title}`;
+      return `${menu.title}`;
     } else if (Object.keys(menu).includes('subNav') && Array.isArray(menu.subNav) ) {
       let result = getTitleByPathname(menu.subNav, pathname);
       if (result !== '') {
@@ -30,7 +33,7 @@ export const getTitleByPathname = function(mlist: TypeMenu[], pathname: string):
   return '';
 }
 
-export const getMenuIdByPathname = function(mlist: TypeMenu[], pathname: string): string {
+const getMenuIdByPathname = function(mlist: MenuInfo[], pathname: string): string {
   for (let menu of mlist) {
     if (menu.pathname === pathname) {
       return menu.itemId;
@@ -42,4 +45,13 @@ export const getMenuIdByPathname = function(mlist: TypeMenu[], pathname: string)
     }
   }
   return '';
-} 
+}
+
+const MenuService = {
+  getMenuList,
+  getPathnameByMenuId,
+  getTitleByPathname,
+  getMenuIdByPathname,
+};
+
+export default MenuService;

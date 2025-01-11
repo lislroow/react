@@ -2,15 +2,15 @@ import React, { Suspense } from 'react';
 
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
-import { TypeMenu } from 'types/TypeMenu';
+import { MenuInfo } from 'types/CommonType';
 import menu from 'json/menu.json';
 
 const loadPages = (path: string): React.ComponentType => React.lazy(() => import(`./pages${path}`));
 
-const flattenMenu = (menus: TypeMenu[]): TypeMenu[] => {
-  const flatMenu: TypeMenu[] = [];
+const flattenMenu = (menus: MenuInfo[]): MenuInfo[] => {
+  const flatMenu: MenuInfo[] = [];
 
-  const flatten = (menu: TypeMenu[]) => {
+  const flatten = (menu: MenuInfo[]) => {
     menu.forEach(item => {
       flatMenu.push(item);
       if (item.subNav && item.subNav.length > 0) {
@@ -26,7 +26,7 @@ const flattenMenu = (menus: TypeMenu[]): TypeMenu[] => {
 
 function App() {
   localStorage.setItem('menu', JSON.stringify(menu));
-  const menuData: TypeMenu[] = flattenMenu([...menu]);
+  const menuData: MenuInfo[] = flattenMenu([...menu]);
   menuData.forEach((menu, idx) => {
     loadPages(`${menu.pathname || ''}`)
   });

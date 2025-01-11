@@ -1,5 +1,4 @@
-import { createStore } from 'redux';
-import { combineReducers } from 'redux';
+import { createStore, combineReducers } from 'redux';
 
 const CLEAR = 'CLEAR' as const;
 const DISPLAY = 'DISPLAY' as const;

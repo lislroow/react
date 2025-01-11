@@ -1,5 +1,4 @@
-import { createStore } from 'redux';
-import { combineReducers } from 'redux';
+import { createStore, combineReducers } from 'redux';
 
 const TURN_ON = 'TURN_ON' as const;
 const TURN_OFF = 'TURN_OFF' as const;

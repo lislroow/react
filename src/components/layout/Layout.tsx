@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { menuList, getTitleByPathname } from 'utils/menu';
-
 import HeaderLayout from 'components/layout/HeaderLayout';
 import AsideLayout from 'components/layout/AsideLayout';
 import ContentLayout from 'components/layout/ContentLayout';
+import MenuService from 'services/MenuService';
+import { MenuInfo } from 'types/CommonType';
 
 type LayoutProps = {
   children: JSX.Element,
@@ -12,6 +12,9 @@ type LayoutProps = {
 }
 
 export const Layout: React.FC<LayoutProps> = (props) => {
+
+  const menuList: MenuInfo[] = MenuService.getMenuList();
+
   return (
     <div>
       <main className='flex' style={{width: '100%', minHeight: '100vh', height: 'auto'}}>
@@ -22,7 +25,6 @@ export const Layout: React.FC<LayoutProps> = (props) => {
         }
         <section className='content' style={{ flex: 1 }}>
           {
-            //window.location.pathname === '/' || props && props.emptyLayout ? 
             props && props.emptyLayout ? 
               '' : 
               <div style={{padding: '14px'}}>
@@ -35,7 +37,7 @@ export const Layout: React.FC<LayoutProps> = (props) => {
                   }
                   </div>
                 </header>
-                {getTitleByPathname(menuList, window.location.pathname)}
+                {MenuService.getTitleByPathname(menuList, window.location.pathname)}
               </div>
           }
           <ContentLayout children={props.children} />

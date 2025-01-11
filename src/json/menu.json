@@ -1,12 +1,12 @@
 [
    {
-      "title":"scientist",
-      "itemId":"scientist",
-      "pathname":"/scientist/scientist-mgr"
+      "itemId":"scientist-mgr",
+      "title":"[sample] scientist-mgr",
+      "pathname":"/sample/scientist-mgr"
    },
    {
-      "title":"userinfo",
-      "itemId":"userinfo",
+      "itemId":"user-info",
+      "title":"[user] user-info",
       "pathname":"/user/user-info"
    }
  ]

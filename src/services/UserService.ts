@@ -39,6 +39,16 @@ const logout = () => {
   window.location.href = `/auth-api/v1/member/logout?redirect_uri=/`;
 };
 
+const setLastAccess = () => {
+  localStorage.setItem('lastAccess', Date.now()+'');
+};
+
+const getLastAccess = (): number => {
+  const lastAccessStr = localStorage.getItem('lastAccess');
+  const lastAccess = lastAccessStr === null ? -1 : parseInt(lastAccessStr);
+  return lastAccess;
+}
+
 const getUserInfo = () => {
   const userType = localStorage.getItem('X-RTKID')?.split(":")[0] || '';
   switch (userType) {
@@ -69,6 +79,8 @@ const UserService = {
   loginBySocial,
   isLogin,
   logout,
+  setLastAccess,
+  getLastAccess,
   getUserType,
   getUserInfo,
   getMemberInfo,

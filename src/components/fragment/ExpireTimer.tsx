@@ -1,12 +1,11 @@
 import { useState, useEffect } from "react";
 import { Typography } from '@mui/material';
 
-import { getLastAccess } from 'utils/storage';
 import UserService from 'services/UserService';
 
 const ExpireTimer = () => {
   const calc = (): number => {
-    const lastAccess = getLastAccess();
+    const lastAccess = UserService.getLastAccess();
     const expire = Math.floor((lastAccess - Date.now()) / 1000) + 1800;
     if (expire < 0) {
       return -1;

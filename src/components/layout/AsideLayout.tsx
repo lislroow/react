@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-
+import { useState } from 'react';
 import { Navigation } from 'react-minimal-side-navigation';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import 'react-minimal-side-navigation/lib/ReactMinimalSideNavigation.css';
 
 import storeAside from 'redux-store/store-aside';
 
-import { menuList, getMenuIdByPathname, getPathnameByMenuId } from 'utils/menu';
+import { MenuInfo } from 'types/CommonType';
+import MenuService from 'services/MenuService';
 
 const AsideLayout = () => {
   const navigate = useNavigate();
@@ -17,6 +17,8 @@ const AsideLayout = () => {
     setSidebarOpen(storeAside.getState().aside.display);
   }
   storeAside.subscribe(subscribe);
+
+  const menuList: MenuInfo[] = MenuService.getMenuList();
   
   return (
     <aside style={{display: 'flex', overflowY: 'auto'}}>
@@ -31,14 +33,14 @@ const AsideLayout = () => {
         <div className="flex items-center justify-center text-center py-2">
           <Link to='/'> 
             <span className="mx-2 text-2xl font-semibold text-black">
-              smpl-app
+              develop
             </span>
           </Link>
         </div>
         <Navigation
-          activeItemId={getMenuIdByPathname(menuList, location.pathname)}
+          activeItemId={MenuService.getMenuIdByPathname(menuList, location.pathname)}
           onSelect={( {itemId} ) => {
-            let pathname = getPathnameByMenuId(menuList, itemId);
+            let pathname = MenuService.getPathnameByMenuId(menuList, itemId);
             if (pathname !== '') {
               navigate(pathname, {replace: false});
             }

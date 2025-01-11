@@ -1,5 +1,5 @@
 import storeAlert, { actAlertShow } from 'redux-store/store-alert';
-import { setLastAccess } from 'utils/storage';
+import UserService from 'services/UserService';
 
 import axios, { AxiosInstance, AxiosResponse, AxiosError, InternalAxiosRequestConfig } from 'axios';
 
@@ -76,7 +76,7 @@ http.interceptors.request.use(
     const tokenId = localStorage.getItem('X-ATKID');
     if (tokenId) {
       config.headers['Authorization'] = 'Bearer ' + tokenId;
-      setLastAccess();
+      UserService.setLastAccess();
     }
     return config;
   },

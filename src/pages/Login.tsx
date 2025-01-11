@@ -3,8 +3,9 @@ import { Container, Typography, Box, Button, TextField } from '@mui/material';
 
 import storeAlert, { actAlertShow } from 'redux-store/store-alert';
 import AlertDialog from 'components/dialog/AlertDialog';
-import UserService from 'services/UserService';
 import { refreshToken } from 'utils/http';
+
+import UserService from 'services/UserService';
 
 const Login = () => {
   if (UserService.isLogin()) {
