@@ -41,7 +41,7 @@ export const http = axios.create({
   withCredentials: true,
 });
 
-export const refreshAccessToken = async () => {
+export const refreshToken = async () => {
   try {
     const response = await axios.post('/auth-api/v1/token/refresh', {
       "rtkUuid": localStorage.getItem('X-RTKID')
@@ -61,7 +61,7 @@ const interceptor = (axiosInstance: AxiosInstance) => (error: AxiosError<any>) =
   const _axios = axiosInstance;
   const originalRequest = error.config;
   if (error.response?.status === 401 && error.response?.data?.title === 'A100') {
-    return refreshAccessToken()
+    return refreshToken()
       .then(() => _axios(originalRequest!))
       .catch(refreshError => {
         console.error('토큰 갱신 중 오류 발생:', refreshError);
@@ -76,7 +76,6 @@ http.interceptors.request.use(
     const tokenId = localStorage.getItem('X-ATKID');
     if (tokenId) {
       config.headers['Authorization'] = 'Bearer ' + tokenId;
-      console.log('Authorization 추가');
       setLastAccess();
     }
     return config;
