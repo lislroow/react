@@ -1,4 +1,9 @@
-export interface PageInfo {
+export interface ReqPageInfo {
+  page: number;
+  size: number;
+}
+
+export interface ResPageInfo {
   page: number;
   size: number;
   start: number;

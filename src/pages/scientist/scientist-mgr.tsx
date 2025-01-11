@@ -1,13 +1,12 @@
 import { useState, useEffect } from "react";
 
 import { Layout } from 'components/layout/Layout';
-import TextField from '@mui/material/TextField';
-import Button from '@mui/material/Button';
-import { DataGrid } from "@mui/x-data-grid";
-import Grid from '@mui/material/Grid';
+import { Grid, TextField, Button } from '@mui/material';
+import { DataGrid, GridPaginationModel } from "@mui/x-data-grid";
 
 import {
-  PageInfo,
+  ReqPageInfo,
+  ResPageInfo,
 } from 'types/CommonType';
 
 import {
@@ -18,29 +17,29 @@ import {
 import SampleService from 'services/SampleService';
 
 const Page = () => {
-  const [ pageInfo, setPageInfo ] = useState<PageInfo>();
+  const pageSizeOptions = [5, 10, 20, 100];
+  const [ reqPageInfo, setReqPageInfo ] = useState<ReqPageInfo>({ page: 0, size: pageSizeOptions[0]});
+  const [ resPageInfo, setResPageInfo ] = useState<ResPageInfo>();
   const [ data, setData ] = useState<resScientists[]>([]);
   const [ name, setName ] = useState<string>('');
   const [searchParams, setSearchParams] = useState<reqScientists>({
-    name: '',
-    page: 1,
-    size: 10
+    name: ''
   });
 
   const defaultParams = {
-    name: '',
-    page: 1,
-    size: 10
+    name: ''
   };
 
   const srch = () => {
     const params: reqScientists = {
       ...searchParams,
-      name: name
+      name: name,
+      page: reqPageInfo.page,
+      size: reqPageInfo.size
     };
     SampleService.getScientistsSearch(params)
       .then((response) => {
-        setPageInfo(response.data.pageInfo);
+        setResPageInfo(response.data.pageInfo);
         setData(response.data.pageData);
       });
   };
@@ -48,7 +47,7 @@ const Page = () => {
   useEffect(() => {
     setSearchParams({ ...defaultParams });
     srch();
-  }, []);
+  }, [reqPageInfo.page, reqPageInfo.size]);
   
   return (
     <Layout>
@@ -73,17 +72,21 @@ const Page = () => {
                 {field: 'name', headerName: 'name', headerAlign: 'center', align: 'left', width: 300}
               ]}
               rows={data}
-              rowCount={pageInfo?.total}
-              paginationMode='client'
-              disableRowSelectionOnClick
-              initialState={{
-                pagination: {
-                  paginationModel: {
-                    pageSize: 20,
-                  },
-                },
+              rowCount={resPageInfo?.total || 0}
+              paginationMode='server'
+              onPaginationModelChange={(paginationModel) => {
+                setReqPageInfo((prev) => ({
+                  ...prev,
+                  page: paginationModel.page,
+                  size: paginationModel.pageSize,
+                }));
               }}
-              pageSizeOptions={[5, 10, 20, 100]}
+              paginationModel={{
+                page: reqPageInfo.page,
+                pageSize: reqPageInfo.size,
+              }}
+              disableRowSelectionOnClick
+              pageSizeOptions={pageSizeOptions}
             />
           </Grid>
         </Grid>
