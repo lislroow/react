@@ -279,6 +279,7 @@ http.interceptors.request.use(
     if (tokenId) {
       config.headers['Authorization'] = 'Bearer ' + tokenId;
       console.log('Authorization 추가');
+      setLastAccess();
     }
     return config;
   },

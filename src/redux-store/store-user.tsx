@@ -1,10 +1,10 @@
 import { createStore } from 'redux';
 import { combineReducers } from 'redux';
-import { TypeUser } from 'types/TypeUser';
+import { UserInfo } from 'types/UserTypes';
 
 const USER = 'USER' as const;
 
-export const actUpdate = (user: TypeUser) => ({
+export const actUpdate = (user: UserInfo) => ({
   type: USER,
   payload: user,
 });
@@ -12,10 +12,10 @@ export const actUpdate = (user: TypeUser) => ({
 type Actions = 
   | ReturnType<typeof actUpdate>;
 
-const initialState: TypeUser = {
+const initialState: UserInfo = {
 };
 
-const reducer = (state: TypeUser = initialState, action: Actions): TypeUser => {
+const reducer = (state: UserInfo = initialState, action: Actions): UserInfo => {
   switch (action.type) {
     case USER:
       return action.payload;

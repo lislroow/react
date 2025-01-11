@@ -1,30 +1,19 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Cookies } from 'react-cookie';
-import { Buffer } from 'buffer';
-import { TypeUser } from 'types/TypeUser';
-import Button from '@mui/material/Button';
-import IconButton from '@mui/material/IconButton';
+
+import { Typography, IconButton, Box, List, ListItem, ListItemButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import LogoutIcon from '@mui/icons-material/Logout';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-import Avatar from '@mui/material/Avatar';
-
-import Box from '@mui/material/Box';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemButton from '@mui/material/ListItemButton';
-import Divider from '@mui/material/Divider';
+import styled from 'styled-components';
 
 import storeAside, { actAsideShow } from 'redux-store/store-aside';
 import storeUser from 'redux-store/store-user';
-import { isLogin, asyncPOST, logout, selectUser } from 'utils/http';
-
-import LoginDialog from 'components/dialog/LoginDialog';
 import AlertDialog from 'components/dialog/AlertDialog';
+
+import { isLogin, logout, selectUser } from 'utils/http';
+import { UserInfo } from 'types/UserTypes';
 import ExpireTimer from 'components/fragment/ExpireTimer';
 
-import styled from 'styled-components';
-import { Typography } from '@mui/material';
 const UserMenu = styled.div`
   position: absolute;
   top: 6vh;
@@ -33,35 +22,19 @@ const UserMenu = styled.div`
 `;
 
 const HeaderLayout = () => {
-  const [ user, setUser ] = useState<TypeUser>({});
+  const [ user, setUser ] = useState<UserInfo>({});
   const subscribeUser = () => {
     setUser(storeUser.getState().user);
     localStorage.setItem('user', JSON.stringify(storeUser.getState().user));
   };
   storeUser.subscribe(subscribeUser);
 
-  const [ loginDialogOpen, setLoginDialogOpen ] = useState(false);
-  const openLoginDialog = () => {
-    window.location.replace('/login');
-  };
-  const closeLoginDialog = () => {
-    setLoginDialogOpen(false);
-  };
   const [ loginIconVisible, setLoginIconVisible ] = useState(false);
-  const [ avatarVisible, setAvatarVisible ] = useState(false);
+  const [ userMenuVisible, setUserMenuVisible ] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
   const avatarButtonRef = useRef<HTMLButtonElement>(null);
-  const [ userMenuVisible, setUserMenuVisible ] = useState(false);
-  const openUserMenu = () => {
-    setUserMenuVisible(true);
-  }
 
   useEffect(() => {
-    // * LOGINED 상태 체크
-    //   T) user 체크
-    //     T) localstorage 사용자 저장
-    //     F) 사용자 조회
-    //   F) 사용자 조회(/auth/user)
     if (isLogin()) {
       if (Object.keys(user).length > 0) {
         let storageStr = localStorage.getItem('user');
@@ -82,16 +55,7 @@ const HeaderLayout = () => {
     } else {
       setLoginIconVisible(true);
     }
-
-    if (isLogin()) {
-      setLoginIconVisible(false);
-      setAvatarVisible(true);
-    } else {
-      setLoginIconVisible(true);
-      setAvatarVisible(false);
-      setUserMenuVisible(false);
-    }
-
+    
     const userMenuOutClick = (event: MouseEvent) => {
       if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node) &&
         !(avatarButtonRef.current && avatarButtonRef.current.contains(event.target as Node))
@@ -104,18 +68,9 @@ const HeaderLayout = () => {
       document.removeEventListener('mousedown', userMenuOutClick);
     };
   }, [user]);
-
-  const handleLogout = (e: React.MouseEvent) => {
-    logout();
-  }
-  
   
   return (
     <React.Fragment>
-      <LoginDialog
-        open={loginDialogOpen}
-        onClose={closeLoginDialog}
-      />
       <AlertDialog />
       <IconButton size="medium" color="primary" aria-label="medium-button" 
         onClick={(e) => {
@@ -126,18 +81,17 @@ const HeaderLayout = () => {
       {
         loginIconVisible &&
           <IconButton size="medium" color="primary" aria-label="medium-button" style={{float: 'right'}} 
-            onClick={(e) => {openLoginDialog()}}>
+            onClick={(e) => window.location.replace('/login')}>
             <AccountCircleOutlinedIcon />
             <Typography>Login</Typography>
           </IconButton>
       }
       {
-        avatarVisible && 
+        !loginIconVisible && 
           <React.Fragment>
             <IconButton ref={avatarButtonRef} size="medium" color="primary" style={{float: 'right'}} 
-              onClick={(e) => {openUserMenu()}}>
-              <Typography sx={{ marginLeft: '5px' }}>{user && user.nickname === null ? user.email : user && user.nickname}</Typography>
-              <Avatar sx={{ width: 32, height: 32 }}></Avatar>
+              onClick={(e) => setUserMenuVisible(true)}>
+              <Typography sx={{ marginLeft: '5px' }}>{user?.nickname}</Typography>
             </IconButton>
             <ExpireTimer />
           </React.Fragment>
@@ -146,21 +100,10 @@ const HeaderLayout = () => {
         userMenuVisible && <div ref={userMenuRef}>
           <UserMenu>
             <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-              {/* <nav>
-                <List dense={true}>
-                  <ListItem disablePadding>
-                    <ListItemButton>
-                      <Avatar sx={{ width: 32, height: 32 }}></Avatar>
-                      <Typography sx={{ marginLeft: '5px' }}>사용자 정보</Typography>
-                    </ListItemButton>
-                  </ListItem>
-                </List>
-              </nav> */}
-              <Divider />
               <nav>
                 <List>
                   <ListItem disablePadding>
-                    <ListItemButton onClick={(e: React.MouseEvent) => { handleLogout(e) } }>
+                    <ListItemButton onClick={(e: React.MouseEvent) => logout()}>
                       <LogoutIcon sx={{ width: 32, height: 32 }}/>
                       <Typography sx={{ marginLeft: '5px' }}>Logout</Typography>
                     </ListItemButton>

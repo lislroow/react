@@ -1,4 +1,4 @@
-export interface resMemberInfo {
-  email: string;
-  nickname: string;
+export interface UserInfo {
+  email?: string;
+  nickname?: string;
 }
