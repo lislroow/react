@@ -1,6 +1,6 @@
 import { Cookies } from 'react-cookie';
 
-import { http } from 'utils/http';
+import { http } from 'lib/http';
 
 const login = (formData: FormData) => {
   return http.post('/auth-api/v1/member/login', formData, {

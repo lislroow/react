@@ -1,5 +1,10 @@
 [
    {
+      "itemId":"mybatis-sample_scientist",
+      "title":"[mybatis-sample] scientist",
+      "pathname":"/mybatis-sample/scientist"
+   },
+   {
       "itemId":"scientist-mgr",
       "title":"[sample] scientist-mgr",
       "pathname":"/sample/scientist-mgr"

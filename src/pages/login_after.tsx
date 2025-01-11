@@ -1,4 +1,4 @@
-import { refreshToken } from 'utils/http';
+import { refreshToken } from 'lib/http';
 
 const LoginAfter = () => {
   const cookies = document.cookie
