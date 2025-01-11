@@ -9,10 +9,13 @@ import styled from 'styled-components';
 import storeAside, { actAsideShow } from 'redux-store/store-aside';
 import storeUser from 'redux-store/store-user';
 import AlertDialog from 'components/dialog/AlertDialog';
-
-import { isLogin, logout, selectUser } from 'utils/http';
-import { UserInfo } from 'types/UserTypes';
 import ExpireTimer from 'components/fragment/ExpireTimer';
+
+import {
+  UserInfo,
+} from 'types/UserTypes';
+
+import UserService from 'services/UserService';
 
 const UserMenu = styled.div`
   position: absolute;
@@ -35,7 +38,7 @@ const HeaderLayout = () => {
   const avatarButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    if (isLogin()) {
+    if (UserService.isLogin()) {
       if (Object.keys(user).length > 0) {
         let storageStr = localStorage.getItem('user');
         if (!storageStr) {
@@ -49,7 +52,19 @@ const HeaderLayout = () => {
         setUser(storageStr && JSON.parse(storageStr));
         return;
       } else {
-        selectUser(setUser);
+        const userType = localStorage.getItem('X-ATKID')?.split(":")[0];
+        switch (userType) {
+        case "member":
+          UserService.getMemberInfo()
+            .then((response) => setUser(response.data));
+          break;
+        case "manager":
+          UserService.getManagerInfo()
+            .then((response) => setUser(response.data));
+          break;
+        default:
+          break;
+        }
         return;
       }
     } else {
@@ -103,7 +118,7 @@ const HeaderLayout = () => {
               <nav>
                 <List>
                   <ListItem disablePadding>
-                    <ListItemButton onClick={(e: React.MouseEvent) => logout()}>
+                    <ListItemButton onClick={(e: React.MouseEvent) => UserService.logout()}>
                       <LogoutIcon sx={{ width: 32, height: 32 }}/>
                       <Typography sx={{ marginLeft: '5px' }}>Logout</Typography>
                     </ListItemButton>

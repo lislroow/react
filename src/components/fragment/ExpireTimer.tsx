@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Typography } from '@mui/material';
 
 import { getLastAccess } from 'utils/storage';
-import { logout } from 'utils/http';
+import UserService from 'services/UserService';
 
 const ExpireTimer = () => {
   const calc = (): number => {
@@ -22,7 +22,7 @@ const ExpireTimer = () => {
       const time = calc();
       if (time < 0) {
         clearInterval(timer);
-        logout();
+        UserService.logout();
       } else {
         setExpireTime(time);
       }
