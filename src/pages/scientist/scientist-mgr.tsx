@@ -11,6 +11,12 @@ import Grid from '@mui/material/Grid';
 import { asyncGET, asyncPOST } from 'utils/http';
 import { Container } from "@mui/material";
 
+import {
+  reqPagedScientists,
+  resPagedScientists,
+} from 'types/SampleType';
+import SampleService from 'services/SampleService';
+
 type TypeScientist = {
   "id": number,
   "name": string,
@@ -20,27 +26,34 @@ const Page = () => {
   const [ rows, setRows ] = useState<TypeScientist[]>([]);
   const [ searchParam, setSearchParam ] = useSearchParams();
   const [ srchName, setName ] = useState<string>('');
+  const [searchParams, setSearchParams] = useState<reqPagedScientists>({
+    name: '',
+    page: 1,
+    size: 10
+  });
+
+  const defaultParams = {
+    name: '',
+    page: 1,
+    size: 10
+  };
+  
+  const handleSearchParams = (name: string, _value: any) => {
+    setSearchParams({ ...searchParams, [name]: _value });
+  };
 
   const srch = () => {
-    const searchParam = new URLSearchParams();
-    searchParam.append('name', srchName);
-    // asyncGET('/auth-api/v1/mybatis-sample/scientists/search', callback, searchParam);
-    asyncGET('/story-api/v1/mybatis-sample/scientists/search', callback, searchParam);
-  };
-  const callback = (res?: Response) => {
-    if (res === undefined || !res.ok) {
-      return;
-    }
-    res.json()
-      .then(json => {
-        return json.pageData.map((row: TypeScientist, idx: number) => ({
-          ...row, id: (json.pageInfo.total - idx)
-        }))
-      })
-      .then(json => setRows(json));
+    const params: reqPagedScientists = {
+      ...searchParams,
+      name: srchName
+    };
+    SampleService.getScientistsSearch(params)
+      .then((response) => {
+        setRows(response.data.pageData);
+      });
   };
   useEffect(() => {
-    asyncGET('/story-api/v1/mybatis-sample/scientists/search', callback);
+    setSearchParams({ ...defaultParams });
   }, []);
   
   return (

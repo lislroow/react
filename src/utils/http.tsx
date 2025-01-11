@@ -43,39 +43,6 @@ export const asyncGET = (url: string, callback: TypeHttpCallback, searchParam?: 
     });
   };
 
-export const refreshToken = (onSuccess: () => void) => {
-  const fetchData = async() => {
-    const api = '/auth-api/v1/token/refresh';
-    const body = JSON.stringify({ "rtkUuid": localStorage.getItem('X-RTKID') });
-    const res = await fetch(api, {
-      method: 'post',
-      headers: {
-        "Content-Type":"application/json; charset=utf-8"
-      },
-      body: body
-    });
-    return res;
-  };
-  fetchData()
-    .then(res => {
-      res.json()
-        .then(json => {
-          if (res.ok) {
-            localStorage.setItem('X-RTKID', json.rtkUuid);
-            localStorage.setItem('X-ATKID', json.atkUuid);
-            if (onSuccess) onSuccess();
-          } else if (json.title === 'A200') {
-            storeAlert.dispatch(actAlertShow(json.title, '세션이 만료되었습니다.'));
-            logout();
-          } else {
-            storeAlert.dispatch(actAlertShow(json.title, json.detail));
-            logout();
-          }
-        });
-    })
-    ;
-};
-  
 export const asyncPOST = (url: string, callback: TypeHttpCallback, data: any) => {
   const fetchData = async() => {
     const api = url;
@@ -233,6 +200,39 @@ const transformResponse = function (res: any) {
   }
 };
 
+export const refreshToken = (onSuccess?: () => void) => {
+  const fetchData = async() => {
+    const api = '/auth-api/v1/token/refresh';
+    const body = JSON.stringify({ "rtkUuid": localStorage.getItem('X-RTKID') });
+    const res = await fetch(api, {
+      method: 'post',
+      headers: {
+        "Content-Type":"application/json; charset=utf-8"
+      },
+      body: body
+    });
+    return res;
+  };
+  fetchData()
+    .then(res => {
+      res.json()
+        .then(json => {
+          if (res.ok) {
+            localStorage.setItem('X-RTKID', json.rtkUuid);
+            localStorage.setItem('X-ATKID', json.atkUuid);
+            if (onSuccess) onSuccess();
+          } else if (json.title === 'A200') {
+            storeAlert.dispatch(actAlertShow(json.title, '세션이 만료되었습니다.'));
+            logout();
+          } else {
+            storeAlert.dispatch(actAlertShow(json.title, json.detail));
+            logout();
+          }
+        });
+    })
+    ;
+};
+
 export const http = axios.create({
   baseURL: `http://localhost`,
   timeout: 30000,
@@ -243,9 +243,33 @@ export const http = axios.create({
   withCredentials: true,
 });
 
-const interceptor = (axiosInstance: AxiosInstance) => (error: AxiosError<AxiosRequestConfig>) => {
+const refreshAccessToken = async () => {
+  try {
+    const response = await axios.post('/auth-api/v1/token/refresh', {
+      "rtkUuid": localStorage.getItem('X-RTKID')
+    });
+    const { rtkUuid, atkUuid } = response.data;
+    
+    localStorage.setItem('X-RTKID', rtkUuid);
+    localStorage.setItem('X-ATKID', atkUuid);
+  } catch (error) {
+    console.error('토큰 갱신 실패:', error);
+    throw error;
+  }
+};
+
+
+const interceptor = (axiosInstance: AxiosInstance) => (error: AxiosError<any>) => {
   const _axios = axiosInstance;
   const originalRequest = error.config;
+  if (error.response?.status === 401 && error.response?.data?.title === 'A100') {
+    return refreshAccessToken()
+      .then(() => _axios(originalRequest!))
+      .catch(refreshError => {
+        console.error('토큰 갱신 중 오류 발생:', refreshError);
+        return Promise.reject(refreshError);
+      });
+  }
   return Promise.reject(error);
 };
 
@@ -266,6 +290,9 @@ http.interceptors.request.use(
 http.interceptors.response.use((res: AxiosResponse) => {
   if (res.status < 400) {
     return res;
+  } else if (res.status === 401 && res.data.title === 'A100') {
+    console.log(JSON.stringify(res.data));
+    return Promise.reject(res);
   } else {
     storeAlert.dispatch(actAlertShow(res.data.title, res.data.detail));
     return Promise.reject(res);
