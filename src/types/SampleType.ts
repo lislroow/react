@@ -1,10 +1,10 @@
-export interface reqPagedScientists {
+export interface reqScientists {
   name: string;
   page?: number;
   size?: number;
 }
 
-export interface resPagedScientists {
+export interface resScientists {
   id: number;
   name: string;
 }

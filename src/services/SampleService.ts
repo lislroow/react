@@ -1,11 +1,10 @@
 import { http } from 'utils/http';
 
 import {
-  reqPagedScientists,
-  resPagedScientists,
+  reqScientists,
 } from 'types/SampleType';
 
-const getScientistsSearch = (data: reqPagedScientists) => {
+const getScientistsSearch = (data: reqScientists) => {
   return http.get('/story-api/v1/mybatis-sample/scientists/search', {params: data});
 }
 

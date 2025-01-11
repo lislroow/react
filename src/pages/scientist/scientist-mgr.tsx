@@ -1,32 +1,27 @@
-import React, { useState, useEffect } from "react";
-import Box from '@mui/material/Box';
+import { useState, useEffect } from "react";
+
+import { Layout } from 'components/layout/Layout';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { Layout } from 'components/layout/Layout';
-
-import { useSearchParams } from "react-router-dom";
 import { DataGrid } from "@mui/x-data-grid";
 import Grid from '@mui/material/Grid';
 
-import { asyncGET, asyncPOST } from 'utils/http';
-import { Container } from "@mui/material";
+import {
+  PageInfo,
+} from 'types/CommonType';
 
 import {
-  reqPagedScientists,
-  resPagedScientists,
+  reqScientists,
+  resScientists,
 } from 'types/SampleType';
+
 import SampleService from 'services/SampleService';
 
-type TypeScientist = {
-  "id": number,
-  "name": string,
-}
-
 const Page = () => {
-  const [ rows, setRows ] = useState<TypeScientist[]>([]);
-  const [ searchParam, setSearchParam ] = useSearchParams();
-  const [ srchName, setName ] = useState<string>('');
-  const [searchParams, setSearchParams] = useState<reqPagedScientists>({
+  const [ pageInfo, setPageInfo ] = useState<PageInfo>();
+  const [ data, setData ] = useState<resScientists[]>([]);
+  const [ name, setName ] = useState<string>('');
+  const [searchParams, setSearchParams] = useState<reqScientists>({
     name: '',
     page: 1,
     size: 10
@@ -37,23 +32,22 @@ const Page = () => {
     page: 1,
     size: 10
   };
-  
-  const handleSearchParams = (name: string, _value: any) => {
-    setSearchParams({ ...searchParams, [name]: _value });
-  };
 
   const srch = () => {
-    const params: reqPagedScientists = {
+    const params: reqScientists = {
       ...searchParams,
-      name: srchName
+      name: name
     };
     SampleService.getScientistsSearch(params)
       .then((response) => {
-        setRows(response.data.pageData);
+        setPageInfo(response.data.pageInfo);
+        setData(response.data.pageData);
       });
   };
+
   useEffect(() => {
     setSearchParams({ ...defaultParams });
+    srch();
   }, []);
   
   return (
@@ -62,15 +56,9 @@ const Page = () => {
         <Grid container spacing={1} justifyContent='flex-end'>
           <Grid item xs={12} sm={3}>
             <TextField fullWidth 
-              value={srchName}
-              onKeyDown={(e) => {
-                  if (e.key === 'Enter') srch();
-                }
-              }
-              onChange={(e) => {
-                  setName(e.target.value);
-                }
-              }
+              value={name}
+              onKeyDown={(e) => { if (e.key === 'Enter') srch(); } }
+              onChange={(e) => setName(e.target.value) }
               label="scientist" helperText="Scientist Name" type="search" size='small' />
           </Grid>
           <Grid item xs={12} sm={1.5} style={{textAlign: 'right'}}>
@@ -84,8 +72,8 @@ const Page = () => {
                 {field: 'id', headerName: 'id', headerAlign: 'left'},
                 {field: 'name', headerName: 'name', headerAlign: 'center', align: 'left', width: 300}
               ]}
-              rows={rows}
-              rowCount={rows.length}
+              rows={data}
+              rowCount={pageInfo?.total}
               paginationMode='client'
               disableRowSelectionOnClick
               initialState={{
