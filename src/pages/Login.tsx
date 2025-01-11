@@ -4,7 +4,7 @@ import { Container, Typography, Box, Button, TextField } from '@mui/material';
 import storeAlert, { actAlertShow } from 'redux-store/store-alert';
 import AlertDialog from 'components/dialog/AlertDialog';
 import UserService from 'services/UserService';
-import { refreshAccessToken } from 'utils/http';
+import { refreshToken } from 'utils/http';
 
 const Login = () => {
   if (UserService.isLogin()) {
@@ -31,7 +31,7 @@ const Login = () => {
         const rtkUuid = cookies['X-RTKID'];
         if (rtkUuid) {
           localStorage.setItem('X-RTKID', rtkUuid);
-          refreshAccessToken()
+          refreshToken()
             .then(() => window.location.replace('/'));
         } else {
           console.log('X-RTKID is null');
