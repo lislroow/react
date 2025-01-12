@@ -31,7 +31,6 @@ export const StyThRow = styled.tr`
 
     &:first-child {
       border-left: none;
-      /* border-right: none; */
     }
 
     &:last-child {
@@ -44,13 +43,11 @@ export const StyThRow = styled.tr`
 export const StyTdRow = styled.tr<{
   pointBackGroundColor?: boolean;
 }>`
-  /* background-color: #ffffff; */
   background-color: ${({ pointBackGroundColor }) =>
     pointBackGroundColor ? '#fffdeb !important;' : 'white !important;'};
   height: 40px;
   line-height: 20px;
   white-space: pre;
-  //table-layout: fixed;
 
   td {
     border-left: 1px solid #dbdbdb;
@@ -60,7 +57,6 @@ export const StyTdRow = styled.tr<{
 
     &:first-child {
       border-left: none;
-      /* border-right: none; */
     }
 
     &:last-child {
@@ -83,7 +79,6 @@ export const StyTdRow = styled.tr<{
 export const StyTdRowHover = styled.tr<{
   pointBackGroundColor?: boolean;
 }>`
-  /* background-color: #ffffff; */
   background-color: ${({ pointBackGroundColor }) =>
     pointBackGroundColor ? '#fffdeb ;' : 'white ;'};
   height: 40px;

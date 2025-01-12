@@ -11,8 +11,9 @@ const Login = () => {
   if (UserService.isLogin()) {
     window.location.replace('/');
   }
-  const [username, setUsername] = useState('mgkim.net@gmail.com');
+  // const [username, setUsername] = useState('mgkim.net@gmail.com');
   // const [username, setUsername] = useState('myeonggu.kim@kakao.com');
+  const [username, setUsername] = useState('mgkim0818@naver.com');
   const [password, setPassword] = useState('1');
 
   const handleLogin = () => {
@@ -20,7 +21,7 @@ const Login = () => {
     formData.append('username', username);
     formData.append('password', password);
     UserService.login(formData)
-      .then((response) => {
+      .then(() => {
         const cookies = document.cookie
           .split('; ')
           .reduce<Record<string, string>>((acc, cookie) => {

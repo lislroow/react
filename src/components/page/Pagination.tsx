@@ -33,24 +33,23 @@ const Pagination: React.FC<IPagination> = ({
   return (
     <>
       <ul className={`pagination ${props.className}`}>
-        {page !== 1 && numPages - pageSize > 0 && (
+        {(
           <li className="itemBtn prevBtn first pageBtn" onClick={() => onClick(1)}>{'<<'}</li>
         )}
         {(
-          <li className="itemBtn pageBtn" onClick={() => onClick(page - pageSize < 1 ? 1 : page - pageSize)}>{'<'}</li>
+          <li className="itemBtn pageBtn" onClick={() => onClick(page -1 < 1 ? 1 : page -1)}>{'<'}</li>
         )}
         {pageList.map((i) => (
           <li className={`itemBtn ${page === i ? 'active' : null}`} key={i} onClick={() => onClick(i)}>{i}</li>
         ))}
         {(
-          <li className="itemBtn nextBtn pageBtn" onClick={() => onClick(page + pageSize > numPages ? numPages : page + pageSize)}>{'>'}</li>
+          <li className="itemBtn nextBtn pageBtn" onClick={() => onClick(page + 1 > numPages ? numPages : page + 1)}>{'>'}</li>
         )}
-        {page !== numPages && numPages - pageSize > 0 && (
+        {(
           <li className="itemBtn nextBtn last pageBtn" onClick={() => onClick(numPages)}>{'>>'}</li>
         )}
       </ul>
       <style jsx>{`
-        /* @@pagination */
         .pagination {
           gap: 8px;
           display: flex;

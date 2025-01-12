@@ -10,19 +10,19 @@ import {
 } from 'types/CommonType';
 
 import {
-  reqScientists,
-  resScientists,
+  ReqScientists,
+  ResScientists,
 } from 'types/SampleType';
 
 import SampleService from 'services/SampleService';
 
 const Page = () => {
-  const pageSizeOptions = [10, 20, 100];
+  const pageSizeOptions = [3, 10, 20, 100];
   const [ reqPageInfo, setReqPageInfo ] = useState<ReqPageInfo>({ page: 1, size: pageSizeOptions[0]});
   const [ resPageInfo, setResPageInfo ] = useState<ResPageInfo>();
-  const [ data, setData ] = useState<resScientists[]>([]);
+  const [ data, setData ] = useState<ResScientists[]>([]);
   const [ name, setName ] = useState<string>('');
-  const [searchParams, setSearchParams] = useState<reqScientists>({
+  const [searchParams, setSearchParams] = useState<ReqScientists>({
     name: ''
   });
 
@@ -36,7 +36,7 @@ const Page = () => {
   };
 
   const srch = (_name: string = '', _value: any = null) => {
-    const params: reqScientists = {
+    const params: ReqScientists = {
       ...searchParams,
       [_name]: _value,
       page: _name === 'page' ? _value : reqPageInfo.page,

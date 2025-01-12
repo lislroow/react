@@ -21,7 +21,6 @@ const getPathnameByMenuId = function(mlist: MenuInfo[], itemId: string): string 
 const getTitleByPathname = function(mlist: MenuInfo[], pathname: string): string {
   for (let menu of mlist) {
     if (menu.pathname === pathname) {
-      // return `[ ${menu.itemId} ] ${menu.title}`;
       return `${menu.title}`;
     } else if (Object.keys(menu).includes('subNav') && Array.isArray(menu.subNav) ) {
       let result = getTitleByPathname(menu.subNav, pathname);
