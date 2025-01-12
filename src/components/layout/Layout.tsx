@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import HeaderLayout from 'components/layout/HeaderLayout';
 import AsideLayout from 'components/layout/AsideLayout';
@@ -12,8 +12,14 @@ type LayoutProps = {
 }
 
 export const Layout: React.FC<LayoutProps> = (props) => {
+  const [menuList, setMenuList] = useState<MenuInfo[]>();
+  const [pathname, setPathname] = useState<string | null>(null);
 
-  const menuList: MenuInfo[] = MenuService.getMenuList();
+
+  useEffect(() => {
+    setMenuList(MenuService.getMenuList());
+    setPathname(window.location.pathname);
+  }, []);
 
   return (
     <div>
@@ -37,7 +43,7 @@ export const Layout: React.FC<LayoutProps> = (props) => {
                   }
                   </div>
                 </header>
-                {MenuService.getTitleByPathname(menuList, window.location.pathname)}
+                {MenuService.getTitleByPathname(menuList, pathname)}
               </div>
           }
           <ContentLayout children={props.children} />

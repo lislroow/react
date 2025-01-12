@@ -9,7 +9,9 @@
     ],
     "baseUrl": "src",
     "paths": {
-      "*": ["*"],
+      "*": [
+        "*"
+      ]
       // "@/components/*": ["components/*"],
       // "@/lib/*": ["lib/*"],
       // "@/services/*":["services/*"],
@@ -28,8 +30,13 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
-    "types": ["@types/styled-components", "node", "styled-jsx"]
+    "jsx": "preserve",
+    "types": [
+      "@types/styled-components",
+      "node",
+      "styled-jsx"
+    ],
+    "incremental": true
   },
   "include": [
     "**/*.js",
