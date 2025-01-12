@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Container, Typography, Box, Button, TextField } from '@mui/material';
 
 import storeAlert, { actAlertShow } from 'redux-store/store-alert';
@@ -6,11 +6,10 @@ import AlertDialog from 'components/dialog/AlertDialog';
 import { refreshToken } from 'lib/http';
 
 import UserService from 'services/UserService';
+import { useRouter } from 'next/router';
 
-const Login = () => {
-  if (UserService.isLogin()) {
-    window.location.replace('/');
-  }
+const Page = () => {
+  const router = useRouter();
   // const [username, setUsername] = useState('mgkim.net@gmail.com');
   // const [username, setUsername] = useState('myeonggu.kim@kakao.com');
   const [username, setUsername] = useState('mgkim0818@naver.com');
@@ -34,7 +33,7 @@ const Login = () => {
         if (rtkUuid) {
           localStorage.setItem('X-RTKID', rtkUuid);
           refreshToken()
-            .then(() => window.location.replace('/'));
+            .then(() => router.push('/'));
         } else {
           console.log('X-RTKID is null');
         }
@@ -46,6 +45,11 @@ const Login = () => {
         return Promise.reject(error);
       });
   }
+  useEffect(() => {
+    if (UserService.isLogin()) {
+      router.push('/');
+    }
+  }, [])
 
   return (
     <Container maxWidth="sm">
@@ -77,4 +81,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Page;

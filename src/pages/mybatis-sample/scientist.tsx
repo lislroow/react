@@ -90,8 +90,8 @@ const Page = () => {
           {data.length > 0 ? (
             data.map((item, index) => {
               return (
-                <StyTdRow>
-                  <Td sort={'center'}>
+                <StyTdRow key={index}>
+                  <Td>
                     {resPageInfo.total - reqPageInfo.size * (reqPageInfo.page -1) - index}
                   </Td>
                   <Td>

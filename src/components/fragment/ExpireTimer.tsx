@@ -12,8 +12,9 @@ const ExpireTimer = () => {
     }
     return expire;
   };
-  const [ expireTime, setExpireTime ] = useState<number>(calc());
+  const [ expireTime, setExpireTime ] = useState<number>();
   useEffect(() => {
+    setExpireTime(calc());
     if (expireTime < 0) {
       return;
     }

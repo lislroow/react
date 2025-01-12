@@ -9,14 +9,15 @@
     ],
     "baseUrl": "src",
     "paths": {
-      "*": [
-        "*"
-      ]
-      // "@/components/*": ["components/*"],
-      // "@/lib/*": ["lib/*"],
-      // "@/services/*":["services/*"],
-      // "@/styles/*": ["styles/*"],
-      // "@/types/*":["types/*"],
+      // "*": [
+      //   "*"
+      // ]
+      "@/components/*": ["components/*"],
+      "@/lib/*": ["lib/*"],
+      "@/services/*":["services/*"],
+      "@/styles/*": ["styles/*"],
+      "@/types/*":["types/*"],
+      "@/json/*":["json/*"],
     },
     "allowJs": true,
     "skipLibCheck": true,
@@ -41,7 +42,9 @@
   "include": [
     "next-env.d.ts",
     "**/*.ts",
-    "**/*.tsx"
+    "**/*.tsx",
+    "styles/*.css",
+    "json/menu.json",
   ],
   "exclude": [
     "node_modules"

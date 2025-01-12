@@ -1,6 +1,9 @@
 import { refreshToken } from 'lib/http';
+import { useRouter } from 'next/router';
 
-const LoginAfter = () => {
+const Page = () => {
+  const router = useRouter();
+
   const cookies = document.cookie
     .split('; ')
     .reduce<Record<string, string>>((acc, cookie) => {
@@ -8,11 +11,13 @@ const LoginAfter = () => {
       acc[key] = value;
       return acc;
     }, {});
+
   const rtkUuid = cookies['X-RTKID'];
+
   if (rtkUuid) {
     localStorage.setItem('X-RTKID', rtkUuid);
     refreshToken()
-      .then(() => window.location.replace('/'));
+      .then(() => router.push('/'));
   } else {
     console.log('X-RTKID is null');
   }
@@ -23,4 +28,4 @@ const LoginAfter = () => {
   );
 };
 
-export default LoginAfter;
+export default Page;

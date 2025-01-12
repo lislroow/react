@@ -16,6 +16,7 @@ import {
 } from 'types/UserTypes';
 
 import UserService from 'services/UserService';
+import { useRouter } from 'next/router';
 
 const UserMenu = styled.div`
   position: absolute;
@@ -25,6 +26,7 @@ const UserMenu = styled.div`
 `;
 
 const HeaderLayout = () => {
+  const router = useRouter();
   const [ user, setUser ] = useState<UserInfo>({});
   const subscribeUser = () => {
     setUser(storeUser.getState().user);
@@ -96,7 +98,7 @@ const HeaderLayout = () => {
       {
         loginIconVisible &&
           <IconButton size="medium" color="primary" aria-label="medium-button" style={{float: 'right'}} 
-            onClick={(e) => window.location.replace('/login')}>
+            onClick={(e) => router.push('/login')}>
             <AccountCircleOutlinedIcon />
             <Typography>Login</Typography>
           </IconButton>

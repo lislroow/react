@@ -1,11 +1,11 @@
 [
    {
-      "itemId":"1",
+      "itemId":"/mybatis-sample/scientist",
       "title":"[sample] scientist",
       "pathname":"/mybatis-sample/scientist"
    },
    {
-      "itemId":"2",
+      "itemId":"/user/user-info",
       "title":"[user] user-info",
       "pathname":"/user/user-info"
    }
