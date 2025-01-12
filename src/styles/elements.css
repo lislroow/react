@@ -1,0 +1,514 @@
+/* # element */
+.el_btnWrap {
+  display: flex;
+  gap: 10px;
+}
+.el_btn {
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 1.7rem;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #efefef;
+  border-radius: 3px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+.el_btn__xs {
+  width: 78px;
+  height: 30px;
+}
+.el_btn__sm {
+  width: 120px;
+  height: 30px;
+}
+.el_btn__md {
+  width: 150px;
+  height: 40px;
+}
+.el_btn__md.h30 {
+  height: 30px;
+}
+.el_btn__lg {
+  width: 200px;
+  height: 50px;
+}
+.el_btn__black {
+  background-color: #282a2e;
+  color: #fff;
+}
+
+
+.el_label {
+  font-size: 14px;
+  line-height: 1.8rem;
+  font-weight: 800;
+  margin-right: 15px;
+  color: #282a2e;;
+}
+.el_label__first {
+  width: 73px;
+  display: inline-block;
+}
+.el_label2 {
+  font-size: 1.7rem;
+  line-height: 2rem;
+  font-weight: 700;
+  color: #282a2e;
+}
+.el_label3 {
+  font-size: 1.5rem;
+  line-height: 1.7rem;
+  font-weight: 400;
+  color: #474d52;
+}
+.el_input_select2 {
+  /*width: 100%;*/
+  width: 306px;
+  height: 40px;
+  padding-left: 10px;
+  margin-right: 15px;
+  border: 1px solid #DBDBDB;
+
+  background-repeat: no-repeat;
+  background-position-x: 93%;
+  background-position-y: 50%;
+  background-color: #ffffff;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.el_input_select2:focus {
+  background: #FFFFFF 0% 0% no-repeat padding-box;
+  border: 1px solid #000000;
+  border-radius: 3px;
+}
+.el_input_select2__lg {
+  max-width: 253px;
+}
+.el_input_select2:disabled {
+  background: #F1F1F1 0% 0% no-repeat padding-box;
+  border: 1px solid #DBDBDB;
+  border-radius: 3px;
+  cursor: not-allowed;
+}
+.el_input_select2 > .item {
+  font-size: 1.5rem;
+  line-height: 1.7rem;
+  font-weight: 400;
+  background-color: #ffffff;
+  transform: skew(-0.01deg);
+}
+.el_input_select2 > .item:hover {
+  background-color: #f3f4f5 !important;
+  box-shadow: 0 0 10px 100px #1882a8 inset;
+}
+
+.el_input_date {
+  width: 100%;
+  max-width: 136px;
+  padding: 11px;
+  border: none;
+  background: transparent;
+  background-repeat: no-repeat;
+  background-position-x: 93%;
+  background-position-y: 50%;
+  background-color: #ffffff;
+  border-radius: 5px;
+  cursor: pointer;
+  position: relative;
+}
+.el_input_date::-webkit-clear-button,
+.el_input_date::-webkit-inner-spin-button {
+  display: none;
+}
+.el_input_date::-webkit-calendar-picker-indicator {
+  background: transparent;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  cursor: pointer;
+}
+.el_getBtn {
+  border-radius: 4px;
+  background-color: #34a3db;
+  font-size: 14px;
+  height: 40px;
+  padding-left: 20px;
+  padding-right: 20px;
+  font-weight: 800;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+.el_getBtn:focus {
+  outline: 2px solid blue;
+}
+.el_classicBtn {
+  background-color: #fbfafa;
+  border: 1px solid #a1a1a1;
+  padding: 7px 26px;
+  color: #474d52;
+  width: fit-content;
+  border-radius: 4px;
+  font-size: 1.4rem;
+  line-height: 1.5rem;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  cursor: pointer;
+}
+.el_classicBtn:focus{
+  outline: 2px solid blue;
+}
+.el_classicBtn.img {
+  padding-left: 12px;
+  padding-right: 16px;
+}
+
+.el_pagination {
+  gap: 2px;
+}
+.el_pagination > .item {
+  border-radius: 3px;
+  background-color: #fff;
+  border: 1px solid #dbdfe0;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.1rem;
+  cursor: pointer;
+}
+.el_pagination > .item.prevBtn,
+.el_pagination > .item.nextBtn {
+  color: #dbdfe0;
+}
+.el_pagination > .item.active {
+  background-color: #282a2e;
+  border-color: #282a2e;
+  color: #fff;
+}
+.el_pagination > .item.deactive {
+  color: #fff;
+  background-color: #dbdfe0;
+  cursor: default;
+}
+.el_pagination > .item.first,
+.el_pagination > .item.last {
+  letter-spacing: -0.3px;
+  margin: 0 1px;
+}
+.el_pagination > .item.skip {
+  cursor: default;
+}
+
+.el_input_checkWrap:not(.el_input_checkWrap:last-child) {
+  margin-right: 26px;
+}
+.el_input_checkLabel2{
+  cursor: pointer;
+}
+.el_input_radioWrap {
+  display: flex;
+  gap: 26px;
+}
+.el_input_radioInnerWrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.el_input_radio {
+  accent-color: #474d52;
+  width: 25px;
+  height: 25px;
+}
+.el_inputWrap {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.el_input,
+.el_input_select {
+  width: 160px;
+  height: 30px;
+  border: 1px solid #dbdbdb;
+  border-radius: 3px;
+  padding: 0 13px;
+  cursor: pointer;
+  color: #474d52;
+}
+.el_input:not(.el_input:last-child) {
+  margin-right: 8px;
+}
+.el_input:disabled {
+  background-color: #f3f4f5;
+  cursor: no-drop;
+}
+.el_input::placeholder {
+  color: #8d8d8d;
+}
+.el_input_select {
+  background: transparent;
+  background-repeat: no-repeat;
+  background-position-x: 93%;
+  background-position-y: 50%;
+}
+.el_content_title {
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 3.6rem;
+  color: #266ae8;
+  margin-bottom: 15px;
+}
+.el_content_title1 {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 32px;
+  color: black;
+}
+
+.bl_content_top {
+  text-align: center;
+}
+
+.bl_content_top img {
+  width: 317px;
+  text-align: center;
+}
+
+.bl_content_top h2 {
+  margin: 17px 0;
+  font-family: "Noto Sans KR", sans-serif;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 25px;
+  color: #34a3db;
+}
+
+.bl_content_top p {
+  margin-top: 25px;
+  font-family: "Noto Sans KR", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 23px;
+  text-align: center;
+  color: #474d52;
+}
+
+.bl_content_top p span {
+  color: #266ae8;
+}
+
+
+.isActive {
+  color: #fff;
+  background-color: #266ae8;
+}
+
+.bl_form_input {
+  display: flex;
+  flex-flow: column;
+  margin-top: 32px;
+}
+
+.bl_form_input .bl_form_input_group input {
+  width: 100%;
+  margin: 10px 0px;
+  font-family: "Noto Sans KR", sans-serif;
+}
+
+.bl_form_input label {
+  display: flex;
+  font-family: "Noto Sans KR", sans-serif;
+  font-style: normal;
+  font-weight: 700;
+  font-size: 16px;
+  margin: 10px 0px;
+  color: #282a2e;
+}
+
+.bl_form_input select {
+  padding: 20px;
+  box-sizing: border-box;
+  height: 60px;
+  background-color: #ffffff;
+  border: 1px solid #c9d0d2;
+  border-radius: 10px;
+  flex: auto;
+  font-size: 18px;
+  font-family: "Noto Sans KR", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.bl_form_input input {
+  padding: 16px;
+  box-sizing: border-box;
+  width: 300px;
+  height: 40px;
+  background-color: #ffffff;
+  border: 1px solid #c9d0d2;
+  border-radius: 4px;
+  flex: auto;
+  font-size: 14px;
+  font-family: "Noto Sans KR", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+}
+
+.bl_form_input select {
+  width: 50px;
+  background-repeat: no-repeat;
+  background-position-x: 93%;
+  background-position-y: 50%;
+}
+
+.bl_form_input .bl_form_group {
+  display: flex;
+  align-content: space-between;
+  gap: 13px;
+}
+
+.bl_form_input .bl_form_group .bl_form_input select {
+  width: 209px;
+}
+
+.check_input {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 10px 0px;
+  font-family: 'Noto Sans KR', sans-serif;
+}
+
+.check_input input {
+  width:25px;
+  height: 25px;
+  margin-right: 10px;
+  border:1px solid #dbdbdb;
+  accent-color: black;
+}
+
+.check_input label {
+  font-weight: 700;
+  font-size: 16px;
+  color: #282a2e;
+}
+
+.file_download{
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+}
+
+.file_download p {
+  cursor: pointer;
+  color: #34a3db;
+}
+.file_download p:hover {
+  cursor: pointer;
+  border-bottom: 1px solid #34a3db;
+  color: #34a3db;
+}
+
+.bl_form_btn {
+  display: block;
+  width: 100%;
+  height: 40px;
+  background: #34a3db;
+  border-radius: 4px;
+  font-family: 'Noto Sans KR', sans-serif;
+  font-style: normal;
+  font-weight: 800;
+  font-size: 14px;
+  line-height: 27px;
+  text-align: center;
+  color: #ffffff;
+  border: none;
+  margin-top: 16px;
+  cursor: pointer;
+}
+
+.auth_msg_wrapper {
+  margin: 10px 0px;
+}
+.auth_msg {
+  width: 100%;
+  font-family: "Noto Sans KR", sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  border-radius: 10px;
+  padding: 10px;
+  background-color: rgb(255, 0, 0, 0.3);
+  color: #d5403c;
+}
+
+.radio-buttons-1,
+.radio-buttons-2 {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+.radio-buttons-1 .radio-button,
+.radio-buttons-2 .radio-button {
+  cursor: pointer;
+  position: relative;
+  padding-left: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+}
+.radio-button input[type='radio'] {
+  position: absolute;
+  opacity: 0;
+  height: 0;
+  width: 0;
+}
+.radio-buttons-2 .radio-button .custom-radio {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 26px;
+  width: 26px;
+  border-radius: 50%;
+  background-color: #fff;
+  border: 1px solid #eee;
+  top: 50%;
+  left: 15px;
+  transform: translate(-50%, -50%);
+}
+.radio-buttons-2 .radio-button input[type='radio']:checked ~ .custom-radio {
+  border: 1px solid #000;
+}
+.radio-buttons-2 .custom-radio:after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #eee;
+}
+.radio-buttons-2 .radio-button input[type='radio']:checked ~ .custom-radio:after {
+  background-color: #000;
+}
+.radio-button input[type="radio"]:focus + .custom-radio {
+  outline: 2px solid blue;
+}
+.el_input_check:focus + .el_input_checkLabel {
+  outline: 2px solid blue;
+}
+button:focus-visible {
+  outline: 2px solid blue;
+}

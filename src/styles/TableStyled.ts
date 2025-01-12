@@ -94,7 +94,6 @@ export const StyTdRowHover = styled.tr<{
 
     &:first-child {
       border-left: none;
-      /* border-right: none; */
     }
 
     &:last-child {
@@ -124,7 +123,7 @@ export const Th = styled.th<{ textAlign?: string }>`
   font-weight: 800;
   padding: 10px 10px;
   white-space: nowrap;
-  background-color: #eff6f9;
+  background-color:rgb(222, 229, 245);
   border-bottom: 1px solid #dbdbdb;
 `;
 
@@ -133,7 +132,6 @@ export const Td = styled.td<{ sort?: string; color?: string; pointBackGroundColo
   vertical-align: middle;
   padding: 10px 10px;
   background-color: ${({ pointBackGroundColor }) => pointBackGroundColor && 'red !important;'};
-
   color: ${({ color }) => (color ? color : '#000000')};
   word-wrap: break-word;
   word-break: break-all;
@@ -143,7 +141,7 @@ export const Td = styled.td<{ sort?: string; color?: string; pointBackGroundColo
     border-left: 1px solid #dbdbdb !important;
     border-right: 1px solid #dbdbdb !important;
   }
-
+  
   &.emptyContent {
     width: fit-content();
     height: 200px;

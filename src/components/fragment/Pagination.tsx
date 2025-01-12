@@ -34,19 +34,19 @@ const Pagination: React.FC<IPagination> = ({
     <>
       <ul className={`pagination ${props.className}`}>
         {(
-          <li className="itemBtn prevBtn first pageBtn" onClick={() => onClick(1)}>{'<<'}</li>
+          <li className="itemBtn prevBtn first pageBtn" onClick={() => onClick(1)}>{'◀'}</li>
         )}
         {(
-          <li className="itemBtn pageBtn" onClick={() => onClick(page -1 < 1 ? 1 : page -1)}>{'<'}</li>
+          <li className="itemBtn pageBtn" onClick={() => onClick(page -1 < 1 ? 1 : page -1)}>{'◁'}</li>
         )}
         {pageList.map((i) => (
           <li className={`itemBtn ${page === i ? 'active' : null}`} key={i} onClick={() => onClick(i)}>{i}</li>
         ))}
         {(
-          <li className="itemBtn nextBtn pageBtn" onClick={() => onClick(page + 1 > numPages ? numPages : page + 1)}>{'>'}</li>
+          <li className="itemBtn nextBtn pageBtn" onClick={() => onClick(page + 1 > numPages ? numPages : page + 1)}>{'▷'}</li>
         )}
         {(
-          <li className="itemBtn nextBtn last pageBtn" onClick={() => onClick(numPages)}>{'>>'}</li>
+          <li className="itemBtn nextBtn last pageBtn" onClick={() => onClick(numPages)}>{'▶'}</li>
         )}
       </ul>
       <style jsx>{`

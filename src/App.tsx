@@ -1,5 +1,7 @@
 import React, { Suspense } from 'react';
 
+import 'styles/elements.css';
+
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 
 import { MenuInfo } from 'types/CommonType';
