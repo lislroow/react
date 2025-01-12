@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 
 import { Button } from "@mui/material";
-import { Layout } from 'components/layout/Layout';
 import Pagination from 'components/fragment/Pagination';
 import SearchArea from "components/fragment/SearchArea";
 import { SearchItem, SearchGroupBox, SearchBtnBox } from "styles/SearchStyled";
@@ -57,73 +56,71 @@ const Page = () => {
   }, [reqPageInfo.page, reqPageInfo.size]);
   
   return (
-    <Layout>
-      <section>
-        <SearchArea>
-          <SearchGroupBox>
-            <SearchItem>
-              <div className="param-title">name</div>
-              <input
-                type="text"
-                className="el_input_select2"
-                placeholder="name"
-                value={searchParams?.name}
-                onKeyDown={(e) => { if (e.key === 'Enter') search(); } }
-                onChange={(e) => handleSearchParams('name', e.target.value)}
-              />
-            </SearchItem>
-          </SearchGroupBox>
-          <SearchBtnBox>
-            <Button style={{ width: '80px' }} onClick={() => search()} id="searchFocus_0" variant="contained">조회</Button>
-          </SearchBtnBox>
-        </SearchArea>
-        <StyTable>
-          <colgroup>
-            <col width={80} />
-            <col />
-          </colgroup>
-          <thead>
-            <StyThRow>
-              <Th>no.</Th>
-              <Th>name</Th>
-            </StyThRow>
-          </thead>
-          <tbody>
-            {data.length > 0 ? (
-              data.map((item, index) => {
-                return (
-                  <StyTdRow>
-                    <Td sort={'center'}>
-                      {resPageInfo.total - reqPageInfo.size * (reqPageInfo.page -1) - index}
-                    </Td>
-                    <Td>
-                      {item.name}
-                    </Td>
-                  </StyTdRow>
-                );
-              })
-            ) : (
-              <StyTdRow>
-                <Td colSpan={2} className={'empty'}>
-                  no data
-                </Td>
-              </StyTdRow>
-            )}
-          </tbody>
-        </StyTable>
-        <Pagination
-          total={resPageInfo?.total ?? 0}
-          page={reqPageInfo?.page ?? 1}
-          size={reqPageInfo?.size ?? pageSizeOptions[0]}
-          onClick={(value: number) => {
-            setReqPageInfo((prev) => ({
-              ...prev,
-              page: value,
-            }));
-          }}
-        />
-      </section>
-    </Layout>
+    <section>
+      <SearchArea>
+        <SearchGroupBox>
+          <SearchItem>
+            <div className="param-title">name</div>
+            <input
+              type="text"
+              className="el_input_select2"
+              placeholder="name"
+              value={searchParams?.name}
+              onKeyDown={(e) => { if (e.key === 'Enter') search(); } }
+              onChange={(e) => handleSearchParams('name', e.target.value)}
+            />
+          </SearchItem>
+        </SearchGroupBox>
+        <SearchBtnBox>
+          <Button style={{ width: '80px' }} onClick={() => search()} id="searchFocus_0" variant="contained">조회</Button>
+        </SearchBtnBox>
+      </SearchArea>
+      <StyTable>
+        <colgroup>
+          <col width={80} />
+          <col />
+        </colgroup>
+        <thead>
+          <StyThRow>
+            <Th>no.</Th>
+            <Th>name</Th>
+          </StyThRow>
+        </thead>
+        <tbody>
+          {data.length > 0 ? (
+            data.map((item, index) => {
+              return (
+                <StyTdRow>
+                  <Td sort={'center'}>
+                    {resPageInfo.total - reqPageInfo.size * (reqPageInfo.page -1) - index}
+                  </Td>
+                  <Td>
+                    {item.name}
+                  </Td>
+                </StyTdRow>
+              );
+            })
+          ) : (
+            <StyTdRow>
+              <Td colSpan={2} className={'empty'}>
+                no data
+              </Td>
+            </StyTdRow>
+          )}
+        </tbody>
+      </StyTable>
+      <Pagination
+        total={resPageInfo?.total ?? 0}
+        page={reqPageInfo?.page ?? 1}
+        size={reqPageInfo?.size ?? pageSizeOptions[0]}
+        onClick={(value: number) => {
+          setReqPageInfo((prev) => ({
+            ...prev,
+            page: value,
+          }));
+        }}
+      />
+    </section>
   )
 }
 

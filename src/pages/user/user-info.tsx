@@ -2,8 +2,6 @@ import { useState, useEffect } from "react";
 
 import { Grid, Box, Button, TextField, Typography } from '@mui/material';
 
-import { Layout } from 'components/layout/Layout';
-
 import {
   UserInfo,
 } from 'types/UserTypes';
@@ -20,7 +18,7 @@ const Page = () => {
   }, []);
   
   return (
-    <Layout>
+    <section>
       <Box component="form" noValidate autoComplete="off">
         <Grid container spacing={1} alignItems='center'>
           <Grid item xs={12}>
@@ -51,7 +49,7 @@ const Page = () => {
           </Grid>
         </Grid>
       </Box>
-    </Layout>
+    </section>
   )
 }
 

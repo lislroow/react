@@ -1,11 +1,18 @@
 import { MenuInfo } from 'types/CommonType';
+import menu from 'json/menu.json';
 
 const getMenuList = (): MenuInfo[] => {
-  return JSON.parse(localStorage.getItem('menu') || '{}');
+  let menuList = null;
+  menuList = localStorage.getItem('menu');
+  if (!menuList) {
+    menuList = JSON.stringify(menu);
+    localStorage.setItem('menu', JSON.stringify(menu));
+  }
+  return JSON.parse(menuList);
 }
 
-const getPathnameByMenuId = function(mlist: MenuInfo[], itemId: string): string {
-  for (let menu of mlist) {
+const getPathnameByMenuId = function(mlist1: MenuInfo[], itemId: string): string {
+  for (let menu of mlist1) {
     if (menu.itemId === itemId) {
       return menu.pathname || '';
     } else if (Object.keys(menu).includes('subNav') && Array.isArray(menu.subNav) ) {
@@ -18,11 +25,11 @@ const getPathnameByMenuId = function(mlist: MenuInfo[], itemId: string): string 
   return '';
 }
 
-const getTitleByPathname = function(mlist: MenuInfo[], pathname: string): string {
-  if (!Array.isArray(mlist)) {
+const getTitleByPathname = function(mlist2: MenuInfo[], pathname: string): string {
+  if (!Array.isArray(mlist2)) {
     return '';
   }
-  for (let menu of mlist) {
+  for (let menu of mlist2) {
     if (menu.pathname === pathname) {
       return `${menu.title}`;
     } else if (Object.keys(menu).includes('subNav') && Array.isArray(menu.subNav) ) {
@@ -35,8 +42,8 @@ const getTitleByPathname = function(mlist: MenuInfo[], pathname: string): string
   return '';
 }
 
-const getMenuIdByPathname = function(mlist: MenuInfo[], pathname: string): string {
-  for (let menu of mlist) {
+const getMenuIdByPathname = function(mlist3: MenuInfo[], pathname: string): string {
+  for (let menu of mlist3) {
     if (menu.pathname === pathname) {
       return menu.itemId;
     } else if (Object.keys(menu).includes('subNav') && Array.isArray(menu.subNav) ) {
