@@ -39,7 +39,7 @@
     "incremental": true
   },
   "include": [
-    "**/*.js",
+    "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
   ],
