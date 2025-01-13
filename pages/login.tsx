@@ -5,7 +5,7 @@ import { Container, Typography, Box, Button, TextField } from '@mui/material';
 import storeAlert, { actAlertShow } from '@/components/redux-store/store-alert';
 import storeUser, { actUpdate } from '@/components/redux-store/store-user';
 
-import { refreshToken } from '@/lib/http';
+import { refreshToken } from '@/components/http';
 import UserService from '@/services/UserService';
 
 const Page = () => {

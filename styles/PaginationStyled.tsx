@@ -6,7 +6,7 @@ export interface PaginationAttr {
   className?: string;
 }
 
-const Pagination: React.FC<PaginationAttr> = ({
+const StylPagination: React.FC<PaginationAttr> = ({
   total = 10,
   size = 1,
   page,
@@ -85,4 +85,4 @@ const Pagination: React.FC<PaginationAttr> = ({
   );
 };
 
-export default Pagination;
+export default StylPagination;

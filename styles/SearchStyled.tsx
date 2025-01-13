@@ -1,6 +1,20 @@
 import styled, { css } from 'styled-components';
 
-export const SearchGroupBox = styled.div<{
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  padding: 25px 29px;
+  background-color: #ffffff;
+  border: 1px solid #dbdbdb;
+  margin-bottom: 30px;
+  width: 100%;
+`;
+
+export const StylSearchArea: React.FC<React.PropsWithChildren<any>> = ({ children }) => {
+  return <Container>{children}</Container>;
+};
+
+export const StylSearchGroup = styled.div<{
   wrap?: string;
   mt?: number;
   mb?: number;
@@ -38,7 +52,7 @@ export const SearchGroupBox = styled.div<{
   }
 `;
 
-export const SearchItem = styled.div<{ width?: number; marginBoth?: boolean }>`
+export const StylSearchItem = styled.div<{ width?: number; marginBoth?: boolean }>`
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -58,7 +72,7 @@ export const SearchItem = styled.div<{ width?: number; marginBoth?: boolean }>`
     `}
 `;
 
-export const SearchBtnBox = styled(SearchGroupBox)`
+export const StylSearchBtnArea = styled(StylSearchGroup)`
   justify-content: space-between;
   flex-direction: row-reverse;
   margin-top: 10px;

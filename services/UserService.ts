@@ -1,7 +1,7 @@
 import { Cookies } from 'react-cookie';
 import { NextRouter, useRouter } from 'next/router';
 
-import { http } from '@/lib/http';
+import { http } from '@/components/http';
 
 const login = (formData: FormData) => {
   return http.post('/auth-api/v1/member/login', formData, {

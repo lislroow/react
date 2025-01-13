@@ -1,9 +1,8 @@
 import { useState, useEffect } from "react";
 
-import { Button } from "@mui/material";
-import Pagination from '@/components/Pagination';
-import SearchArea from "@/components/SearchArea";
-import { SearchItem, SearchGroupBox, SearchBtnBox } from "@/styles/SearchStyled";
+import { Button, Link } from "@mui/material";
+import StylPagination from '@/styles/PaginationStyled';
+import { StylSearchArea, StylSearchGroup, StylSearchItem, StylSearchBtnArea } from "@/styles/SearchStyled";
 import { StyTable, StyTdRow, StyThRow, Td, Th } from '@/styles/TableStyled';
 
 import {
@@ -17,8 +16,10 @@ import {
 } from '@/types/SampleType';
 
 import SampleService from '@/services/SampleService';
+import { useRouter } from "next/router";
 
 const Page = () => {
+  const router = useRouter();
   const pageSizeOptions = [10, 20, 100];
   const [ reqPageInfo, setReqPageInfo ] = useState<ReqPageInfo>({ page: 1, size: pageSizeOptions[0]});
   const [ resPageInfo, setResPageInfo ] = useState<ResPageInfo>();
@@ -57,9 +58,9 @@ const Page = () => {
   
   return (
     <section>
-      <SearchArea>
-        <SearchGroupBox>
-          <SearchItem>
+      <StylSearchArea>
+        <StylSearchGroup>
+          <StylSearchItem>
             <div className="param-title">name</div>
             <input
               type="text"
@@ -69,12 +70,12 @@ const Page = () => {
               onKeyDown={(e) => { if (e.key === 'Enter') search(); } }
               onChange={(e) => handleSearchParams('name', e.target.value)}
             />
-          </SearchItem>
-        </SearchGroupBox>
-        <SearchBtnBox>
+          </StylSearchItem>
+        </StylSearchGroup>
+        <StylSearchBtnArea>
           <Button style={{ width: '80px' }} onClick={() => search()} id="searchFocus_0" variant="contained">조회</Button>
-        </SearchBtnBox>
-      </SearchArea>
+        </StylSearchBtnArea>
+      </StylSearchArea>
       <StyTable>
         <colgroup>
           <col width={80} />
@@ -95,7 +96,7 @@ const Page = () => {
                     {resPageInfo.total - reqPageInfo.size * (reqPageInfo.page -1) - index}
                   </Td>
                   <Td>
-                    {item.name}
+                    <Link onClick={() => router.push(`scientist/`+item.id)}>{item.name}</Link>
                   </Td>
                 </StyTdRow>
               );
@@ -109,7 +110,7 @@ const Page = () => {
           )}
         </tbody>
       </StyTable>
-      <Pagination
+      <StylPagination
         total={resPageInfo?.total ?? 0}
         page={reqPageInfo?.page ?? 1}
         size={reqPageInfo?.size ?? pageSizeOptions[0]}

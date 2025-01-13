@@ -10,10 +10,10 @@
     "baseUrl": ".",
     "paths": {
       "@/components/*": ["components/*"],
-      "@/lib/*": ["lib/*"],
       "@/services/*":["services/*"],
-      "@/styles/*": ["styles/*"],
       "@/types/*":["types/*"],
+      "@/styles/*": ["styles/*"],
+      "@/css/*":["css/*"],
       "@/json/*":["json/*"],
     },
     "allowJs": true,

@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, List, ListItem, ListItemButton, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import LogoutIcon from '@mui/icons-material/Logout';
-import '@/styles/globals.css';
+import '@/css/globals.css';
 
 import storeAside, { actAsideShow } from '@/components/redux-store/store-aside';
 import storeFooter from '@/components/redux-store/store-footer';

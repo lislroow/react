@@ -20,7 +20,7 @@ export interface SelectItem {
   value: string;
 }
 
-const FormSelect: React.FC<SelectAttr> = ({
+const StylFormSelect: React.FC<SelectAttr> = ({
   type = 'type1',
   size = 'medium',
   name,
@@ -133,4 +133,4 @@ const FormSelect: React.FC<SelectAttr> = ({
   );
 };
 
-export default FormSelect;
+export default StylFormSelect;
