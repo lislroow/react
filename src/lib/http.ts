@@ -47,7 +47,6 @@ export const refreshToken = async () => {
       "rtkUuid": localStorage.getItem('X-RTKID')
     });
     const { rtkUuid, atkUuid } = response.data;
-    
     localStorage.setItem('X-RTKID', rtkUuid);
     localStorage.setItem('X-ATKID', atkUuid);
   } catch (error) {
@@ -55,7 +54,6 @@ export const refreshToken = async () => {
     throw error;
   }
 };
-
 
 const interceptor = (axiosInstance: AxiosInstance) => (error: AxiosError<any>) => {
   const _axios = axiosInstance;
@@ -67,6 +65,8 @@ const interceptor = (axiosInstance: AxiosInstance) => (error: AxiosError<any>) =
         console.error('토큰 갱신 중 오류 발생:', refreshError);
         return Promise.reject(refreshError);
       });
+  } else {
+    storeAlert.dispatch(actAlertShow(error.response?.data.title, error.response?.data.detail));
   }
   return Promise.reject(error);
 };
@@ -92,7 +92,6 @@ http.interceptors.response.use((res: AxiosResponse) => {
     console.log(JSON.stringify(res.data));
     return Promise.reject(res);
   } else {
-    storeAlert.dispatch(actAlertShow(res.data.title, res.data.detail));
     return Promise.reject(res);
   }
 }, interceptor(http));

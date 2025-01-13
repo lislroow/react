@@ -3,7 +3,7 @@ import { Navigation } from 'react-minimal-side-navigation';
 import { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { Box, IconButton, List, ListItem, ListItemButton, Typography } from '@mui/material';
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, List, ListItem, ListItemButton, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import LogoutIcon from '@mui/icons-material/Logout';
 import '@/styles/globals.css';
@@ -11,8 +11,7 @@ import '@/styles/globals.css';
 import storeAside, { actAsideShow } from '@/redux-store/store-aside';
 import storeFooter from '@/redux-store/store-footer';
 import storeUser from '@/redux-store/store-user';
-
-import AlertDialog from '@/components/dialog/AlertDialog';
+import storeAlert from '@/redux-store/store-alert';
 
 import { MenuInfo } from '@/types/CommonType';
 import { UserInfo } from '@/types/UserTypes';
@@ -27,6 +26,10 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
   const [ menuList, setMenuList ] = useState<MenuInfo[]>();
   const [ pathname, setPathname ] = useState<string | null>(null);
 
+  const [alertDisplay, setAlertDisplay] = useState(false);
+  const [alertTitle, setAlertTitle] = useState('');
+  const [alertMessage, setAlertMessage] = useState('');
+
   const [ isSidebarOpen, setSidebarOpen ] = useState(false);
   const [ footerMessage, setFooterMessage ] = useState(''); 
 
@@ -38,22 +41,26 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
   
   const [ expireTime, setExpireTime ] = useState<number>();
 
-  const subscribe = () => {
+  storeAside.subscribe(() => {
     setSidebarOpen(storeAside.getState().aside.display);
-  }
-  storeAside.subscribe(subscribe);
+  });
 
-  const subscribeFooter = () => {
+  storeFooter.subscribe(() => {
     setFooterMessage(storeFooter.getState().footer.message);
-  };
-  storeFooter.subscribe(subscribeFooter);
+  });
   
-  const subscribeUser = () => {
+  storeUser.subscribe(() => {
     setUser(storeUser.getState().user);
     localStorage.setItem('user', JSON.stringify(storeUser.getState().user));
     setLoginIconVisible(false);
-  };
-  storeUser.subscribe(subscribeUser);
+  });
+  
+  storeAlert.subscribe(() => {
+    setAlertDisplay(storeAlert.getState().alert.display);
+    setAlertTitle(storeAlert.getState().alert.title || '');
+    setAlertMessage(storeAlert.getState().alert.message || '');
+  });
+
 
   useEffect(() => {
     setMenuList(MenuService.getMenuList());
@@ -105,6 +112,15 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
           <div>Loading...</div>
         </div>
       }>
+        <Dialog open={alertDisplay || false} onClose={() => setAlertDisplay(false)} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
+          <DialogTitle id="alert-dialog-title">{alertTitle}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">{alertMessage}</DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setAlertDisplay(false)} autoFocus>확인</Button>
+          </DialogActions>
+        </Dialog>
         <div>
           <main className='flex' style={{width: '100%', minHeight: '100vh', height: 'auto'}}>
             {!noLayoutUri.includes(router.pathname) && (
@@ -139,7 +155,6 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
             <section className='content' style={{ flex: 1 }}>
               <div style={{padding: '14px'}}>
                 <div style={{width: '100%', minHeight: '5vh', zIndex: '100'}}>
-                  <AlertDialog />
                   <IconButton size="medium" color="primary" aria-label="medium-button" 
                     onClick={(e) => {
                       storeAside.dispatch(actAsideShow())
