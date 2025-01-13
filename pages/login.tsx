@@ -16,7 +16,6 @@ const Page = () => {
   const [password, setPassword] = useState('1');
 
   const handleSocialLogin = (social: string) => {
-    // UserService.loginBySocial(social);
     switch (social) {
     case 'google':
     case 'kakao':
@@ -56,7 +55,6 @@ const Page = () => {
         }
       })
       .catch(error => {
-        console.error('로그인 오류 발생:', error);
         const [title, message] = [error.title, error.detail];
         storeAlert.dispatch(actAlertShow(title, message));
         return Promise.reject(error);
@@ -69,31 +67,28 @@ const Page = () => {
   }, [])
 
   return (
-    <Container maxWidth="sm">
-      <Box sx={{ mt: 8 }}>
-        <Typography variant="h4" align="center" gutterBottom>
-          로그인
-        </Typography>
-        <form>
-          <TextField margin="normal" required fullWidth id="username" name="username" autoComplete="username"
-            label="email" value={username} onChange={(e) => setUsername(e.target.value)} autoFocus />
-          <TextField margin="normal" required fullWidth id="password" name="password" autoComplete="current-password" 
-            label="password" value={password} onChange={(e) => setPassword(e.target.value)}
-            type="password" />
-          <Button onClick={(e) => handleIdLogin()} fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-            id /pw login
-          </Button>
-        </form>
-        <Typography variant="subtitle1" align="center" gutterBottom>
-          social login
-        </Typography>
-        <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
-          <Button onClick={(e) => handleSocialLogin('google')} variant="contained">Google</Button>
-          <Button onClick={(e) => handleSocialLogin('kakao')} variant="contained">Kakao</Button>
-          <Button onClick={(e) => handleSocialLogin('naver')} variant="contained">Naver</Button>
+    <div className='contents'>
+      <Container maxWidth="sm">
+        <Box sx={{ mt: 4 }}>
+          <Typography variant="h4" align="center" gutterBottom>Login</Typography>
+          <form>
+            <TextField margin="normal" required fullWidth id="username" name="username" autoComplete="username"
+              label="email" value={username} onChange={(e) => setUsername(e.target.value)} autoFocus />
+            <TextField margin="normal" required fullWidth id="password" name="password" autoComplete="current-password" 
+              label="password" value={password} onChange={(e) => setPassword(e.target.value)}
+              type="password" />
+            <Button onClick={(e) => handleIdLogin()} fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+              id /pw login
+            </Button>
+          </form>
+          <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
+            <Button onClick={(e) => handleSocialLogin('google')} variant="contained">Google</Button>
+            <Button onClick={(e) => handleSocialLogin('kakao')} variant="contained">Kakao</Button>
+            <Button onClick={(e) => handleSocialLogin('naver')} variant="contained">Naver</Button>
+          </Box>
         </Box>
-      </Box>
-    </Container>
+      </Container>
+    </div>
   );
 };
 

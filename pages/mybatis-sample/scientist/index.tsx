@@ -77,7 +77,7 @@ const Page = () => {
   
   
   return (
-    <section>
+    <div className="contents">
       <StylSearchArea>
         <StylSearchGroup>
           <StylSearchItem>
@@ -140,7 +140,7 @@ const Page = () => {
         size={searchParams?.size ?? pageSizeOptions[0]}
         onClick={(value: number) => search('page', value)}
       />
-    </section>
+    </div>
   )
 }
 

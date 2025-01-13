@@ -18,7 +18,7 @@ const Page = () => {
   }, []);
   
   return (
-    <section>
+    <div className="contents">
       <Box component="form" noValidate autoComplete="off">
         <Grid container spacing={1} alignItems='center'>
           <Grid item xs={12}>
@@ -49,7 +49,7 @@ const Page = () => {
           </Grid>
         </Grid>
       </Box>
-    </section>
+    </div>
   )
 }
 

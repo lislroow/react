@@ -118,8 +118,8 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
         </Dialog>
         <div>
           <main className='flex' style={{width: '100%', minHeight: '100vh', height: 'auto'}}>
-            {!noLayoutUri.includes(router.pathname) && (
-              <aside style={{overflowY: 'auto', maxWidth: '254px'}} className={isSidebarOpen ? 'aside-show' : 'aside-hidden'}>
+            {!noLayoutUri.includes(router.pathname) && 
+              <aside className={isSidebarOpen ? 'aside-show' : 'aside-hidden'}>
                 <div className="flex items-center justify-center text-center py-4">
                   <Link href='/'> 
                     <span className="mx-2 text-2xl font-semibold text-black">
@@ -136,17 +136,16 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
                     onSelect={({ itemId }) => { router.query = {}; router.push(itemId); } } activeItemId={''} />
                 )}
               </aside>
-            )}
+            }
             <section className='content' style={{ flex: 1 }}>
               <div style={{padding: '14px'}}>
                 <div style={{width: '100%', minHeight: '5vh', zIndex: '100'}}>
-                  <IconButton size="medium" color="primary" aria-label="medium-button" 
-                    onClick={(e) => {
-                      setSidebarOpen(!isSidebarOpen)
-                    }}>
-                    <MenuIcon sx={{ fontSize: '20px' }} />
-                  </IconButton>
-                  {loginIconVisible &&
+                  {!noLayoutUri.includes(router.pathname) && 
+                    <IconButton size="medium" color="primary" aria-label="medium-button" onClick={(e) => setSidebarOpen(!isSidebarOpen)}>
+                      <MenuIcon sx={{ fontSize: '20px' }} />
+                    </IconButton>
+                  }
+                  {loginIconVisible && !noLayoutUri.includes(router.pathname) && 
                     <IconButton size="medium" color="primary" aria-label="medium-button" style={{float: 'right'}} 
                       onClick={(e) => router.push('/login')}>
                       <Typography>Login</Typography>

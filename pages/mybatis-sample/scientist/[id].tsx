@@ -22,7 +22,7 @@ const Page = () => {
       .then((response) => setScientist(response.data));
   }, [router.isReady]);
   return (
-    <div>
+    <div className="contents">
       {scientist && (
         <div>{scientist.name}</div>
       )}
