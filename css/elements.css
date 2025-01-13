@@ -1,4 +1,3 @@
-/* # element */
 .el_btnWrap {
   display: flex;
   gap: 10px;
@@ -17,26 +16,26 @@
   border: none;
   cursor: pointer;
 }
-.el_btn__xs {
+.el_btn_xs {
   width: 78px;
   height: 30px;
 }
-.el_btn__sm {
+.el_btn_sm {
   width: 120px;
   height: 30px;
 }
-.el_btn__md {
+.el_btn_md {
   width: 150px;
   height: 40px;
 }
-.el_btn__md.h30 {
+.el_btn_md.h30 {
   height: 30px;
 }
-.el_btn__lg {
+.el_btn_lg {
   width: 200px;
   height: 50px;
 }
-.el_btn__black {
+.el_btn_black {
   background-color: #282a2e;
   color: #fff;
 }
@@ -49,7 +48,7 @@
   margin-right: 15px;
   color: #282a2e;;
 }
-.el_label__first {
+.el_label_first {
   width: 73px;
   display: inline-block;
 }
@@ -66,7 +65,6 @@
   color: #474d52;
 }
 .el_input_select2 {
-  /*width: 100%;*/
   width: 306px;
   height: 40px;
   padding-left: 10px;
@@ -85,7 +83,7 @@
   border: 1px solid #000000;
   border-radius: 3px;
 }
-.el_input_select2__lg {
+.el_input_select2_lg {
   max-width: 253px;
 }
 .el_input_select2:disabled {
@@ -511,4 +509,149 @@
 }
 button:focus-visible {
   outline: 2px solid blue;
+}
+
+
+.searchApiInput {
+  display: flex;
+  align-items: center;
+}
+
+.tableTab ul{
+  display: flex;
+  margin-bottom:20px;
+}
+
+.tableTab ul li {
+  background: #eee ;
+}
+
+.tableTab ul li div{
+  display: flex;
+  width: 170px;
+  height: 40px;
+  justify-content: center;
+  align-items: center;
+}
+
+.serchInputRow {
+  display: flex;
+}
+
+.tabActive{
+  background:#ccc !important ;
+}
+
+.active {
+  background:#C2DFFF;
+}
+
+.el_input_wrap {
+  width: fit-content;
+  position: relative;
+}
+
+.el_input_wrap--full {
+  width: 100%;
+}
+
+.el_input_won {
+  padding-right: 30px;
+}
+
+.el_input_label {
+  color: #474d52;
+  position: absolute;
+  right: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.el_input {
+  width: 200px;
+  height: 40px;
+  border: 1px solid #f1f1f1;
+  border-radius: 5px;
+  padding: 0 13px;
+  cursor: pointer;
+  color: #474d52;
+}
+
+.el_input_label + .el_input {
+  padding-right: 30px;
+}
+
+.el_input:disabled {
+  background-color: #f3f4f5;
+  cursor: no-drop;
+}
+.el_input::placeholder {
+  color: #8d8d8d;
+}
+.el_input_sm {
+  width: 148px;
+}
+.el_input_md {
+  width: 220px;
+}
+.el_input_lg {
+  width: 260px;
+}
+.el_input_full {
+  width: 100%;
+}
+.el_input_fluid {
+  width: 100%;
+}
+.el_input_wrap--fluid {
+  width: fit-content;
+  flex-grow: 1;
+}
+.el_input_heigth {
+  height: 200px;
+}
+.modaltable {
+  border: 0.5px solid #9b9b9b;
+  border-collapse: collapse;
+}
+.modalth {
+  min-width: 100px;
+  min-height: 40px;
+  color: #282a2e;
+  font-weight: 600;
+  font-family: "Noto Sans KR", sans-serif;
+  font-size: 17px;
+  background-color: #f3f4f5;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
+}
+.modaltd {
+  display: flex;
+  flex: 1;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 40px;
+  padding: 11px 23px;
+  background-color: white;
+  border-left: 0.5px solid #9b9b9b;
+}
+.search_P{
+  color: var(--unnamed-color-34a3db);
+  text-align: left;
+  text-decoration: underline;
+  font: normal normal normal 14px/17px Noto Sans KR;
+  letter-spacing: -0.35px;
+  color: #34A3DB;
+}
+.div_gt{
+  transform: matrix(0, -1, 1, 0, 0, 0);
+  border: 1.5px solid var(--unnamed-color-000000);
+  border: 2px solid #000000;
+  opacity: 1;
+  height: 4.15px;
+  width: 8.29px;
 }

@@ -12,22 +12,22 @@ export const StyTable = styled.table<{ minWidth?: number }>`
     width: 100%;
     padding: 100px 0;
     text-align: center;
-    border-bottom: 0.5px solid #dbdbdb;
+    border-bottom: 0.5px solid rgb(125, 125, 125);
     background-color: #fff;
   }
 `;
 
 export const StyThRow = styled.tr`
   font-size: 14px;
-  background-color: #eff6f9;
+  background-color: hsl(260, 17.60%, 90.00%);
   height: 40px;
   line-height: 20px;
   white-space: pre;
 
   th {
-    border-left: 1px solid #dbdbdb;
-    border-right: 1px solid #dbdbdb;
-    border-bottom: 1px solid #dbdbdb;
+    border-left: 1px solid rgb(125, 125, 125);
+    border-right: 1px solid rgb(125, 125, 125);
+    border-bottom: 1px solid rgb(125, 125, 125);
 
     &:first-child {
       border-left: none;
@@ -50,9 +50,9 @@ export const StyTdRow = styled.tr<{
   white-space: pre;
 
   td {
-    border-left: 1px solid #dbdbdb;
-    border-right: 1px solid #dbdbdb;
-    border-bottom: 1px solid #dbdbdb;
+    border-left: 1px solid rgb(125, 125, 125);
+    border-right: 1px solid rgb(125, 125, 125);
+    border-bottom: 1px solid rgb(125, 125, 125);
     padding: 0 10px;
 
     &:first-child {
@@ -65,13 +65,13 @@ export const StyTdRow = styled.tr<{
     }
 
     &.sum {
-      background-color: #eff6f9;
+      background-color: hsl(260, 17.60%, 90.00%);
       font-weight: 800;
     }
   }
 
   &.sum {
-    background-color: #eff6f9;
+    background-color: hsl(260, 17.60%, 90.00%);
     font-weight: 800;
   }
 `;
@@ -87,9 +87,9 @@ export const StyTdRowHover = styled.tr<{
   cursor: pointer;
 
   td {
-    border-left: 1px solid #dbdbdb;
-    border-right: 1px solid #dbdbdb;
-    border-bottom: 1px solid #dbdbdb;
+    border-left: 1px solid rgb(125, 125, 125);
+    border-right: 1px solid rgb(125, 125, 125);
+    border-bottom: 1px solid rgb(125, 125, 125);
     padding: 0 10px;
 
     &:first-child {
@@ -102,13 +102,13 @@ export const StyTdRowHover = styled.tr<{
     }
 
     &.sum {
-      background-color: #eff6f9;
+      background-color: hsl(260, 17.60%, 90.00%);
       font-weight: 800;
     }
   }
 
   &.sum {
-    background-color: #eff6f9;
+    background-color: hsl(260, 17.60%, 90.00%);
     font-weight: 800;
   }
 
@@ -124,7 +124,7 @@ export const Th = styled.th<{ textAlign?: string }>`
   padding: 10px 10px;
   white-space: nowrap;
   background-color:rgb(222, 229, 245);
-  border-bottom: 1px solid #dbdbdb;
+  border-bottom: 1px solid rgb(125, 125, 125);
 `;
 
 export const Td = styled.td<{ sort?: string; color?: string; pointBackGroundColor?: boolean }>`
@@ -138,8 +138,8 @@ export const Td = styled.td<{ sort?: string; color?: string; pointBackGroundColo
   white-space: break-spaces;
 
   .border-box td:last-child {
-    border-left: 1px solid #dbdbdb !important;
-    border-right: 1px solid #dbdbdb !important;
+    border-left: 1px solid rgb(125, 125, 125); !important;
+    border-right: 1px solid rgb(125, 125, 125); !important;
   }
   
   &.emptyContent {

@@ -28,12 +28,11 @@ const Page = () => {
     page: Array.isArray(query.page) ? Number(query.page[0]) : Number(query.page) || 1,
     size: Array.isArray(query.size) ? Number(query.size[0]) : Number(query.size) || pageSizeOptions[0],
   };
-  
   const [ searchParams, setSearchParams ] = useState<ReqScientists>(reqScientistDef);
   const [ resPageInfo, setResPageInfo ] = useState<ResPageInfo>();
   const [ resScientists, setResScientists ] = useState<ResScientists[]>([]);
 
-  const search = (name: string = null, _value: any = null) => {
+  const handleRouteAndSearch = (name: string = null, _value: any = null) => {
     let param = null;
     if (name === 'page' || name === 'size') {
       param = { ...searchParams, [name]: _value };
@@ -84,7 +83,7 @@ const Page = () => {
             <div className="param-title">name</div>
             <input type="text" className="el_input_select2" placeholder="name"
               value={searchParams?.name}
-              onKeyDown={(e) => e.key === 'Enter' && search()}
+              onKeyDown={(e) => e.key === 'Enter' && handleRouteAndSearch()}
               onChange={(e) => setSearchParams({
                 ...searchParams,
                 name: e.target.value,
@@ -93,7 +92,7 @@ const Page = () => {
           </StylSearchItem>
         </StylSearchGroup>
         <StylSearchBtnArea>
-          <Button style={{ width: '80px' }} onClick={() => search()} id="searchBtn" variant="contained">조회</Button>
+          <Button style={{ width: '80px' }} onClick={() => handleRouteAndSearch()} id="searchBtn" variant="contained">조회</Button>
         </StylSearchBtnArea>
       </StylSearchArea>
       <StyTable>
@@ -138,7 +137,7 @@ const Page = () => {
         total={resPageInfo?.total ?? 0}
         page={searchParams.page ??  1}
         size={searchParams?.size ?? pageSizeOptions[0]}
-        onClick={(value: number) => search('page', value)}
+        onClick={(value: number) => handleRouteAndSearch('page', value)}
       />
     </div>
   )
