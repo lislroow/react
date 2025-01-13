@@ -1,17 +1,25 @@
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useEffect, useRef, useState } from 'react';
 import { Navigation } from 'react-minimal-side-navigation';
 import { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import { Box, IconButton, List, ListItem, ListItemButton, Typography } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import LogoutIcon from '@mui/icons-material/Logout';
 
-import HeaderLayout from 'components/layout/HeaderLayout';
-import storeAside from 'redux-store/store-aside';
+import storeAside, { actAsideShow } from 'redux-store/store-aside';
 import storeFooter from 'redux-store/store-footer';
 
 import '@/styles/globals.css';
 import menu from '@/json/menu.json';
 import { MenuInfo } from '@/types/CommonType';
 import MenuService from '@/services/MenuService';
+import { UserInfo } from '@/types/UserTypes';
+import storeUser from 'redux-store/store-user';
+import ExpireTimer from '@/components/fragment/ExpireTimer';
+import UserService from '@/services/UserService';
+import AlertDialog from '@/components/dialog/AlertDialog';
+import zIndex from '@mui/material/styles/zIndex';
 
 const AppStructer = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
@@ -23,6 +31,12 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
   const [ isSidebarOpen, setSidebarOpen ] = useState(false);
   const [ footerMessage, setFooterMessage ] = useState(''); 
 
+  const [ user, setUser ] = useState<UserInfo>({});
+  const [ loginIconVisible, setLoginIconVisible ] = useState(true);
+  const [ userMenuVisible, setUserMenuVisible ] = useState(false);
+  const userMenuRef = useRef<HTMLDivElement>(null);
+  const avatarButtonRef = useRef<HTMLButtonElement>(null);
+
   const subscribe = () => {
     setSidebarOpen(storeAside.getState().aside.display);
   }
@@ -32,11 +46,31 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
     setFooterMessage(storeFooter.getState().footer.message);
   };
   storeFooter.subscribe(subscribeFooter);
+  
+  const subscribeUser = () => {
+    setUser(storeUser.getState().user);
+    localStorage.setItem('user', JSON.stringify(storeUser.getState().user));
+    setLoginIconVisible(false);
+  };
+  storeUser.subscribe(subscribeUser);
 
   useEffect(() => {
     setMenuList(MenuService.getMenuList());
     setPathname(window.location.pathname);
   }, []);
+
+  useEffect(() => {
+    const userMenuOutClick = (event: MouseEvent) => {
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node) && !(avatarButtonRef.current && avatarButtonRef.current.contains(event.target as Node))
+      ) {
+        setUserMenuVisible(false);
+      }
+    };
+    document.addEventListener('mousedown', userMenuOutClick);
+    return () => {
+      document.removeEventListener('mousedown', userMenuOutClick);
+    };
+  }, [user]);
   
   return (
     <div>
@@ -53,7 +87,7 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
         <div>
           <main className='flex' style={{width: '100%', minHeight: '100vh', height: 'auto'}}>
             {!noLayoutUri.includes(router.pathname) && (
-              <aside style={{display: 'flex', overflowY: 'auto'}}>
+              <aside style={{display: 'flex', overflowY: 'auto', maxWidth: '254px'}}>
                 <div
                   onClick={() => setSidebarOpen(false)}
                   className={`fixed inset-0 z-20 block transition-opacity bg-black opacity-50 lg:hidden ${isSidebarOpen ? 'block' : 'hidden'}`}
@@ -68,26 +102,63 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
                       </span>
                     </Link>
                   </div>
-                  {menuList ? (
-                  <Navigation 
-                    items={menuList.map((item) => ({
-                      title: item.title,
-                      itemId: item.itemId,
-                      subNav: [],
-                    }))}
-                    onSelect={({ itemId }) => { router.push(itemId); } } activeItemId={''}>
-                  </Navigation>
-                  ) : (<div/>)}
+                  {menuList &&
+                    <Navigation 
+                      items={menuList.map((item) => ({
+                        title: item.title,
+                        itemId: item.itemId,
+                        subNav: [],
+                      }))}
+                      onSelect={({ itemId }) => { router.push(itemId); } } activeItemId={''}>
+                    </Navigation>
+                  }
                 </div>
               </aside>
             )}
             <section className='content' style={{ flex: 1 }}>
               <div style={{padding: '14px'}}>
-                <header>
-                  <div style={{width: '100%', minHeight: '5vh', zIndex: '100'}}>
-                    <HeaderLayout />
-                  </div>
-                </header>
+                <div style={{width: '100%', minHeight: '5vh', zIndex: '100'}}>
+                  <AlertDialog />
+                  <IconButton size="medium" color="primary" aria-label="medium-button" 
+                    onClick={(e) => {
+                      storeAside.dispatch(actAsideShow())
+                    }}>
+                    <MenuIcon sx={{ fontSize: '20px' }} />
+                  </IconButton>
+                  {loginIconVisible &&
+                    <IconButton size="medium" color="primary" aria-label="medium-button" style={{float: 'right'}} 
+                      onClick={(e) => router.push('/login')}>
+                      <Typography>Login</Typography>
+                    </IconButton>
+                  }
+                  {!loginIconVisible && 
+                    <div>
+                      <IconButton ref={avatarButtonRef} size="medium" color="primary" style={{float: 'right'}} 
+                        onClick={(e) => setUserMenuVisible(true)}>
+                        <Typography sx={{ marginLeft: '5px' }}>{user?.nickname}</Typography>
+                      </IconButton>
+                      <ExpireTimer />
+                    </div>
+                  }
+                  {userMenuVisible &&
+                    <div ref={userMenuRef}>
+                      <div style={{position: 'absolute', right: '10px', top: '8vh'}}>
+                        <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
+                          <nav>
+                            <List>
+                              <ListItem disablePadding>
+                                <ListItemButton onClick={(e: React.MouseEvent) => UserService.logout(router)}>
+                                  <LogoutIcon sx={{ width: 32, height: 32 }}/>
+                                  <Typography sx={{ marginLeft: '5px' }}>Logout</Typography>
+                                </ListItemButton>
+                              </ListItem>
+                            </List>
+                          </nav>
+                        </Box>
+                      </div>
+                    </div>
+                  }
+                </div>
                 { MenuService.getTitleByPathname(menuList, pathname) }
               </div>
               <div className='flex-row' style={{ padding: '10px' }}>
