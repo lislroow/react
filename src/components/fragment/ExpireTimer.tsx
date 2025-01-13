@@ -2,8 +2,10 @@ import { useState, useEffect } from "react";
 import { Typography } from '@mui/material';
 
 import UserService from 'services/UserService';
+import { useRouter } from "next/router";
 
 const ExpireTimer = () => {
+  const router = useRouter();
   const calc = (): number => {
     const lastAccess = UserService.getLastAccess();
     const expire = Math.floor((lastAccess - Date.now()) / 1000) + 1800;
@@ -22,7 +24,7 @@ const ExpireTimer = () => {
       const time = calc();
       if (time < 0) {
         clearInterval(timer);
-        UserService.logout();
+        UserService.logout(router);
       } else {
         setExpireTime(time);
       }

@@ -69,14 +69,14 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
                     </Link>
                   </div>
                   {menuList ? (
-                    <Navigation 
-                      items={menuList.map((item) => ({
-                        title: item.title,
-                        itemId: item.itemId,
-                        subNav: [],
-                      }))}
-                      onSelect={({ itemId }) => { router.push(itemId); } } activeItemId={''}>
-                    </Navigation>
+                  <Navigation 
+                    items={menuList.map((item) => ({
+                      title: item.title,
+                      itemId: item.itemId,
+                      subNav: [],
+                    }))}
+                    onSelect={({ itemId }) => { router.push(itemId); } } activeItemId={''}>
+                  </Navigation>
                   ) : (<div/>)}
                 </div>
               </aside>

@@ -1,12 +1,13 @@
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import { Container, Typography, Box, Button, TextField } from '@mui/material';
 
 import storeAlert, { actAlertShow } from 'redux-store/store-alert';
 import AlertDialog from 'components/dialog/AlertDialog';
-import { refreshToken } from 'lib/http';
+import storeUser, { actUpdate } from 'redux-store/store-user';
 
+import { refreshToken } from 'lib/http';
 import UserService from 'services/UserService';
-import { useRouter } from 'next/router';
 
 const Page = () => {
   const router = useRouter();
@@ -15,7 +16,21 @@ const Page = () => {
   const [username, setUsername] = useState('mgkim0818@naver.com');
   const [password, setPassword] = useState('1');
 
-  const handleLogin = () => {
+  const handleSocialLogin = (social: string) => {
+    // UserService.loginBySocial(social);
+    switch (social) {
+    case 'google':
+    case 'kakao':
+    case 'naver':
+      break;
+    default:
+      console.log(`${social} login not allowed`);
+      return;
+    }
+    router.push(`/auth-api/v1/member/login/oauth2/authorization/${social}`);
+  }
+
+  const handleIdLogin = () => {
     const formData = new FormData();
     formData.append('username', username);
     formData.append('password', password);
@@ -29,11 +44,14 @@ const Page = () => {
             return acc;
           }, {});
           
-        const rtkUuid = cookies['X-RTKID'];
-        if (rtkUuid) {
-          localStorage.setItem('X-RTKID', rtkUuid);
-          refreshToken()
-            .then(() => router.push('/'));
+        if (cookies['X-RTKID']) {
+          localStorage.setItem('X-RTKID', cookies['X-RTKID']);
+          refreshToken().then(() => 
+            UserService.getUserInfo().then((reponse) => {
+              storeUser.dispatch(actUpdate(reponse.data));
+              router.push('/');
+            })
+          );
         } else {
           console.log('X-RTKID is null');
         }
@@ -64,7 +82,7 @@ const Page = () => {
           <TextField margin="normal" required fullWidth id="password" name="password" autoComplete="current-password" 
             label="password" value={password} onChange={(e) => setPassword(e.target.value)}
             type="password" />
-          <Button onClick={(e) => handleLogin()} fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+          <Button onClick={(e) => handleIdLogin()} fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
             id /pw login
           </Button>
         </form>
@@ -72,9 +90,9 @@ const Page = () => {
           social login
         </Typography>
         <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
-          <Button onClick={(e) => UserService.loginBySocial('google')} variant="contained">Google</Button>
-          <Button onClick={(e) => UserService.loginBySocial('kakao')} variant="contained">Kakao</Button>
-          <Button onClick={(e) => UserService.loginBySocial('naver')} variant="contained">Naver</Button>
+          <Button onClick={(e) => handleSocialLogin('google')} variant="contained">Google</Button>
+          <Button onClick={(e) => handleSocialLogin('kakao')} variant="contained">Kakao</Button>
+          <Button onClick={(e) => handleSocialLogin('naver')} variant="contained">Naver</Button>
         </Box>
       </Box>
     </Container>

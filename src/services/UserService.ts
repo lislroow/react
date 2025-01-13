@@ -1,6 +1,7 @@
 import { Cookies } from 'react-cookie';
 
 import { http } from 'lib/http';
+import { NextRouter, useRouter } from 'next/router';
 
 const login = (formData: FormData) => {
   return http.post('/auth-api/v1/member/login', formData, {
@@ -11,6 +12,7 @@ const login = (formData: FormData) => {
 }
 
 const loginBySocial = (social: string) => {
+  const router = useRouter();
   switch (social) {
   case 'google':
   case 'kakao':
@@ -20,14 +22,14 @@ const loginBySocial = (social: string) => {
     console.log(`${social} login not allowed`);
     return;
   }
-  window.location.replace(`/auth-api/v1/member/login/oauth2/authorization/${social}`);
+  router.push(`/auth-api/v1/member/login/oauth2/authorization/${social}`);
 }
 
 const isLogin = (): Boolean => {
   return localStorage.getItem('X-RTKID') !== null;
 };
 
-const logout = () => {
+const logout = (router: NextRouter) => {
   const cookies = new Cookies();
   const allCookies = cookies.getAll();
   Object.entries(allCookies).map(([key, value]) => {
@@ -35,8 +37,7 @@ const logout = () => {
   });
   localStorage.clear();
   sessionStorage.clear();
-  console.log('logout');
-  window.location.href = `/auth-api/v1/member/logout?redirect_uri=/`;
+  router.push(`/auth-api/v1/member/logout?redirect_uri=/`);
 };
 
 const setLastAccess = () => {

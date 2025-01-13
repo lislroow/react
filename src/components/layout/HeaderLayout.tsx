@@ -31,51 +31,19 @@ const HeaderLayout = () => {
   const subscribeUser = () => {
     setUser(storeUser.getState().user);
     localStorage.setItem('user', JSON.stringify(storeUser.getState().user));
+    setLoginIconVisible(false);
   };
   storeUser.subscribe(subscribeUser);
+  
 
-  const [ loginIconVisible, setLoginIconVisible ] = useState(false);
+  const [ loginIconVisible, setLoginIconVisible ] = useState(true);
   const [ userMenuVisible, setUserMenuVisible ] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
   const avatarButtonRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
-    if (UserService.isLogin()) {
-      if (Object.keys(user).length > 0) {
-        let storageStr = localStorage.getItem('user');
-        if (!storageStr) {
-          storageStr = JSON.stringify(user);
-          localStorage.setItem('user', storageStr);
-          setUser(JSON.parse(storageStr));
-          return;
-        }
-      } else if (Object.keys(user).length === 0 && localStorage.getItem('user')) {
-        let storageStr = localStorage.getItem('user');
-        setUser(storageStr && JSON.parse(storageStr));
-        return;
-      } else {
-        const userType = localStorage.getItem('X-ATKID')?.split(":")[0];
-        switch (userType) {
-        case "member":
-          UserService.getMemberInfo()
-            .then((response) => setUser(response.data));
-          break;
-        case "manager":
-          UserService.getManagerInfo()
-            .then((response) => setUser(response.data));
-          break;
-        default:
-          break;
-        }
-        return;
-      }
-    } else {
-      setLoginIconVisible(true);
-    }
-    
     const userMenuOutClick = (event: MouseEvent) => {
-      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node) &&
-        !(avatarButtonRef.current && avatarButtonRef.current.contains(event.target as Node))
+      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node) && !(avatarButtonRef.current && avatarButtonRef.current.contains(event.target as Node))
       ) {
         setUserMenuVisible(false);
       }
@@ -99,7 +67,6 @@ const HeaderLayout = () => {
         loginIconVisible &&
           <IconButton size="medium" color="primary" aria-label="medium-button" style={{float: 'right'}} 
             onClick={(e) => router.push('/login')}>
-            <AccountCircleOutlinedIcon />
             <Typography>Login</Typography>
           </IconButton>
       }
@@ -120,7 +87,7 @@ const HeaderLayout = () => {
               <nav>
                 <List>
                   <ListItem disablePadding>
-                    <ListItemButton onClick={(e: React.MouseEvent) => UserService.logout()}>
+                    <ListItemButton onClick={(e: React.MouseEvent) => UserService.logout(router)}>
                       <LogoutIcon sx={{ width: 32, height: 32 }}/>
                       <Typography sx={{ marginLeft: '5px' }}>Logout</Typography>
                     </ListItemButton>

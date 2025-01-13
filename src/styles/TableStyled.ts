@@ -5,7 +5,7 @@ export const StyTable = styled.table<{ minWidth?: number }>`
   width: ${({ width }) => (width ? width + 'px' : '100%')};
   border-top: 2px solid #000000;
   font-size: 13px;
-  min-width: ${({ minWidth }) => (minWidth ? minWidth + 'px' : '1150px')};
+  min-width: ${({ minWidth }) => (minWidth ? minWidth + 'px' : '1024px')};
 
   td.empty {
     font-size: 12px;
