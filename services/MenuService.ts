@@ -1,5 +1,5 @@
 import menu from 'json/menu.json';
-import { MenuInfo } from '@/types/CommonType';
+import { MenuInfo } from '../types/CommonType';
 
 const getMenuList = (): MenuInfo[] => {
   let menuList = null;

@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 import { refreshToken } from '@/lib/http';
-import UserService from '@/services/UserService';
+import UserService from '../services/UserService';
 import storeUser, { actUpdate } from '@/components/redux-store/store-user';
 
 const Page = () => {

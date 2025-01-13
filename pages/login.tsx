@@ -5,10 +5,8 @@ import { Container, Typography, Box, Button, TextField } from '@mui/material';
 import storeAlert, { actAlertShow } from '@/components/redux-store/store-alert';
 import storeUser, { actUpdate } from '@/components/redux-store/store-user';
 
-import AlertDialog from '@/components/dialog/AlertDialog';
-
 import { refreshToken } from '@/lib/http';
-import UserService from 'services/UserService';
+import UserService from '../services/UserService';
 
 const Page = () => {
   const router = useRouter();
@@ -72,7 +70,6 @@ const Page = () => {
 
   return (
     <Container maxWidth="sm">
-      <AlertDialog />
       <Box sx={{ mt: 8 }}>
         <Typography variant="h4" align="center" gutterBottom>
           로그인

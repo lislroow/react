@@ -1,6 +1,6 @@
 import { createStore, combineReducers } from 'redux';
 
-import { UserInfo } from '@/types/UserTypes';
+import { UserInfo } from '../../types/UserTypes';
 
 const USER = 'USER' as const;
 
