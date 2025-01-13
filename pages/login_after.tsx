@@ -29,11 +29,11 @@ const Page = () => {
     } else {
       console.log('X-RTKID is null');
     }
-  });
+  }, []);
 
   return (
-    <div>
-    </div>
+    <>
+    </>
   );
 };
 
