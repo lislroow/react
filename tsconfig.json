@@ -9,21 +9,18 @@
     ],
     "baseUrl": "src",
     "paths": {
-      // "*": [
-      //   "*"
-      // ]
       "@/components/*": ["components/*"],
       "@/lib/*": ["lib/*"],
       "@/services/*":["services/*"],
       "@/styles/*": ["styles/*"],
       "@/types/*":["types/*"],
       "@/json/*":["json/*"],
+      "@/redux-store/*":["redux-store/*"],
     },
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    // "strict": true,
     "strict": false,
     "forceConsistentCasingInFileNames": true,
     "noFallthroughCasesInSwitch": true,

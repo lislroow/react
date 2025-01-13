@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 
-import storeAlert from 'redux-store/store-alert';
+import storeAlert from '@/redux-store/store-alert';
 
 export default function AlertDialog() {
   const [display, setDisplay] = useState(false);

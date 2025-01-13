@@ -6,24 +6,23 @@ import Link from 'next/link';
 import { Box, IconButton, List, ListItem, ListItemButton, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import LogoutIcon from '@mui/icons-material/Logout';
-
-import storeAside, { actAsideShow } from 'redux-store/store-aside';
-import storeFooter from 'redux-store/store-footer';
-
 import '@/styles/globals.css';
-import menu from '@/json/menu.json';
-import { MenuInfo } from '@/types/CommonType';
-import MenuService from '@/services/MenuService';
-import { UserInfo } from '@/types/UserTypes';
-import storeUser from 'redux-store/store-user';
-import ExpireTimer from '@/components/fragment/ExpireTimer';
-import UserService from '@/services/UserService';
+
+import storeAside, { actAsideShow } from '@/redux-store/store-aside';
+import storeFooter from '@/redux-store/store-footer';
+import storeUser from '@/redux-store/store-user';
+
 import AlertDialog from '@/components/dialog/AlertDialog';
-import zIndex from '@mui/material/styles/zIndex';
+
+import { MenuInfo } from '@/types/CommonType';
+import { UserInfo } from '@/types/UserTypes';
+
+import MenuService from '@/services/MenuService';
+import UserService from '@/services/UserService';
 
 const AppStructer = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
-  const noLayoutUri = ['/login', '/register'];
+  const noLayoutUri = ['/login'];
 
   const [ menuList, setMenuList ] = useState<MenuInfo[]>();
   const [ pathname, setPathname ] = useState<string | null>(null);
@@ -36,6 +35,8 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
   const [ userMenuVisible, setUserMenuVisible ] = useState(false);
   const userMenuRef = useRef<HTMLDivElement>(null);
   const avatarButtonRef = useRef<HTMLButtonElement>(null);
+  
+  const [ expireTime, setExpireTime ] = useState<number>();
 
   const subscribe = () => {
     setSidebarOpen(storeAside.getState().aside.display);
@@ -71,6 +72,26 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
       document.removeEventListener('mousedown', userMenuOutClick);
     };
   }, [user]);
+  
+  useEffect(() => {
+    const remainTime = UserService.getRemainTime();
+    if (remainTime < 0) {
+      return;
+    }
+    setExpireTime(remainTime);
+    const timer = setInterval(() => {
+      const remainTime = UserService.getRemainTime();
+      if (remainTime < 0) {
+        clearInterval(timer);
+        UserService.logout(router);
+      } else {
+        setExpireTime(remainTime);
+      }
+    }, 1000);
+    return () => {
+      clearInterval(timer);
+    };
+  }, [expireTime]);
   
   return (
     <div>
@@ -137,7 +158,7 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
                         onClick={(e) => setUserMenuVisible(true)}>
                         <Typography sx={{ marginLeft: '5px' }}>{user?.nickname}</Typography>
                       </IconButton>
-                      <ExpireTimer />
+                      <Typography style={{float: 'right', padding: '1px', marginTop: '7px', marginRight: '40px'}}>{expireTime > 0 ? expireTime : ''}</Typography>
                     </div>
                   }
                   {userMenuVisible &&

@@ -1,4 +1,4 @@
-export interface IPagination {
+export interface PaginationAttr {
   total: number;
   size: number;
   page: number;
@@ -6,7 +6,7 @@ export interface IPagination {
   className?: string;
 }
 
-const Pagination: React.FC<IPagination> = ({
+const Pagination: React.FC<PaginationAttr> = ({
   total = 10,
   size = 1,
   page,

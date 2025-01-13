@@ -2,11 +2,12 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Container, Typography, Box, Button, TextField } from '@mui/material';
 
-import storeAlert, { actAlertShow } from 'redux-store/store-alert';
-import AlertDialog from 'components/dialog/AlertDialog';
-import storeUser, { actUpdate } from 'redux-store/store-user';
+import storeAlert, { actAlertShow } from '@/redux-store/store-alert';
+import storeUser, { actUpdate } from '@/redux-store/store-user';
 
-import { refreshToken } from 'lib/http';
+import AlertDialog from '@/components/dialog/AlertDialog';
+
+import { refreshToken } from '@/lib/http';
 import UserService from 'services/UserService';
 
 const Page = () => {

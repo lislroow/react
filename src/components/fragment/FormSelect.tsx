@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 
 export interface SelectAttr {
   type: 'type1' | 'type2' | 'type3';

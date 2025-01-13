@@ -1,12 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const SearchArea: React.FC<React.PropsWithChildren<any>> = ({ children }) => {
-  return <Container>{children}</Container>;
-};
-
-export default SearchArea;
-
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -16,3 +10,9 @@ const Container = styled.div`
   margin-bottom: 30px;
   width: 100%;
 `;
+
+const SearchArea: React.FC<React.PropsWithChildren<any>> = ({ children }) => {
+  return <Container>{children}</Container>;
+};
+
+export default SearchArea;

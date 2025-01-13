@@ -1,7 +1,7 @@
 import { Cookies } from 'react-cookie';
-
-import { http } from 'lib/http';
 import { NextRouter, useRouter } from 'next/router';
+
+import { http } from '@/lib/http';
 
 const login = (formData: FormData) => {
   return http.post('/auth-api/v1/member/login', formData, {
@@ -40,14 +40,15 @@ const logout = (router: NextRouter) => {
   router.push(`/auth-api/v1/member/logout?redirect_uri=/`);
 };
 
-const setLastAccess = () => {
+const updateLastAccess = () => {
   localStorage.setItem('lastAccess', Date.now()+'');
 };
 
-const getLastAccess = (): number => {
+const getRemainTime = (): number => {
   const lastAccessStr = localStorage.getItem('lastAccess');
   const lastAccess = lastAccessStr === null ? -1 : parseInt(lastAccessStr);
-  return lastAccess;
+  const expireTime = Math.floor((lastAccess - Date.now()) / 1000) + 1800;
+  return expireTime < 0 ? -1 : expireTime;
 }
 
 const getUserInfo = () => {
@@ -80,8 +81,8 @@ const UserService = {
   loginBySocial,
   isLogin,
   logout,
-  setLastAccess,
-  getLastAccess,
+  updateLastAccess,
+  getRemainTime,
   getUserType,
   getUserInfo,
   getMemberInfo,
