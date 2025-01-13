@@ -1,5 +1,5 @@
 export interface ReqScientists {
-  name: string;
+  name?: string;
   page?: number;
   size?: number;
 }

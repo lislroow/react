@@ -146,7 +146,7 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
                         itemId: item.itemId,
                         subNav: [],
                       }))}
-                      onSelect={({ itemId }) => { router.push(itemId); } } activeItemId={''}>
+                      onSelect={({ itemId }) => { router.query = {}; router.push(itemId); } } activeItemId={''}>
                     </Navigation>
                   }
                 </div>

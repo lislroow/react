@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
+import queryString from 'query-string';
 
-import { Button, Link } from "@mui/material";
+import { Button } from "@mui/material";
 import StylPagination from '@/styles/PaginationStyled';
 import { StylSearchArea, StylSearchGroup, StylSearchItem, StylSearchBtnArea } from "@/styles/SearchStyled";
 import { StyTable, StyTdRow, StyThRow, Td, Th } from '@/styles/TableStyled';
 
 import {
-  ReqPageInfo,
   ResPageInfo,
 } from '@/types/CommonType';
 
@@ -17,44 +17,64 @@ import {
 
 import SampleService from '@/services/SampleService';
 import { useRouter } from "next/router";
+import { StylLink } from "@/styles/GeneralStyled";
 
 const Page = () => {
   const router = useRouter();
-  const pageSizeOptions = [10, 20, 100];
-  const [ reqPageInfo, setReqPageInfo ] = useState<ReqPageInfo>({ page: 1, size: pageSizeOptions[0]});
+  const { query } = router;
+  const pageSizeOptions = [5, 10, 50, 100];
+  const reqScientistDef: ReqScientists = {
+    name: Array.isArray(query.name) ? query.name[0] : query.name || '',
+    page: Array.isArray(query.page) ? Number(query.page[0]) : Number(query.page) || 1,
+    size: Array.isArray(query.size) ? Number(query.size[0]) : Number(query.size) || pageSizeOptions[0],
+  };
+  
+  const [ searchParams, setSearchParams ] = useState<ReqScientists>(reqScientistDef);
   const [ resPageInfo, setResPageInfo ] = useState<ResPageInfo>();
-  const [ data, setData ] = useState<ResScientists[]>([]);
-  const [ searchParams, setSearchParams ] = useState<ReqScientists>({
-    name: ''
-  });
+  const [ resScientists, setResScientists ] = useState<ResScientists[]>([]);
 
-  const defaultParams = {
-    name: ''
-  };
+  const search = (name: string = null, _value: any = null) => {
+    let param = null;
+    if (name === 'page' || name === 'size') {
+      param = { ...searchParams, [name]: _value };
+    } else if (name ===  null) {
+      param = { ...searchParams, page: 1, size: pageSizeOptions[0]};
+    } else {
+      return;
+    }
+    router.push({
+      pathname: `scientist`,
+      query: queryString.stringify(param),
+    });
+  }
 
-  const handleSearchParams = (name: string, _value: any) => {
-    setSearchParams({ ...searchParams, [name]: _value });
-    (name === 'page' || name === 'size') && search(name, _value);
-  };
+  useEffect(() => {
+    const parsedParams = Object.keys(searchParams).reduce((acc, key) => {
+      if (key in query) {
+        let value = query[key];
+        if (key === 'page' || key === 'size') {
+          acc[key] = Array.isArray(value) ? Number(value[0]) : Number(value) || 1;
+        } else {
+          acc[key] = Array.isArray(value) ? value[0] : value || '';
+        }
+      }
+      return acc;
+    }, {} as ReqScientists);
 
-  const search = (_name: string = '', _value: any = null) => {
-    const params: ReqScientists = {
-      ...searchParams,
-      [_name]: _value,
-      page: _name === 'page' ? _value : reqPageInfo.page,
-      size: _name === 'size' ? _value : reqPageInfo.size,
-    };
+    let params = null;
+    if (Object.keys(parsedParams).length > 0) {
+      params = {...searchParams, ...parsedParams};
+    } else {
+      params = reqScientistDef;
+    }
+    setSearchParams(params);
     SampleService.getScientistsSearch(params)
       .then((response) => {
         setResPageInfo(response.data.pageInfo);
-        setData(response.data.pageData);
+        setResScientists(response.data.pageData);
       });
-  };
-
-  useEffect(() => {
-    setSearchParams({ ...defaultParams });
-    search();
-  }, [reqPageInfo.page, reqPageInfo.size]);
+  }, [query]);
+  
   
   return (
     <section>
@@ -62,18 +82,18 @@ const Page = () => {
         <StylSearchGroup>
           <StylSearchItem>
             <div className="param-title">name</div>
-            <input
-              type="text"
-              className="el_input_select2"
-              placeholder="name"
+            <input type="text" className="el_input_select2" placeholder="name"
               value={searchParams?.name}
-              onKeyDown={(e) => { if (e.key === 'Enter') search(); } }
-              onChange={(e) => handleSearchParams('name', e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && search()}
+              onChange={(e) => setSearchParams({
+                ...searchParams,
+                name: e.target.value,
+              })}
             />
           </StylSearchItem>
         </StylSearchGroup>
         <StylSearchBtnArea>
-          <Button style={{ width: '80px' }} onClick={() => search()} id="searchFocus_0" variant="contained">조회</Button>
+          <Button style={{ width: '80px' }} onClick={() => search()} id="searchBtn" variant="contained">조회</Button>
         </StylSearchBtnArea>
       </StylSearchArea>
       <StyTable>
@@ -88,15 +108,19 @@ const Page = () => {
           </StyThRow>
         </thead>
         <tbody>
-          {data.length > 0 ? (
-            data.map((item, index) => {
+          {resScientists.length > 0 ? (
+            resScientists.map((item, index) => {
               return (
                 <StyTdRow key={index}>
                   <Td>
-                    {resPageInfo.total - reqPageInfo.size * (reqPageInfo.page -1) - index}
+                    {resPageInfo.total - searchParams.size * (searchParams.page -1) - index}
                   </Td>
                   <Td>
-                    <Link onClick={() => router.push(`scientist/`+item.id)}>{item.name}</Link>
+                    <StylLink onClick={() => 
+                      router.push({
+                        pathname: `scientist/${item.id}`,
+                        query: queryString.stringify(searchParams),
+                      })}>{item.name}</StylLink>
                   </Td>
                 </StyTdRow>
               );
@@ -112,14 +136,9 @@ const Page = () => {
       </StyTable>
       <StylPagination
         total={resPageInfo?.total ?? 0}
-        page={reqPageInfo?.page ?? 1}
-        size={reqPageInfo?.size ?? pageSizeOptions[0]}
-        onClick={(value: number) => {
-          setReqPageInfo((prev) => ({
-            ...prev,
-            page: value,
-          }));
-        }}
+        page={searchParams.page ??  1}
+        size={searchParams?.size ?? pageSizeOptions[0]}
+        onClick={(value: number) => search('page', value)}
       />
     </section>
   )
