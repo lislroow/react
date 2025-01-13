@@ -1,2 +1,35 @@
 @import url(./main.bundle.css);
 @import url(./elements.css);
+
+aside {
+  transition: all 0.3s ease;
+  max-width: 254px;
+  width: 254px;
+  overflow-y: auto;
+}
+
+.aside-hidden {
+  max-width: 0;
+  width: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.aside-show {
+  max-width: 254px;
+  width: 254px;
+}
+
+aside > nav > ul > li {
+  font-weight: bold;
+  font-size: 16px;
+  color: #333;
+  padding: 3px 10px;
+  cursor: pointer;
+
+}
+
+aside > nav > ul > li:hover {
+  color: #5964de;
+  text-decoration: underline;
+}

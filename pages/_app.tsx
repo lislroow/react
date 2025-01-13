@@ -8,7 +8,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import LogoutIcon from '@mui/icons-material/Logout';
 import '@/css/globals.css';
 
-import storeAside, { actAsideShow } from '@/components/redux-store/store-aside';
 import storeFooter from '@/components/redux-store/store-footer';
 import storeUser from '@/components/redux-store/store-user';
 import storeAlert from '@/components/redux-store/store-alert';
@@ -30,7 +29,7 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
   const [alertTitle, setAlertTitle] = useState('');
   const [alertMessage, setAlertMessage] = useState('');
 
-  const [ isSidebarOpen, setSidebarOpen ] = useState(false);
+  const [ isSidebarOpen, setSidebarOpen ] = useState(true);
   const [ footerMessage, setFooterMessage ] = useState(''); 
 
   const [ user, setUser ] = useState<UserInfo>({});
@@ -40,10 +39,6 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
   const avatarButtonRef = useRef<HTMLButtonElement>(null);
   
   const [ expireTime, setExpireTime ] = useState<number>();
-
-  storeAside.subscribe(() => {
-    setSidebarOpen(storeAside.getState().aside.display);
-  });
 
   storeFooter.subscribe(() => {
     setFooterMessage(storeFooter.getState().footer.message);
@@ -124,32 +119,22 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
         <div>
           <main className='flex' style={{width: '100%', minHeight: '100vh', height: 'auto'}}>
             {!noLayoutUri.includes(router.pathname) && (
-              <aside style={{display: 'flex', overflowY: 'auto', maxWidth: '254px'}}>
-                <div
-                  onClick={() => setSidebarOpen(false)}
-                  className={`fixed inset-0 z-20 block transition-opacity bg-black opacity-50 lg:hidden ${isSidebarOpen ? 'block' : 'hidden'}`}
-                />
-                <div className={`fixed left-0 top-0 bottom-0 z-30 w-64 overflow-y-auto transition duration-300 ease-out transform translate-x-0 bg-white border-r-2 lg:translate-x-0 lg:static lg:inset-0 ${
-                  isSidebarOpen ? "ease-out translate-x-0" : "ease-in -translate-x-full"}`}
-                  >
-                  <div className="flex items-center justify-center text-center py-2">
-                    <Link href='/'> 
-                      <span className="mx-2 text-2xl font-semibold text-black">
-                        develop
-                      </span>
-                    </Link>
-                  </div>
-                  {menuList &&
-                    <Navigation 
-                      items={menuList.map((item) => ({
-                        title: item.title,
-                        itemId: item.itemId,
-                        subNav: [],
-                      }))}
-                      onSelect={({ itemId }) => { router.query = {}; router.push(itemId); } } activeItemId={''}>
-                    </Navigation>
-                  }
+              <aside style={{overflowY: 'auto', maxWidth: '254px'}} className={isSidebarOpen ? 'aside-show' : 'aside-hidden'}>
+                <div className="flex items-center justify-center text-center py-4">
+                  <Link href='/'> 
+                    <span className="mx-2 text-2xl font-semibold text-black">
+                      develop
+                    </span>
+                  </Link>
                 </div>
+                {menuList && (
+                  <Navigation items={menuList.map((item) => ({
+                      title: item.title,
+                      itemId: item.itemId,
+                      subNav: [],
+                    }))}
+                    onSelect={({ itemId }) => { router.query = {}; router.push(itemId); } } activeItemId={''} />
+                )}
               </aside>
             )}
             <section className='content' style={{ flex: 1 }}>
@@ -157,7 +142,7 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
                 <div style={{width: '100%', minHeight: '5vh', zIndex: '100'}}>
                   <IconButton size="medium" color="primary" aria-label="medium-button" 
                     onClick={(e) => {
-                      storeAside.dispatch(actAsideShow())
+                      setSidebarOpen(!isSidebarOpen)
                     }}>
                     <MenuIcon sx={{ fontSize: '20px' }} />
                   </IconButton>
