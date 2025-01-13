@@ -6,7 +6,7 @@ import storeAlert, { actAlertShow } from '@/components/redux-store/store-alert';
 import storeUser, { actUpdate } from '@/components/redux-store/store-user';
 
 import { refreshToken } from '@/lib/http';
-import UserService from '../services/UserService';
+import UserService from '@/services/UserService';
 
 const Page = () => {
   const router = useRouter();

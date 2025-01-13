@@ -13,11 +13,11 @@ import storeFooter from '@/components/redux-store/store-footer';
 import storeUser from '@/components/redux-store/store-user';
 import storeAlert from '@/components/redux-store/store-alert';
 
-import { MenuInfo } from '../types/CommonType';
-import { UserInfo } from '../types/UserTypes';
+import { MenuInfo } from '@/types/CommonType';
+import { UserInfo } from '@/types/UserTypes';
 
-import MenuService from '../services/MenuService';
-import UserService from '../services/UserService';
+import MenuService from '@/services/MenuService';
+import UserService from '@/services/UserService';
 
 const AppStructer = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();

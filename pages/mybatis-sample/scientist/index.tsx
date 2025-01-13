@@ -3,20 +3,20 @@ import { useState, useEffect } from "react";
 import { Button } from "@mui/material";
 import Pagination from '@/components/Pagination';
 import SearchArea from "@/components/SearchArea";
-import { SearchItem, SearchGroupBox, SearchBtnBox } from "../../styles/SearchStyled";
-import { StyTable, StyTdRow, StyThRow, Td, Th } from '../../styles/TableStyled';
+import { SearchItem, SearchGroupBox, SearchBtnBox } from "@/styles/SearchStyled";
+import { StyTable, StyTdRow, StyThRow, Td, Th } from '@/styles/TableStyled';
 
 import {
   ReqPageInfo,
   ResPageInfo,
-} from '../../types/CommonType';
+} from '@/types/CommonType';
 
 import {
   ReqScientists,
   ResScientists,
-} from '../../types/SampleType';
+} from '@/types/SampleType';
 
-import SampleService from '../../services/SampleService';
+import SampleService from '@/services/SampleService';
 
 const Page = () => {
   const pageSizeOptions = [10, 20, 100];

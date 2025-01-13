@@ -4,9 +4,9 @@ import { Grid, Box, Button, TextField, Typography } from '@mui/material';
 
 import {
   UserInfo,
-} from '../../types/UserTypes';
+} from '@/types/UserTypes';
 
-import UserService from '../../services/UserService';
+import UserService from '@/services/UserService';
 
 const Page = () => {
   const [userInfo, setUserInfo] = useState<UserInfo>({});

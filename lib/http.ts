@@ -1,5 +1,5 @@
 import storeAlert, { actAlertShow } from '@/components/redux-store/store-alert';
-import UserService from '../services/UserService';
+import UserService from '@/services/UserService';
 
 import axios, { AxiosInstance, AxiosResponse, AxiosError, InternalAxiosRequestConfig } from 'axios';
 
