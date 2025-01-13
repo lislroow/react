@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 
 import { Button } from "@mui/material";
-import Pagination from '@/components/fragment/Pagination';
-import SearchArea from "components/fragment/SearchArea";
+import Pagination from '@/components/Pagination';
+import SearchArea from "@/components/SearchArea";
 import { SearchItem, SearchGroupBox, SearchBtnBox } from "styles/SearchStyled";
 import { StyTable, StyTdRow, StyThRow, Td, Th } from 'styles/TableStyled';
 

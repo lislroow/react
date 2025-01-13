@@ -8,10 +8,10 @@ import MenuIcon from '@mui/icons-material/Menu';
 import LogoutIcon from '@mui/icons-material/Logout';
 import '@/styles/globals.css';
 
-import storeAside, { actAsideShow } from '@/redux-store/store-aside';
-import storeFooter from '@/redux-store/store-footer';
-import storeUser from '@/redux-store/store-user';
-import storeAlert from '@/redux-store/store-alert';
+import storeAside, { actAsideShow } from '@/components/redux-store/store-aside';
+import storeFooter from '@/components/redux-store/store-footer';
+import storeUser from '@/components/redux-store/store-user';
+import storeAlert from '@/components/redux-store/store-alert';
 
 import { MenuInfo } from '@/types/CommonType';
 import { UserInfo } from '@/types/UserTypes';

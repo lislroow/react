@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 
 import { refreshToken } from '@/lib/http';
 import UserService from '@/services/UserService';
-import storeUser, { actUpdate } from '@/redux-store/store-user';
+import storeUser, { actUpdate } from '@/components/redux-store/store-user';
 
 const Page = () => {
   const router = useRouter();

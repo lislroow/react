@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { Container, Typography, Box, Button, TextField } from '@mui/material';
 
-import storeAlert, { actAlertShow } from '@/redux-store/store-alert';
-import storeUser, { actUpdate } from '@/redux-store/store-user';
+import storeAlert, { actAlertShow } from '@/components/redux-store/store-alert';
+import storeUser, { actUpdate } from '@/components/redux-store/store-user';
 
 import AlertDialog from '@/components/dialog/AlertDialog';
 
