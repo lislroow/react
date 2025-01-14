@@ -67,7 +67,7 @@ const interceptor = (axiosInstance: AxiosInstance) => (error: AxiosError<any>) =
         return Promise.reject(refreshError);
       });
   } else {
-    storeAlert.dispatch(actAlertShow(error.response?.data.title, error.response?.data.detail));
+    storeAlert.dispatch(actAlertShow(error.response?.data.title, error.response?.data.detail.split('\n')[0]));
   }
   return Promise.reject(error);
 };
