@@ -115,13 +115,13 @@ const Page = () => {
             resScientists.map((item, index) => {
               return (
                 <StyTdRow key={index}>
-                  <Td>
+                  <Td align="right">
                     {resPageInfo.total - searchParams.size * (searchParams.page -1) - index}
                   </Td>
-                  <Td>
+                  <Td align="center">
                     {item.birthYear}
                   </Td>
-                  <Td>
+                  <Td align="center">
                     {item.deathYear}
                   </Td>
                   <Td>

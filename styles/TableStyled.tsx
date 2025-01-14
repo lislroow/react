@@ -127,8 +127,8 @@ export const Th = styled.th<{ textAlign?: string }>`
   border-bottom: 1px solid rgb(125, 125, 125);
 `;
 
-export const Td = styled.td<{ sort?: string; color?: string; pointBackGroundColor?: boolean }>`
-  // text-align: ${({ sort }) => (sort === 'center' && 'center') || (sort === 'end' && 'end')};
+export const Td = styled.td<{ align?: string; color?: string; pointBackGroundColor?: boolean }>`
+  text-align: ${({ align }) => (align === 'center' && 'center') || (align === 'right' && 'right')};
   vertical-align: middle;
   padding: 10px 10px;
   background-color: ${({ pointBackGroundColor }) => pointBackGroundColor && 'red !important;'};
