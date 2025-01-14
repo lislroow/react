@@ -117,8 +117,10 @@ export const StyTdRowHover = styled.tr<{
   }
 `;
 
-export const Th = styled.th<{ textAlign?: string }>`
-  text-align: ${({ textAlign }) => (textAlign ? textAlign : 'center')};
+const shouldForwardProp = (prop: string) => !['textAlign', 'color', 'pointBackGroundColor'].includes(prop);
+
+export const Th = styled.th.withConfig({ shouldForwardProp })<{ textAlign?: string }>`
+  text-align: ${({ textAlign }) => (textAlign === 'center' && 'center') || (textAlign === 'right' && 'right')};
   vertical-align: middle;
   font-weight: 800;
   padding: 10px 10px;
@@ -126,8 +128,8 @@ export const Th = styled.th<{ textAlign?: string }>`
   border-bottom: 1px solid rgb(125, 125, 125);
 `;
 
-export const Td = styled.td<{ align?: string; color?: string; pointBackGroundColor?: boolean }>`
-  text-align: ${({ align }) => (align === 'center' && 'center') || (align === 'right' && 'right')};
+export const Td = styled.td.withConfig({ shouldForwardProp })<{ textAlign?: string; color?: string; pointBackGroundColor?: boolean }>`
+  text-align: ${({ textAlign }) => (textAlign === 'center' && 'center') || (textAlign === 'right' && 'right')};
   vertical-align: middle;
   padding: 10px 10px;
   background-color: ${({ pointBackGroundColor }) => pointBackGroundColor && 'red !important;'};

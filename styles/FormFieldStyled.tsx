@@ -65,8 +65,10 @@ const FieldRow = styled.div`
   border-bottom: 1px solid rgb(125, 125, 125);
 `;
 
-const Title = styled.div<{ small: boolean }>`
-  min-width: ${(props) => (props.small ? '155px' : '236px')};
+const shouldForwardProp = (prop: string) => !['small'].includes(prop);
+
+const Title = styled.div.withConfig({ shouldForwardProp })<{ small: boolean }>`
+  min-width: ${({small}) => (small ? '155px' : '236px')};
   min-height: 50px;
   color: #282a2e;
   font-weight: 600;

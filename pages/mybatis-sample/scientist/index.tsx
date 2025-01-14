@@ -124,13 +124,13 @@ const Page = () => {
             resScientists.map((item, index) => {
               return (
                 <StyTdRow key={index}>
-                  <Td align="right">
+                  <Td textAlign="right">
                     {resPageInfo.total - (resPageInfo.size * (resPageInfo.page -1)) - index}
                   </Td>
-                  <Td align="center">
+                  <Td textAlign="center">
                     {item.birthYear}
                   </Td>
-                  <Td align="center">
+                  <Td textAlign="center">
                     {item.deathYear}
                   </Td>
                   <Td>
