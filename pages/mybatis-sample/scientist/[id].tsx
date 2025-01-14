@@ -22,7 +22,7 @@ const Page = () => {
   };
   
   const handleSave = () => {
-    SampleService.postScientistsSearch(scientist)
+    SampleService.putScientistsSearch(scientist)
       .then((response) => console.log('saved'));
   };
   
