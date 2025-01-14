@@ -161,7 +161,7 @@
   height: 40px;
   cursor: pointer;
 }
-.el_classicBtn:focus{
+.el_classicBtn:focus {
   outline: 2px solid blue;
 }
 .el_classicBtn.img {
@@ -210,7 +210,7 @@
 .el_input_checkWrap:not(.el_input_checkWrap:last-child) {
   margin-right: 26px;
 }
-.el_input_checkLabel2{
+.el_input_checkLabel2 {
   cursor: pointer;
 }
 .el_input_radioWrap {
@@ -401,7 +401,7 @@
   color: #282a2e;
 }
 
-.file_download{
+.file_download {
   display: flex;
   flex-direction: column;
   text-align: left;
@@ -517,7 +517,7 @@ button:focus-visible {
   align-items: center;
 }
 
-.tableTab ul{
+.tableTab ul {
   display: flex;
   margin-bottom:20px;
 }
@@ -526,7 +526,7 @@ button:focus-visible {
   background: #eee ;
 }
 
-.tableTab ul li div{
+.tableTab ul li div {
   display: flex;
   width: 170px;
   height: 40px;
@@ -538,7 +538,7 @@ button:focus-visible {
   display: flex;
 }
 
-.tabActive{
+.tabActive {
   background:#ccc !important ;
 }
 
@@ -639,7 +639,7 @@ button:focus-visible {
   background-color: white;
   border-left: 0.5px solid #9b9b9b;
 }
-.search_P{
+.search_P {
   color: var(--unnamed-color-34a3db);
   text-align: left;
   text-decoration: underline;
@@ -647,7 +647,7 @@ button:focus-visible {
   letter-spacing: -0.35px;
   color: #34A3DB;
 }
-.div_gt{
+.div_gt {
   transform: matrix(0, -1, 1, 0, 0, 0);
   border: 1.5px solid var(--unnamed-color-000000);
   border: 2px solid #000000;

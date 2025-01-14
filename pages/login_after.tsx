@@ -10,13 +10,12 @@ const Page = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const cookies = document.cookie
-    .split('; ')
-    .reduce<Record<string, string>>((acc, cookie) => {
-      const [key, value] = cookie.split('=');
-      acc[key] = value;
-      return acc;
-    }, {});
+    const cookies = document.cookie.split('; ')
+      .reduce<Record<string, string>>((acc, cookie) => {
+        const [key, value] = cookie.split('=');
+        acc[key] = value;
+        return acc;
+      }, {});
     
     if (cookies['X-RTKID']) {
       localStorage.setItem('X-RTKID', cookies['X-RTKID']);

@@ -22,7 +22,7 @@ import { StylLink } from "@/styles/GeneralStyled";
 const Page = () => {
   const router = useRouter();
   const { query } = router;
-  const pageSizeOptions = [20, 50, 100];
+  const pageSizeOptions = [3, 50, 100];
   const reqScientistDef: ReqScientists = {
     name: '',
     page: 1,

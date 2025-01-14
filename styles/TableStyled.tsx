@@ -123,7 +123,6 @@ export const Th = styled.th<{ textAlign?: string }>`
   font-weight: 800;
   padding: 10px 10px;
   white-space: nowrap;
-  background-color:rgb(222, 229, 245);
   border-bottom: 1px solid rgb(125, 125, 125);
 `;
 

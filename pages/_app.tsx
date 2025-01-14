@@ -56,13 +56,16 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
     setAlertMessage(storeAlert.getState().alert.message || '');
   });
 
-
   useEffect(() => {
     setMenuList(MenuService.getMenuList());
     setPathname(window.location.pathname);
-  }, []);
-
-  useEffect(() => {
+    const token = localStorage.getItem('X-RTKID');
+    if (token) {
+      UserService.getUserInfo().then((reponse) => {
+        setUser(reponse.data);
+        setLoginIconVisible(false);
+      });
+    }
     const userMenuOutClick = (event: MouseEvent) => {
       if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node) && !(avatarButtonRef.current && avatarButtonRef.current.contains(event.target as Node))
       ) {
@@ -73,8 +76,8 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
     return () => {
       document.removeEventListener('mousedown', userMenuOutClick);
     };
-  }, [user]);
-  
+  }, []);
+
   useEffect(() => {
     const remainTime = UserService.getRemainTime();
     if (remainTime < 0) {

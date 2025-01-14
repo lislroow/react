@@ -70,7 +70,7 @@ const Title = styled.div<{ small: boolean }>`
   min-height: 50px;
   color: #282a2e;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 13px;
   background-color:hsl(260, 17.60%, 90.00%);
   text-align: right;
   border-right: 1px solid rgb(125, 125, 125);
