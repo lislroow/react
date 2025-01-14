@@ -24,13 +24,21 @@ const Page = () => {
   const { query } = router;
   const pageSizeOptions = [20, 50, 100];
   const reqScientistDef: ReqScientists = {
+    name: '',
+    page: 1,
+    size: pageSizeOptions[0],
+  };
+  const [ searchParams, setSearchParams ] = useState<ReqScientists>({
     name: Array.isArray(query.name) ? query.name[0] : query.name || '',
     page: Array.isArray(query.page) ? Number(query.page[0]) : Number(query.page) || 1,
     size: Array.isArray(query.size) ? Number(query.size[0]) : Number(query.size) || pageSizeOptions[0],
-  };
-  const [ searchParams, setSearchParams ] = useState<ReqScientists>(reqScientistDef);
+  });
   const [ resPageInfo, setResPageInfo ] = useState<ResPageInfo>();
   const [ resScientists, setResScientists ] = useState<ResScientists[]>([]);
+
+  const handleClear = () => {
+    setSearchParams(reqScientistDef);
+  };
 
   const handleRouteAndSearch = (name: string = null, _value: any = null) => {
     let param = null;
@@ -42,7 +50,7 @@ const Page = () => {
       return;
     }
     router.push({
-      pathname: `scientist`,
+      pathname: `/mybatis-sample/scientist`,
       query: queryString.stringify(param),
     });
   }
@@ -90,10 +98,10 @@ const Page = () => {
               })}
             />
           </StylSearchItem>
+          <StylSearchBtnArea>
+            <Button style={{ width: '80px' }} onClick={() => handleRouteAndSearch()} id="searchBtn" variant="contained">조회</Button>
+          </StylSearchBtnArea>
         </StylSearchGroup>
-        <StylSearchBtnArea>
-          <Button style={{ width: '80px' }} onClick={() => handleRouteAndSearch()} id="searchBtn" variant="contained">조회</Button>
-        </StylSearchBtnArea>
       </StylSearchArea>
       <StyTable>
         <colgroup>
@@ -116,7 +124,7 @@ const Page = () => {
               return (
                 <StyTdRow key={index}>
                   <Td align="right">
-                    {resPageInfo.total - searchParams.size * (searchParams.page -1) - index}
+                    {resPageInfo.total - resPageInfo.size * (resPageInfo.page -1) - index}
                   </Td>
                   <Td align="center">
                     {item.birthYear}

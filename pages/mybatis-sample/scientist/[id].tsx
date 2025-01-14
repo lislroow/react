@@ -10,6 +10,8 @@ import { useRouter } from "next/router";
 import StylFormField, { FieldWrap } from "@/styles/FormFieldStyled";
 import { StylText } from "@/styles/GeneralStyled";
 import StylButtonGroup from "@/styles/ButtonGroupStyled";
+import queryString from "query-string";
+import storeAlert, { actAlertShow } from "@/components/redux-store/store-alert";
 
 
 const Page = () => {
@@ -21,14 +23,30 @@ const Page = () => {
     setScientist({ ...scientist, [name]: _value });
   };
   
+  const handleList = () => {
+    router.push({
+      pathname: '/mybatis-sample/scientist',
+      query: queryString.stringify(router.query),
+    });
+  };
+  
   const handleSave = () => {
     SampleService.putScientistsSearch(scientist)
-      .then((response) => console.log('saved'));
+      .then((response) => {
+        storeAlert.dispatch(actAlertShow('', '저장 되었습니다.'));
+        router.push({
+          pathname: `${router.query.id}`,
+          query: queryString.stringify(router.query),
+        });
+      });
   };
   
   const handleDelete = () => {
     SampleService.deleteScientistsSearch(scientist.id)
-      .then((response) => console.log('deleted'));
+      .then((response) => {
+        storeAlert.dispatch(actAlertShow('', '삭제 되었습니다.'));
+        handleList();
+      });
   };
 
   useEffect(() => {
@@ -46,7 +64,7 @@ const Page = () => {
     <div className="contents">
       <StylButtonGroup
         btn1Label="list"
-        btn1OnClick={() => router.back()}
+        btn1OnClick={() => handleList()}
         btn2Label="save"
         btn2OnClick={() => handleSave()}
         btn3Label="delete"
