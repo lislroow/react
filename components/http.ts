@@ -56,6 +56,7 @@ export const refreshToken = async () => {
 };
 
 const interceptor = (axiosInstance: AxiosInstance) => (error: AxiosError<any>) => {
+  document.body.classList.remove('spinner');
   const _axios = axiosInstance;
   const originalRequest = error.config;
   if (error.response?.status === 401 && error.response?.data?.title === 'A100') {
