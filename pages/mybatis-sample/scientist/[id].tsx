@@ -7,17 +7,19 @@ import {
 
 import SampleService from '@/services/SampleService';
 import { useRouter } from "next/router";
-import StylFormField, { FieldWrap } from "@/styles/FormFieldStyled";
+import StylFormField, { StylFieldWrap } from "@/styles/FormFieldStyled";
 import { StylText } from "@/styles/GeneralStyled";
 import StylButtonGroup from "@/styles/ButtonGroupStyled";
 import queryString from "query-string";
-import storeAlert, { actAlertShow } from "@/components/redux-store/store-alert";
-
+import StylModal from "@/styles/ModalStyled";
 
 const Page = () => {
   const router = useRouter();
-  const [scientist, setScientist] = useState<Scientists>();
-  const [invalid, setInvalid] = useState(false);
+  const [ scientist, setScientist ] = useState<Scientists>();
+  const [ invalid, setInvalid ] = useState(false);
+  const [ saveModalState, setSaveModalState ] = useState(false);
+  const [ deleteModalState, setDeleteModalState ] = useState(false);
+  const [ confirmDeleteId, setConfirmDeleteId ] = useState<number>();
 
   const handleParams = (name: string, _value: any) => {
     setScientist({ ...scientist, [name]: _value });
@@ -33,7 +35,6 @@ const Page = () => {
   const handleSave = () => {
     SampleService.putScientistsSearch(scientist)
       .then((response) => {
-        storeAlert.dispatch(actAlertShow('', '저장 되었습니다.'));
         router.push({
           pathname: `${router.query.id}`,
           query: queryString.stringify(router.query),
@@ -44,11 +45,10 @@ const Page = () => {
   const handleDelete = () => {
     SampleService.deleteScientistsSearch(scientist.id)
       .then((response) => {
-        storeAlert.dispatch(actAlertShow('', '삭제 되었습니다.'));
         handleList();
       });
   };
-
+  
   useEffect(() => {
     if (!router.isReady) return;
     const id = router.query.id;
@@ -66,12 +66,12 @@ const Page = () => {
         btn1Label="list"
         btn1OnClick={() => handleList()}
         btn2Label="save"
-        btn2OnClick={() => handleSave()}
+        btn2OnClick={() => setSaveModalState(true)}
         btn3Label="delete"
-        btn3OnClick={() => handleDelete()}
+        btn3OnClick={() => setDeleteModalState(true)}
       >
       </StylButtonGroup>
-      <FieldWrap>
+      <StylFieldWrap>
         <StylFormField title="id">
           <StylText>{scientist?.id}</StylText>
         </StylFormField>
@@ -110,7 +110,37 @@ const Page = () => {
           {invalid && !scientist?.name && (
             <span style={{ color: '#FF8080', fontSize: '15px' }}>not allow empty string</span>)}
         </StylFormField>
-      </FieldWrap>
+      </StylFieldWrap>
+      <StylModal openState={saveModalState}
+        handleOkClick={() => {
+          setSaveModalState(false);
+          handleSave();
+        }}
+        handleCloseClick={() => setSaveModalState(false)}>
+        <StylText>저장하시겠습니까?</StylText>
+      </StylModal>
+      <StylModal openState={deleteModalState}
+        handleOkClick={() => {
+          if (confirmDeleteId !== scientist.id) {
+            return false;
+          }
+          setDeleteModalState(false);
+          handleDelete();
+        }}
+        handleCloseClick={() => setDeleteModalState(false)}>
+        <main>
+          <StylText>{'삭제 대상 id \'' + scientist?.id + '\' 를 입력해주세요.'}</StylText>
+          <div style={{ display: 'flex' }}>
+            <div>
+              <input type="text"
+                className={`el_input_lg`}
+                style={{ height: '40px', textAlign: 'center' }}
+                placeholder={scientist?.id + ''}
+                onChange={(e) => setConfirmDeleteId(Number(e.target.value))} />
+            </div>
+          </div>
+        </main>
+      </StylModal>
     </div>
   );
 }

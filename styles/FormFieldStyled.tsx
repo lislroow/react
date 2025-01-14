@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import React from 'react';
 
-export const FieldWrap = styled.div`
+export const StylFieldWrap = styled.div`
   border-top: 2px solid #000000;
   .wrapTitle {
     border-left: 0.5px solid #9b9b9b;

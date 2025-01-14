@@ -124,7 +124,7 @@ const Page = () => {
               return (
                 <StyTdRow key={index}>
                   <Td align="right">
-                    {resPageInfo.total - resPageInfo.size * (resPageInfo.page -1) - index}
+                    {resPageInfo.total - (resPageInfo.size * (resPageInfo.page -1)) - index}
                   </Td>
                   <Td align="center">
                     {item.birthYear}
@@ -144,7 +144,7 @@ const Page = () => {
             })
           ) : (
             <StyTdRow>
-              <Td colSpan={2} className={'empty'}>
+              <Td colSpan={4} className={'empty'}>
                 no data
               </Td>
             </StyTdRow>
