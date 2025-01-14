@@ -57,6 +57,28 @@ const Page = () => {
         <StylFormField title="id">
           <StylText>{scientist?.id}</StylText>
         </StylFormField>
+        <StylFormField title="year of birth" required>
+          <div className={`el_input_wrap`}>
+            <input type="text"
+              className={`el_input el_input__md`}
+              style={{ height: '40px' }}
+              value={scientist?.birthYear ?? ''}
+              tabIndex={1001}
+              onChange={(e) => handleParams('birthYear', e.target.value)} />
+          </div>
+          {invalid && !scientist?.birthYear && (
+            <span style={{ color: '#FF8080', fontSize: '15px' }}>not allow empty string</span>)}
+        </StylFormField>
+        <StylFormField title="year of death">
+          <div className={`el_input_wrap`}>
+            <input type="text"
+              className={`el_input el_input__md`}
+              style={{ height: '40px' }}
+              value={scientist?.deathYear ?? ''}
+              tabIndex={1002}
+              onChange={(e) => handleParams('deathYear', e.target.value)} />
+          </div>
+        </StylFormField>
         <StylFormField title="name" required>
           <div className={`el_input_wrap`}>
             <input type="text"
@@ -64,11 +86,11 @@ const Page = () => {
               style={{ height: '40px' }}
               placeholder="input name"
               value={scientist?.name ?? ''}
-              tabIndex={1000}
+              tabIndex={1003}
               onChange={(e) => handleParams('name', e.target.value)} />
           </div>
           {invalid && !scientist?.name && (
-            <span style={{ color: '#FF8080', fontSize: '15px' }}>name is empty</span>)}
+            <span style={{ color: '#FF8080', fontSize: '15px' }}>not allow empty string</span>)}
         </StylFormField>
       </FieldWrap>
     </div>

@@ -22,7 +22,7 @@ import { StylLink } from "@/styles/GeneralStyled";
 const Page = () => {
   const router = useRouter();
   const { query } = router;
-  const pageSizeOptions = [5, 10, 50, 100];
+  const pageSizeOptions = [20, 50, 100];
   const reqScientistDef: ReqScientists = {
     name: Array.isArray(query.name) ? query.name[0] : query.name || '',
     page: Array.isArray(query.page) ? Number(query.page[0]) : Number(query.page) || 1,
@@ -98,11 +98,15 @@ const Page = () => {
       <StyTable>
         <colgroup>
           <col width={80} />
+          <col width={120} />
+          <col width={120} />
           <col />
         </colgroup>
         <thead>
           <StyThRow>
             <Th>no.</Th>
+            <Th>year of birth</Th>
+            <Th>year of death</Th>
             <Th>name</Th>
           </StyThRow>
         </thead>
@@ -113,6 +117,12 @@ const Page = () => {
                 <StyTdRow key={index}>
                   <Td>
                     {resPageInfo.total - searchParams.size * (searchParams.page -1) - index}
+                  </Td>
+                  <Td>
+                    {item.birthYear}
+                  </Td>
+                  <Td>
+                    {item.deathYear}
                   </Td>
                   <Td>
                     <StylLink onClick={() => 
