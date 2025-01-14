@@ -1,6 +1,7 @@
 import { Button } from '@mui/material';
 import React, { FC } from 'react';
 import styled from 'styled-components';
+import styles from '@/css/global.module.css';
 
 const StylButtonGroupWrap = styled.div`
   .buttonGroup {
@@ -62,56 +63,44 @@ const StylButtonGroup: FC<ButtonGroupAttr> = ({
         <div className="btnItemWrap">
           <div className="btnItem">
             {btn1OnClick &&
-              <Button
-                variant="contained"
-                style={{ width: '80px' }} 
-                onClick={btn1OnClick ?? null}
-              >{btn1Label}</Button>}
+              <button className={styles.button_2} type={'button'} onClick={btn1OnClick ?? null}>
+                {btn1Label}
+              </button>}
           </div>
 
           <div className="btnItem">
             {btn2OnClick &&
-              <Button
-                variant="contained"
-                style={{ width: '80px' }} 
-                onClick={btn2OnClick ?? null}
-                >{btn2Label}</Button>}
+              <button className={styles.button_2} type={'button'} onClick={btn2OnClick ?? null}>
+                {btn2Label}
+              </button>}
           </div>
 
           <div className="btnItem">
             {btn3OnClick &&
-              <Button
-                variant="contained"
-                style={{ width: '80px' }} 
-                onClick={btn3OnClick ?? null}
-                >{btn3Label}</Button>}
+              <button className={styles.button_2} type={'button'} onClick={btn3OnClick ?? null}>
+                {btn3Label}
+              </button>}
           </div>
 
           <div className="btnItem">
             {btn4OnClick &&
-              <Button
-                variant="contained"
-                style={{ width: '80px' }} 
-                onClick={btn4OnClick ?? null}
-                >{btn4Label}</Button>}
+              <button className={styles.button_2} type={'button'} onClick={btn4OnClick ?? null}>
+                {btn4Label}
+              </button>}
           </div>
 
           <div className="btnItem">
             {btn5OnClick &&
-              <Button
-                variant="contained"
-                style={{ width: '80px' }} 
-                onClick={btn5OnClick ?? null}
-                >{btn5Label}</Button>}
+              <button className={styles.button_2} type={'button'} onClick={btn5OnClick ?? null}>
+                {btn5Label}
+              </button>}
           </div>
 
           <div className="btnItem">
             {btn6OnClick &&
-              <Button
-                variant="contained"
-                style={{ width: '80px' }} 
-                onClick={btn6OnClick ?? null}
-                >{btn6Label}</Button>}
+              <button className={styles.button_2} type={'button'} onClick={btn6OnClick ?? null}>
+                {btn6Label}
+              </button>}
           </div>
         </div>
       </div>

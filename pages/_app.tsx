@@ -3,7 +3,7 @@ import { Navigation } from 'react-minimal-side-navigation';
 import { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, IconButton, List, ListItem, ListItemButton, Typography } from '@mui/material';
+import { Box, IconButton, List, ListItem, ListItemButton, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import LogoutIcon from '@mui/icons-material/Logout';
 import '@/css/globals.css';
@@ -17,6 +17,7 @@ import { UserInfo } from '@/types/UserTypes';
 
 import MenuService from '@/services/MenuService';
 import UserService from '@/services/UserService';
+import StylAlert from '@/styles/AlertStyled';
 
 const AppStructer = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
@@ -110,15 +111,11 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
           <div>Loading...</div>
         </div>
       }>
-        <Dialog open={alertDisplay || false} onClose={() => setAlertDisplay(false)} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
-          <DialogTitle id="alert-dialog-title">{alertTitle}</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">{alertMessage}</DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setAlertDisplay(false)} autoFocus>확인</Button>
-          </DialogActions>
-        </Dialog>
+        <StylAlert handleClose={() => setAlertDisplay(false)}
+          attr={{
+            openState: alertDisplay,
+            message: `[${alertTitle}] ${alertMessage}`}}>
+        </StylAlert>
         <div>
           <main className='flex' style={{width: '100%', minHeight: '100vh', height: 'auto'}}>
             {!noLayoutUri.includes(router.pathname) && 

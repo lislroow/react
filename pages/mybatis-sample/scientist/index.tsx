@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import queryString from 'query-string';
 
 import { Button } from "@mui/material";
+import styles from '@/css/global.module.css';
 import StylPagination from '@/styles/PaginationStyled';
 import { StylSearchArea, StylSearchGroup, StylSearchItem, StylSearchBtnArea } from "@/styles/SearchStyled";
 import { StyTable, StyTdRow, StyThRow, Td, Th } from '@/styles/TableStyled';
@@ -99,7 +100,7 @@ const Page = () => {
             />
           </StylSearchItem>
           <StylSearchBtnArea>
-            <Button style={{ width: '80px' }} onClick={() => handleRouteAndSearch()} id="searchBtn" variant="contained">조회</Button>
+            <button className={styles.button_1} type={'button'} onClick={() => handleRouteAndSearch()}>조회</button>
           </StylSearchBtnArea>
         </StylSearchGroup>
       </StylSearchArea>

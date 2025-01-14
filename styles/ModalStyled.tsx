@@ -137,7 +137,7 @@ const StylModal = ({
           color: #000000;
           opacity: 1;
           font-weight: 600;
-          font-family: Noto Sans KR;
+          font-family: "Noto Sans KR", sans-serif;
           font-size: 14px;
           padding: 20px;
           border-right: 1px solid #dbdbdb;
@@ -151,7 +151,7 @@ const StylModal = ({
           opacity: 1;
           border-bottom: 1px solid #dbdbdb;
           margin-left: 10px;
-          font-family: Noto Sans KR;
+          font-family: "Noto Sans KR", sans-serif;
           font-size: 14px;
           padding: 10px;
         }
