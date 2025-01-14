@@ -42,9 +42,6 @@
   cursor: pointer;
 }
 
-.buttons button div {
-}
-
 .close_wrapper {
   width: 95%;
   position: fixed;
@@ -55,9 +52,6 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-}
-
-.closes option {
 }
 
 .closes .close button {
@@ -422,9 +416,6 @@
   font-size: 14px;
 }
 
-.mobileCheck_input_wrapper {
-
-}
 .checkbox_wrapper {
   display: flex;
   align-items: center;
@@ -440,11 +431,6 @@
   justify-content: flex-end;
   gap: 5px;
 }
-
-.select_box {
-
-}
-
 
 .select_box_sub_select {
   margin-top: 10px;
