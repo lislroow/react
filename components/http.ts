@@ -78,6 +78,7 @@ http.interceptors.request.use(
       config.headers['Authorization'] = 'Bearer ' + tokenId;
       UserService.updateLastAccess();
     }
+    document.body.classList.add('spinner');
     return config;
   },
   (error: AxiosError) => {
@@ -86,6 +87,7 @@ http.interceptors.request.use(
 );
 
 http.interceptors.response.use((res: AxiosResponse) => {
+  document.body.classList.remove('spinner');
   if (res.status < 400) {
     return res;
   } else if (res.status === 401 && res.data.title === 'A100') {
