@@ -46,7 +46,8 @@ const updateLastAccess = () => {
 
 const getRemainTime = (): number => {
   const lastAccess = Number(localStorage.getItem('lastAccess') ?? -1);
-  const expireTime = Math.floor((lastAccess - Date.now()) / 1000) + 1800;
+  const sessionSec = Number(localStorage.getItem('X-SESSION-SEC') ?? 1800);
+  const expireTime = Math.floor((lastAccess - Date.now()) / 1000) + sessionSec;
   return expireTime < 0 ? -1 : expireTime;
 }
 

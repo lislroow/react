@@ -46,9 +46,10 @@ export const refreshToken = async () => {
     const response = await axios.post('/auth-api/v1/token/refresh', {
       "rtkUuid": localStorage.getItem('X-RTKID')
     });
-    const { rtkUuid, atkUuid } = response.data;
+    const { rtkUuid, atkUuid, clientSessionSec } = response.data;
     localStorage.setItem('X-RTKID', rtkUuid);
     localStorage.setItem('X-ATKID', atkUuid);
+    localStorage.setItem('X-SESSION-SEC', clientSessionSec);
   } catch (error) {
     console.error('토큰 갱신 실패:', error);
     throw error;

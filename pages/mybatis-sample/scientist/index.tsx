@@ -100,7 +100,7 @@ const Page = () => {
             />
           </StylSearchItem>
           <StylSearchBtnArea>
-            <button className={styles.button_1} type={'button'} onClick={() => handleRouteAndSearch()}>조회</button>
+            <button className={styles.button_sm1} type={'button'} onClick={() => handleRouteAndSearch()}>조회</button>
           </StylSearchBtnArea>
         </StylSearchGroup>
       </StylSearchArea>

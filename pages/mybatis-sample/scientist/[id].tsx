@@ -63,11 +63,11 @@ const Page = () => {
   return (
     <div className="contents">
       <StylButtonGroup
-        btn1Label="list"
+        btn1Label="목록"
         btn1OnClick={() => handleList()}
-        btn2Label="save"
+        btn2Label="저장"
         btn2OnClick={() => setSaveModalState(true)}
-        btn3Label="delete"
+        btn3Label="삭제"
         btn3OnClick={() => setDeleteModalState(true)}
       >
       </StylButtonGroup>
@@ -76,37 +76,28 @@ const Page = () => {
           <StylText>{scientist?.id}</StylText>
         </StylFormField>
         <StylFormField title="year of birth" required>
-          <div className={`el_input_wrap`}>
-            <input type="text"
-              className={`el_input el_input__md`}
-              style={{ height: '40px' }}
-              value={scientist?.birthYear ?? ''}
-              tabIndex={1001}
-              onChange={(e) => handleParams('birthYear', e.target.value)} />
-          </div>
+          <input type="text"
+            className={`el_input el_input_lg`}
+            value={scientist?.birthYear ?? ''}
+            tabIndex={1001}
+            onChange={(e) => handleParams('birthYear', e.target.value)} />
           {invalid && !scientist?.birthYear && (
             <span style={{ color: '#FF8080', fontSize: '15px' }}>not allow empty string</span>)}
         </StylFormField>
         <StylFormField title="year of death">
-          <div className={`el_input_wrap`}>
-            <input type="text"
-              className={`el_input el_input__md`}
-              style={{ height: '40px' }}
-              value={scientist?.deathYear ?? ''}
-              tabIndex={1002}
-              onChange={(e) => handleParams('deathYear', e.target.value)} />
-          </div>
+          <input type="text"
+            className={`el_input el_input_lg`}
+            value={scientist?.deathYear ?? ''}
+            tabIndex={1002}
+            onChange={(e) => handleParams('deathYear', e.target.value)} />
         </StylFormField>
         <StylFormField title="name" required>
-          <div className={`el_input_wrap`}>
-            <input type="text"
-              className={`el_input el_input__md`}
-              style={{ height: '40px' }}
-              placeholder="input name"
-              value={scientist?.name ?? ''}
-              tabIndex={1003}
-              onChange={(e) => handleParams('name', e.target.value)} />
-          </div>
+          <input type="text"
+            className={`el_input el_input_lg`}
+            placeholder="input name"
+            value={scientist?.name ?? ''}
+            tabIndex={1003}
+            onChange={(e) => handleParams('name', e.target.value)} />
           {invalid && !scientist?.name && (
             <span style={{ color: '#FF8080', fontSize: '15px' }}>not allow empty string</span>)}
         </StylFormField>

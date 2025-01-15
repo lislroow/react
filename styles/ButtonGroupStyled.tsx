@@ -63,42 +63,42 @@ const StylButtonGroup: FC<ButtonGroupAttr> = ({
         <div className="btnItemWrap">
           <div className="btnItem">
             {btn1OnClick &&
-              <button className={styles.button_2} type={'button'} onClick={btn1OnClick ?? null}>
+              <button className={styles.button_sm1} type={'button'} onClick={btn1OnClick ?? null}>
                 {btn1Label}
               </button>}
           </div>
 
           <div className="btnItem">
             {btn2OnClick &&
-              <button className={styles.button_2} type={'button'} onClick={btn2OnClick ?? null}>
+              <button className={styles.button_sm1} type={'button'} onClick={btn2OnClick ?? null}>
                 {btn2Label}
               </button>}
           </div>
 
           <div className="btnItem">
             {btn3OnClick &&
-              <button className={styles.button_2} type={'button'} onClick={btn3OnClick ?? null}>
+              <button className={styles.button_sm1} type={'button'} onClick={btn3OnClick ?? null}>
                 {btn3Label}
               </button>}
           </div>
 
           <div className="btnItem">
             {btn4OnClick &&
-              <button className={styles.button_2} type={'button'} onClick={btn4OnClick ?? null}>
+              <button className={styles.button_sm1} type={'button'} onClick={btn4OnClick ?? null}>
                 {btn4Label}
               </button>}
           </div>
 
           <div className="btnItem">
             {btn5OnClick &&
-              <button className={styles.button_2} type={'button'} onClick={btn5OnClick ?? null}>
+              <button className={styles.button_sm1} type={'button'} onClick={btn5OnClick ?? null}>
                 {btn5Label}
               </button>}
           </div>
 
           <div className="btnItem">
             {btn6OnClick &&
-              <button className={styles.button_2} type={'button'} onClick={btn6OnClick ?? null}>
+              <button className={styles.button_sm1} type={'button'} onClick={btn6OnClick ?? null}>
                 {btn6Label}
               </button>}
           </div>

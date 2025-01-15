@@ -49,7 +49,7 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
   useEffect(() => {
     setMenuList(MenuService.getMenuList());
     setPathname(router.pathname);
-    const token = localStorage.getItem('X-RTKID');
+    const token = localStorage.getItem('X-ATKID');
     if (token) {
       UserService.getUserInfo().then((reponse) => {
         setUser(reponse.data);
@@ -107,33 +107,35 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
               )}
             </aside>
           }
-          <section className='content' style={{ flex: 1 }}>
-            <div style={{padding: '14px'}}>
-              <div style={{width: '100%', minHeight: '5vh', zIndex: '100'}}>
+          <section className='content' style={{padding: '14px', flex: 1}}>
+            <div>
+              <div>
                 {!noLayoutUri.includes(router.pathname) && 
                   <IconButton size="medium" color="primary" aria-label="medium-button" onClick={(e) => setAsideStatus(!asideStatus)}>
                     <MenuIcon sx={{ fontSize: '20px' }} />
                   </IconButton>
                 }
-                {loginStatus && !noLayoutUri.includes(router.pathname) && (
-                    <IconButton size="medium" color="primary" aria-label="medium-button" style={{float: 'right'}} 
-                      onClick={(e) => router.push('/login')}>
-                      <Typography>Login</Typography>
-                    </IconButton>
-                )}
-                {!loginStatus && (
+                {loginStatus ? (
+                  !noLayoutUri.includes(router.pathname) && (
+                    <div style={{float: 'right', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '25px'}}>
+                      <button className={styles.button_sm1} type={'button'} onClick={(e) => router.push('/login')}>
+                        로그인
+                      </button>
+                    </div>
+                  )
+                ) : (
                   <div style={{float: 'right', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '25px'}}>
-                    <button className={styles.button_user1} type={'button'} onClick={() => UserService.getUserInfo()}>
-                      {expireTime > 0 ? expireTime : ''} : 연장
+                    <button className={styles.button_sm1} type={'button'} onClick={() => UserService.getUserInfo()}>
+                      {/* {expireTime > 0 ? expireTime : ''} | 연장 */}
+                      {Math.floor(expireTime / 60) + ':' + (expireTime % 60)} | 연장
                     </button>
                     <Typography>{user?.nickname}</Typography>
-                    <button className={styles.button_user2} type={'button'} onClick={() => UserService.logout(router)}>
+                    <button className={styles.button_sm2} type={'button'} onClick={() => UserService.logout(router)}>
                       로그아웃
                     </button>
                   </div>
                 )}
               </div>
-              { MenuService.getTitleByPathname(menuList, pathname) }
             </div>
             <div className='flex-row' style={{ padding: '10px' }}>
               <Component {...pageProps} />

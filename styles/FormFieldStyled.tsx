@@ -69,7 +69,7 @@ const shouldForwardProp = (prop: string) => !['small'].includes(prop);
 
 const Title = styled.div.withConfig({ shouldForwardProp })<{ small: boolean }>`
   min-width: ${({small}) => (small ? '155px' : '236px')};
-  min-height: 50px;
+  min-height: 40px;
   color: #282a2e;
   font-weight: 600;
   font-size: 13px;
@@ -87,8 +87,8 @@ const Field = styled.div`
   align-items: flex-start;
   flex-direction: column;
   justify-content: center;
-  min-height: 40px;
-  padding: 10px 20px;
+  min-height: 30px;
+  padding: 5px 20px;
   background-color: white;
   word-break: break-all;
 `;

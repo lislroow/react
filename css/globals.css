@@ -6,7 +6,7 @@ nextjs-portal {
 }
 
 aside {
-  transition: all 0.3s ease;
+  transition: all 0.05s;
   max-width: 254px;
   width: 254px;
   overflow-y: auto;

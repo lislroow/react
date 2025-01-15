@@ -188,7 +188,7 @@
 }
 
 
-.button_user1 {
+.button_sm1 {
   padding: 0px 20px;
   color: #fff;
   background: #34A3DB;
@@ -198,10 +198,10 @@
   cursor: pointer;
 }
 
-.button_user2 {
+.button_sm2 {
   padding: 0px 20px;
   color: #fff;
-  background: #505050;
+  background: hsl(240, 2%, 76%);
   height: 30px;
   border: none;
   border-radius: 4px;
