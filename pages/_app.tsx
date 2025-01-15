@@ -3,10 +3,10 @@ import { Navigation } from 'react-minimal-side-navigation';
 import { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { Box, IconButton, List, ListItem, ListItemButton, Typography } from '@mui/material';
+import { IconButton, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import LogoutIcon from '@mui/icons-material/Logout';
 import '@/css/globals.css';
+import styles from '@/css/global.module.css';
 
 import storeUser from '@/components/redux-store/store-user';
 import storeAlert from '@/components/redux-store/store-alert';
@@ -30,19 +30,14 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
   const [alertMessage, setAlertMessage] = useState('');
 
   const [ asideStatus, setAsideStatus ] = useState(true);
-
   const [ user, setUser ] = useState<UserInfo>({});
-  const [ loginIconVisible, setLoginIconVisible ] = useState(true);
-  const [ userMenuVisible, setUserMenuVisible ] = useState(false);
-  const userMenuRef = useRef<HTMLDivElement>(null);
-  const avatarButtonRef = useRef<HTMLButtonElement>(null);
-  
+  const [ loginStatus, setLoginStatus ] = useState(true);
   const [ expireTime, setExpireTime ] = useState<number>();
   
   storeUser.subscribe(() => {
     setUser(storeUser.getState().user);
     localStorage.setItem('user', JSON.stringify(storeUser.getState().user));
-    setLoginIconVisible(false);
+    setLoginStatus(false);
   });
   
   storeAlert.subscribe(() => {
@@ -58,32 +53,23 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
     if (token) {
       UserService.getUserInfo().then((reponse) => {
         setUser(reponse.data);
-        setLoginIconVisible(false);
+        setLoginStatus(false);
       });
     }
-    const userMenuOutClick = (event: MouseEvent) => {
-      if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node) && !(avatarButtonRef.current && avatarButtonRef.current.contains(event.target as Node))
-      ) {
-        setUserMenuVisible(false);
-      }
-    };
-    document.addEventListener('mousedown', userMenuOutClick);
-    return () => {
-      document.removeEventListener('mousedown', userMenuOutClick);
-    };
   }, []);
+
 
   useEffect(() => {
     const remainTime = UserService.getRemainTime();
-    if (remainTime < 0) {
-      return;
-    }
     setExpireTime(remainTime);
     const timer = setInterval(() => {
       const remainTime = UserService.getRemainTime();
       if (remainTime < 0) {
-        clearInterval(timer);
-        UserService.logout(router);
+        const token = localStorage.getItem('X-RTKID');
+        if (token) {
+          clearInterval(timer);
+          UserService.logout(router);
+        }
       } else {
         setExpireTime(remainTime);
       }
@@ -129,39 +115,23 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
                     <MenuIcon sx={{ fontSize: '20px' }} />
                   </IconButton>
                 }
-                {loginIconVisible && !noLayoutUri.includes(router.pathname) && 
-                  <IconButton size="medium" color="primary" aria-label="medium-button" style={{float: 'right'}} 
-                    onClick={(e) => router.push('/login')}>
-                    <Typography>Login</Typography>
-                  </IconButton>
-                }
-                {!loginIconVisible && 
-                  <div>
-                    <IconButton ref={avatarButtonRef} size="medium" color="primary" style={{float: 'right'}} 
-                      onClick={(e) => setUserMenuVisible(true)}>
-                      <Typography sx={{ marginLeft: '5px' }}>{user?.nickname}</Typography>
+                {loginStatus && !noLayoutUri.includes(router.pathname) && (
+                    <IconButton size="medium" color="primary" aria-label="medium-button" style={{float: 'right'}} 
+                      onClick={(e) => router.push('/login')}>
+                      <Typography>Login</Typography>
                     </IconButton>
-                    <Typography style={{float: 'right', padding: '1px', marginTop: '7px', marginRight: '40px'}}>{expireTime > 0 ? expireTime : ''}</Typography>
+                )}
+                {!loginStatus && (
+                  <div style={{float: 'right', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '25px'}}>
+                    <button className={styles.button_user1} type={'button'} onClick={() => UserService.getUserInfo()}>
+                      {expireTime > 0 ? expireTime : ''} : 연장
+                    </button>
+                    <Typography>{user?.nickname}</Typography>
+                    <button className={styles.button_user2} type={'button'} onClick={() => UserService.logout(router)}>
+                      로그아웃
+                    </button>
                   </div>
-                }
-                {userMenuVisible &&
-                  <div ref={userMenuRef}>
-                    <div style={{position: 'absolute', right: '10px', top: '8vh'}}>
-                      <Box sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-                        <nav>
-                          <List>
-                            <ListItem disablePadding>
-                              <ListItemButton onClick={(e: React.MouseEvent) => UserService.logout(router)}>
-                                <LogoutIcon sx={{ width: 32, height: 32 }}/>
-                                <Typography sx={{ marginLeft: '5px' }}>Logout</Typography>
-                              </ListItemButton>
-                            </ListItem>
-                          </List>
-                        </nav>
-                      </Box>
-                    </div>
-                  </div>
-                }
+                )}
               </div>
               { MenuService.getTitleByPathname(menuList, pathname) }
             </div>

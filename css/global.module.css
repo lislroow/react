@@ -188,6 +188,26 @@
 }
 
 
+.button_user1 {
+  padding: 0px 20px;
+  color: #fff;
+  background: #34A3DB;
+  height: 30px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.button_user2 {
+  padding: 0px 20px;
+  color: #fff;
+  background: #505050;
+  height: 30px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
 .button_1 {
   padding: 10px 20px;
   color: #fff;
