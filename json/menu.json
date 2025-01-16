@@ -8,5 +8,10 @@
       "itemId":"/user/user-info",
       "title":"[user] user-info",
       "pathname":"/user/user-info"
+   },
+   {
+      "itemId":"/common-code",
+      "title":"[common-code] mng",
+      "pathname":"/common-code"
    }
  ]
