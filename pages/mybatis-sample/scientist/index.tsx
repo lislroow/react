@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import queryString from 'query-string';
 
-import { Button } from "@mui/material";
 import styles from '@/css/global.module.css';
 import StylPagination from '@/styles/PaginationStyled';
 import { StylSearchArea, StylSearchGroup, StylSearchItem, StylSearchBtnArea } from "@/styles/SearchStyled";
