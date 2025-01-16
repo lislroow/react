@@ -11,7 +11,7 @@ export interface ResScientists {
   deathYear: number;
 }
 
-export interface Scientists {
+export interface Scientist {
   id: number;
   name: string;
   birthYear: number;

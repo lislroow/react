@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 import {
   ResScientists,
-  Scientists,
+  Scientist,
 } from '@/types/SampleType';
 
 import SampleService from '@/services/SampleService';
@@ -15,7 +15,7 @@ import StylModal from "@/styles/ModalStyled";
 
 const Page = () => {
   const router = useRouter();
-  const [ scientist, setScientist ] = useState<Scientists>();
+  const [ scientist, setScientist ] = useState<Scientist>();
   const [ invalid, setInvalid ] = useState(false);
   const [ saveModalState, setSaveModalState ] = useState(false);
   const [ deleteModalState, setDeleteModalState ] = useState(false);
