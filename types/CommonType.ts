@@ -1,3 +1,7 @@
+export const PageSizeOptions = [
+  10, 50, 100
+];
+
 export interface ReqPageInfo {
   page: number;
   size: number;

@@ -109,7 +109,7 @@ const StylModal = ({
           justify-content: flex-end;
         }
         .modal > section > footer button {
-          padding: 20px 20px;
+          padding: 15px 20px;
           background-color: #fff;
           border-radius: 5px;
           font-size: 13px;

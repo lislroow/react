@@ -27,7 +27,7 @@ const StylAlert = ({
                 </article>
               </section>
               <article className={styles.sub_buttons}>
-                <button className={styles.button_1} type={'button'} onClick={() => handleClose()}>
+                <button className={styles.button_sm1} type={'button'} onClick={() => handleClose()}>
                   확인
                 </button>
               </article>

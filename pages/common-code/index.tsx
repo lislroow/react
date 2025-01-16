@@ -5,8 +5,10 @@ import styles from '@/css/global.module.css';
 import StylPagination from '@/styles/PaginationStyled';
 import { StylSearchArea, StylSearchGroup, StylSearchItem, StylSearchBtnArea } from "@/styles/SearchStyled";
 import { StyTable, StyTdRow, StyThRow, Td, Th } from '@/styles/TableStyled';
+import { SelectItem } from '@/styles/FormSelectStyled';
 
 import {
+  PageSizeOptions,
   ResPageInfo,
 } from '@/types/CommonType';
 
@@ -15,20 +17,23 @@ import {
   ResCodes,
 } from '@/types/CommonCodeType';
 
+import CommonCodeMngService from '@/services/CommonCodeMngService';
 import CommonCodeService from '@/services/CommonCodeService';
 import { useRouter } from "next/router";
-import { StylLink } from "@/styles/GeneralStyled";
+import StylFormSelect from "@/styles/FormSelectStyled";
 
 const Page = () => {
   const router = useRouter();
   const { query } = router;
-  const pageSizeOptions = [3, 50, 100];
+  const [ USE_YN, setUSE_YN ] = useState<SelectItem[]>();
   const reqCodesDef: ReqCodes = {
     cdGrp: '',
     cdGrpNm: '',
     cd: '',
     cdNm: '',
     useYn: '',
+    page: 1,
+    size: PageSizeOptions[0],
   };
   const [ searchParams, setSearchParams ] = useState<ReqCodes>({
     cdGrp: Array.isArray(query.cdGrp) ? query.cdGrp[0] : query.cdGrp || '',
@@ -36,9 +41,15 @@ const Page = () => {
     cd: Array.isArray(query.cd) ? query.cd[0] : query.cd || '',
     cdNm: Array.isArray(query.cdNm) ? query.cdNm[0] : query.cdNm || '',
     useYn: Array.isArray(query.useYn) ? query.useYn[0] : query.useYn || '',
+    page: Array.isArray(query.page) ? Number(query.page[0]) : Number(query.page) || 1,
+    size: Array.isArray(query.size) ? Number(query.size[0]) : Number(query.size) || PageSizeOptions[0],
   });
   const [ resPageInfo, setResPageInfo ] = useState<ResPageInfo>();
   const [ resCodes, setResCodes ] = useState<ResCodes[]>([]);
+
+  const init = async () => {
+    setUSE_YN(await CommonCodeService.getFormSelectItem('USE_YN'));
+  }
 
   const handleClear = () => {
     setSearchParams(reqCodesDef);
@@ -49,7 +60,7 @@ const Page = () => {
     if (name === 'page' || name === 'size') {
       param = { ...searchParams, [name]: _value };
     } else if (name ===  null) {
-      param = { ...searchParams, page: 1, size: pageSizeOptions[0]};
+      param = { ...searchParams, page: 1, size: PageSizeOptions[0]};
     } else {
       return;
     }
@@ -58,8 +69,10 @@ const Page = () => {
       query: queryString.stringify(param),
     });
   }
-
+  
   useEffect(() => {
+    init();
+
     const parsedParams = Object.keys(searchParams).reduce((acc, key) => {
       if (key in query) {
         let value = query[key];
@@ -79,9 +92,10 @@ const Page = () => {
       params = reqCodesDef;
     }
     setSearchParams(params);
-    CommonCodeService.getCommonCodeMngCodesSearch(params)
+    CommonCodeMngService.getCodesSearch(params)
       .then((response) => {
-        setResCodes(response.data);
+        setResPageInfo(response.data.pageInfo);
+        setResCodes(response.data.pageData);
       });
   }, [query]);
   
@@ -98,8 +112,7 @@ const Page = () => {
               onChange={(e) => setSearchParams({
                 ...searchParams,
                 cdGrp: e.target.value,
-              })}
-            />
+              })} />
             <div className="param-title">code group name</div>
             <input type="text" className="el_input_select2" placeholder="code group name"
               value={searchParams?.cdGrpNm}
@@ -107,28 +120,33 @@ const Page = () => {
               onChange={(e) => setSearchParams({
                 ...searchParams,
                 cdGrpNm: e.target.value,
-              })}
-            />
+              })} />
           </StylSearchItem>
           <StylSearchItem>
             <div className="param-title">code</div>
-              <input type="text" className="el_input_select2" placeholder="code"
-                value={searchParams?.cd}
-                onKeyDown={(e) => e.key === 'Enter' && handleRouteAndSearch()}
-                onChange={(e) => setSearchParams({
-                  ...searchParams,
-                  cd: e.target.value,
-                })}
-              />
+            <input type="text" className="el_input_select2" placeholder="code"
+              value={searchParams?.cd}
+              onKeyDown={(e) => e.key === 'Enter' && handleRouteAndSearch()}
+              onChange={(e) => setSearchParams({
+                ...searchParams,
+                cd: e.target.value,
+              })} />
             <div className="param-title">code name</div>
-              <input type="text" className="el_input_select2" placeholder="code name"
-                value={searchParams?.cdNm}
-                onKeyDown={(e) => e.key === 'Enter' && handleRouteAndSearch()}
-                onChange={(e) => setSearchParams({
-                  ...searchParams,
-                  cdNm: e.target.value,
-                })}
-              />
+            <input type="text" className="el_input_select2" placeholder="code name"
+              value={searchParams?.cdNm}
+              onKeyDown={(e) => e.key === 'Enter' && handleRouteAndSearch()}
+              onChange={(e) => setSearchParams({
+                ...searchParams,
+                cdNm: e.target.value,
+              })} />
+            <div className="param-title">use yn</div>
+            <StylFormSelect type="type1" items={USE_YN}
+              value={searchParams?.useYn}
+              size="large"
+              onChange={(e) => setSearchParams({
+                ...searchParams,
+                useYn: e.target.value,
+              })} />
           </StylSearchItem>
           <StylSearchBtnArea>
             <button className={styles.button_sm1} type={'button'} onClick={() => handleRouteAndSearch()}>조회</button>
@@ -140,6 +158,7 @@ const Page = () => {
           <col width={80} />
           <col width={100} />
           <col width={200} />
+          <col width={60} />
           <col width={100} />
           <col />
           <col width={80} />
@@ -149,6 +168,7 @@ const Page = () => {
             <Th>no.</Th>
             <Th>code group</Th>
             <Th>code group name</Th>
+            <Th>seq</Th>
             <Th>code</Th>
             <Th>code name</Th>
             <Th>use</Th>
@@ -160,13 +180,16 @@ const Page = () => {
               return (
                 <StyTdRow key={index}>
                   <Td textAlign="right">
-                    {index+1}
+                    {resCodes.length - index}
                   </Td>
                   <Td>
                     {item.cdGrp}
                   </Td>
                   <Td>
                     {item.cdGrpNm}
+                  </Td>
+                  <Td textAlign="center">
+                    {item.seq}
                   </Td>
                   <Td>
                     {item.cd}
@@ -182,19 +205,19 @@ const Page = () => {
             })
           ) : (
             <StyTdRow>
-              <Td colSpan={6} className={'empty'}>
+              <Td colSpan={7} className={'empty'}>
                 no data
               </Td>
             </StyTdRow>
           )}
         </tbody>
       </StyTable>
-      {/* <StylPagination
+      <StylPagination
         total={resPageInfo?.total ?? 0}
         page={searchParams.page ??  1}
-        size={searchParams?.size ?? pageSizeOptions[0]}
+        size={searchParams?.size ?? PageSizeOptions[0]}
         onClick={(value: number) => handleRouteAndSearch('page', value)}
-      /> */}
+      />
     </div>
   )
 }

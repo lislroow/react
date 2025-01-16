@@ -14,6 +14,8 @@ export interface ReqCodes {
   cd?: string;
   cdNm?: string;
   useYn?: string;
+  page?: number;
+  size?: number;
 }
 
 export interface ResCodes {

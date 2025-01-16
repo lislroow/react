@@ -12,14 +12,21 @@ import { StylText } from "@/styles/GeneralStyled";
 import StylButtonGroup from "@/styles/ButtonGroupStyled";
 import queryString from "query-string";
 import StylModal from "@/styles/ModalStyled";
+import StylFormSelect, { SelectItem } from "@/styles/FormSelectStyled";
+import CommonCodeService from "@/services/CommonCodeService";
 
 const Page = () => {
   const router = useRouter();
+  const [ FOS, setFOS ] = useState<SelectItem[]>();
   const [ scientist, setScientist ] = useState<Scientist>();
   const [ invalid, setInvalid ] = useState(false);
   const [ saveModalState, setSaveModalState ] = useState(false);
   const [ deleteModalState, setDeleteModalState ] = useState(false);
   const [ confirmDeleteId, setConfirmDeleteId ] = useState<number>();
+  
+  const init = async () => {
+    setFOS(await CommonCodeService.getFormSelectItem('FOS'));
+  }
 
   const handleParams = (name: string, _value: any) => {
     setScientist({ ...scientist, [name]: _value });
@@ -50,6 +57,8 @@ const Page = () => {
   };
   
   useEffect(() => {
+    init();
+
     if (!router.isReady) return;
     const id = router.query.id;
     if (!id) {
@@ -90,6 +99,12 @@ const Page = () => {
             value={scientist?.deathYear ?? ''}
             tabIndex={1002}
             onChange={(e) => handleParams('deathYear', e.target.value)} />
+        </StylFormField>
+        <StylFormField title="field of study">
+          <StylFormSelect type="type1" items={FOS}
+            value={scientist?.fosCd}
+            size="medium"
+            onChange={(e) => handleParams('fosCd', e.target.value)} />
         </StylFormField>
         <StylFormField title="name" required>
           <input type="text"

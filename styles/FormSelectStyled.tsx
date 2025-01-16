@@ -8,9 +8,8 @@ export interface SelectAttr {
   onClick?: () => void;
   className?: string;
   isDisabled?: boolean;
-  isFstDisabled?: boolean;
+  useFirstItem?: boolean;
   onChange?: (e: any) => void;
-  defaultValue?: any;
   value?: any;
   tabIndex?: number;
 }
@@ -27,7 +26,7 @@ const StylFormSelect: React.FC<SelectAttr> = ({
   items = [],
   className,
   isDisabled = false,
-  isFstDisabled = false,
+  useFirstItem = false,
   tabIndex = 1006,
   ...props
 }: SelectAttr) => {
@@ -42,7 +41,7 @@ const StylFormSelect: React.FC<SelectAttr> = ({
       >
         {items.length > 0 &&
           items.map((item, idx) => {
-            return idx === 0 && isFstDisabled ? (
+            return idx === 0 && useFirstItem ? (
               <option
                 key={`form-select-${idx}`}
                 className={`option`}

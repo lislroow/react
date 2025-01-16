@@ -1,20 +1,30 @@
 import { http } from '@/components/http';
-import {
-  ReqCodeGroups,
-  ReqCodes,
-} from '@/types/CommonCodeType';
+import { SelectItem } from '@/styles/FormSelectStyled';
 
-const getCommonCodeMngCodeGroupssSearch = (data: ReqCodeGroups) => {
-  return http.get('/story-api/v1/common-code/mng/codes/search', {params: data});
-}
-
-const getCommonCodeMngCodesSearch = (data: ReqCodes) => {
-  return http.get('/story-api/v1/common-code/mng/codes/search', {params: data});
-}
-
-const SampleService = {
-  getCommonCodeMngCodeGroupssSearch,
-  getCommonCodeMngCodesSearch,
+const getCodesFindByCdGrp = (cdGrp: string) => {
+  return http.get(`/story-api/v1/common-code/codes/find/${cdGrp}`);
 };
 
-export default SampleService;
+const getFormSelectItem = async (cdGrp: string) : Promise<SelectItem[]>  => {
+  try {
+    const response = await getCodesFindByCdGrp(cdGrp);
+    const result: SelectItem[] =  response.data.map(item => ({
+      label: item.cdNm,
+      value: item.cd,
+    }));
+    result.unshift({
+      label: '전체',
+      value: '',
+    });
+    return result;
+  } catch (error) {
+    return [];
+  }
+};
+
+const CommonCodeService = {
+  getCodesFindByCdGrp,
+  getFormSelectItem,
+};
+
+export default CommonCodeService;
