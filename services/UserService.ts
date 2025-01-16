@@ -51,13 +51,13 @@ const getRemainTime = (): number => {
   return expireTime < 0 ? -1 : expireTime;
 }
 
-const getUserInfo = () => {
+const getUserInfo = (id: string) => {
   const userType = localStorage.getItem('X-RTKID')?.split(":")[0] || '';
   switch (userType) {
     case 'member':
-      return getMemberInfo();
+      return getMemberInfo(id);
     case 'manager':
-      return getManagerInfo();
+      return getManagerInfo(id);
     default:
       console.log(`${userType} is not yet!`);
       return null;
@@ -68,11 +68,11 @@ const getUserType = (): string => {
   return localStorage.getItem('X-RTKID')?.split(":")[0] || '';
 }
 
-const getMemberInfo = () => {
-  return http.get('/auth-api/v1/user/member/info', {});
+const getMemberInfo = (id: string) => {
+  return http.get(`/auth-api/v1/user/member/${id}`, {});
 }
 
-const getManagerInfo = () => {
+const getManagerInfo = (id: string) => {
   return http.get('/auth-api/v1/user/manager/info', {});
 }
 

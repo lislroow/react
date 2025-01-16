@@ -13,7 +13,8 @@ const Page = () => {
 
   useEffect(() => {
     if (UserService.isLogin()) {
-      UserService.getUserInfo()?.then((response) => setUserInfo(response.data));
+      // UserService.getUserInfo()?.then((response) => setUserInfo(response.data));
+      console.log('todo!!');
     }
   }, []);
   
@@ -30,7 +31,7 @@ const Page = () => {
             <Grid container alignItems='center'>
               <Grid item xs={12} sm={4}>
                 <TextField margin="normal" InputProps={{ readOnly: true, }} InputLabelProps={{ shrink: true }}
-                  variant="standard" fullWidth id="email" name="email" label="email" value={userInfo.email || ''} />
+                  variant="standard" fullWidth id="loginId" name="loginId" label="loginId" value={userInfo.loginId || ''} />
               </Grid>
               <Grid item xs={12} sm={4}>
                 <TextField margin="normal" InputLabelProps={{ shrink: true }} 

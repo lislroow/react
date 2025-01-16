@@ -1,4 +1,5 @@
 export interface UserInfo {
-  email?: string;
+  id?: string;
+  loginId?: string;
   nickname?: string;
 }

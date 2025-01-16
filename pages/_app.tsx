@@ -25,18 +25,21 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
   const [ menuList, setMenuList ] = useState<MenuInfo[]>();
   const [ pathname, setPathname ] = useState<string | null>(null);
 
-  const [alertDisplay, setAlertDisplay] = useState(false);
-  const [alertTitle, setAlertTitle] = useState('');
-  const [alertMessage, setAlertMessage] = useState('');
+  const [ alertDisplay, setAlertDisplay] = useState(false);
+  const [ alertTitle, setAlertTitle] = useState('');
+  const [ alertMessage, setAlertMessage] = useState('');
 
   const [ asideStatus, setAsideStatus ] = useState(true);
   const [ user, setUser ] = useState<UserInfo>({});
   const [ loginStatus, setLoginStatus ] = useState(true);
   const [ expireTime, setExpireTime ] = useState<number>();
   
+  const [ usrId, setUsrId ] = useState('');
+
   storeUser.subscribe(() => {
     setUser(storeUser.getState().user);
     localStorage.setItem('user', JSON.stringify(storeUser.getState().user));
+    setUsrId(storeUser.getState().user.id);
     setLoginStatus(false);
   });
   
@@ -50,8 +53,8 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
     setMenuList(MenuService.getMenuList());
     setPathname(router.pathname);
     const token = localStorage.getItem('X-ATKID');
-    if (token) {
-      UserService.getUserInfo().then((reponse) => {
+    if (token && usrId) {
+      UserService.getUserInfo(usrId).then((reponse) => {
         setUser(reponse.data);
         setLoginStatus(false);
       });
@@ -125,7 +128,7 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
                   )
                 ) : (
                   <div style={{float: 'right', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '25px'}}>
-                    <button className={styles.button_sm1} type={'button'} onClick={() => UserService.getUserInfo()}>
+                    <button className={styles.button_sm1} type={'button'} onClick={() => UserService.getUserInfo(usrId)}>
                       {/* {expireTime > 0 ? expireTime : ''} | 연장 */}
                       {Math.floor(expireTime / 60) + ':' + (expireTime % 60)} | 연장
                     </button>

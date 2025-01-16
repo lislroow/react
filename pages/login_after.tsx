@@ -19,8 +19,9 @@ const Page = () => {
     
     if (cookies['X-RTKID']) {
       localStorage.setItem('X-RTKID', cookies['X-RTKID']);
+      const usrid = cookies['X-USRID'];
       refreshToken().then(() => 
-        UserService.getUserInfo().then((reponse) => {
+        UserService.getUserInfo(usrid).then((reponse) => {
           storeUser.dispatch(actUpdate(reponse.data));
           router.push('/');
         })

@@ -10,9 +10,9 @@ import UserService from '@/services/UserService';
 
 const Page = () => {
   const router = useRouter();
-  // const [username, setUsername] = useState('mgkim.net@gmail.com');
-  // const [username, setUsername] = useState('myeonggu.kim@kakao.com');
-  const [username, setUsername] = useState('mgkim0818@naver.com');
+  // const [username, setUsername] = useState('mgkim.net@gmail.com'); // member
+  const [username, setUsername] = useState('mgkim0818@naver.com'); // member
+  // const [username, setUsername] = useState('myeonggu.kim@kakao.com'); // manager
   const [password, setPassword] = useState('1');
 
   const handleSocialLogin = (social: string) => {
@@ -44,8 +44,9 @@ const Page = () => {
           
         if (cookies['X-RTKID']) {
           localStorage.setItem('X-RTKID', cookies['X-RTKID']);
+          const usrid = cookies['X-USRID'];
           refreshToken().then(() => 
-            UserService.getUserInfo().then((reponse) => {
+            UserService.getUserInfo(usrid).then((reponse) => {
               storeUser.dispatch(actUpdate(reponse.data));
               router.push('/');
             })
