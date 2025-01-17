@@ -55,7 +55,7 @@ const Page = () => {
         }
       })
       .catch(error => {
-        const [title, message] = [error.title, error.detail];
+        const [title, message] = [error.response.data.title, error.response.data.detail];
         storeAlert.dispatch(actAlertShow(title, message));
         return Promise.reject(error);
       });
