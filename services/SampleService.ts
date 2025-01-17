@@ -12,24 +12,24 @@ const getScientist = (id: any) => {
   return http.get(`/story-api/v1/mybatis-sample/scientist/${id}`);
 }
 
-const postScientistsSearch = (data: Scientist) => {
+const postScientist = (data: Scientist) => {
   return http.post('/story-api/v1/mybatis-sample/scientist', data);
 }
 
-const deleteScientistsSearch = (id: any) => {
+const deleteScientist = (id: any) => {
   return http.delete(`/story-api/v1/mybatis-sample/scientist/${id}`);
 }
 
-const putScientistsSearch = (data: Scientist) => {
+const putScientist = (data: Scientist) => {
   return http.put('/story-api/v1/mybatis-sample/scientist', data);
 }
 
 const SampleService = {
   getScientistsSearch,
   getScientist,
-  postScientistsSearch,
-  deleteScientistsSearch,
-  putScientistsSearch,
+  postScientist,
+  deleteScientist,
+  putScientist,
 };
 
 export default SampleService;

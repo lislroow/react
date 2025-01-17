@@ -40,7 +40,7 @@ const Page = () => {
   };
   
   const handleSave = () => {
-    SampleService.putScientistsSearch(scientist)
+    SampleService.putScientist(scientist)
       .then((response) => {
         router.push({
           pathname: `${router.query.id}`,
@@ -50,7 +50,7 @@ const Page = () => {
   };
   
   const handleDelete = () => {
-    SampleService.deleteScientistsSearch(scientist.id)
+    SampleService.deleteScientist(scientist.id)
       .then((response) => {
         handleList();
       });
