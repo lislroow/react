@@ -5,13 +5,13 @@
       "pathname":"/mybatis-sample/scientist"
    },
    {
-      "itemId":"/user/user-info",
-      "title":"[user] user-info",
-      "pathname":"/user/user-info"
-   },
-   {
       "itemId":"/common-code",
       "title":"[common-code] mng",
       "pathname":"/common-code"
+   },
+   {
+      "itemId":"/user/user-mng",
+      "title":"[user] user-mng",
+      "pathname":"/user/user-mng"
    }
  ]
