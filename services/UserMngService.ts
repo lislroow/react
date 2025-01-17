@@ -1,7 +1,8 @@
 import { http } from '@/components/http';
 import {
-  ReqManagers,
+  ReqManager,
   Manager,
+  ChangePassword,
 } from '@/types/UserMngTypes';
 
 const getManagersSearch = (data: Manager) => {
@@ -24,11 +25,16 @@ const putManager = (data: Manager) => {
   return http.put('/auth-api/v1/user-mng/manager', data);
 }
 
+const putManagerPassword = (data: ChangePassword) => {
+  return http.put('/auth-api/v1/user-mng/manager/password', data);
+}
+
 const SampleService = {
   getManagersSearch,
   getManager,
   postManager,
   deleteManager,
+  putManagerPassword,
   putManager,
 };
 

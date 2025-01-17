@@ -12,8 +12,8 @@ import {
 } from '@/types/CommonType';
 
 import {
-  ReqManagers,
-  ResManagers,
+  ReqManager,
+  ResManager,
 } from '@/types/UserMngTypes';
 
 import UserMngService from '@/services/UserMngService';
@@ -27,7 +27,7 @@ const Page = () => {
   const { query } = router;
   const [ LOCKED_YN, setLOCKED_YN ] = useState<SelectItem[]>();
   const [ DISABLED_YN, setDISABLED_YN ] = useState<SelectItem[]>();
-  const reqManagersDef: ReqManagers = {
+  const reqManagersDef: ReqManager = {
     loginId: '',
     mgrName: '',
     role: '',
@@ -36,7 +36,7 @@ const Page = () => {
     page: 1,
     size: PageSizeOptions[0],
   };
-  const [ searchParams, setSearchParams ] = useState<ReqManagers>({
+  const [ searchParams, setSearchParams ] = useState<ReqManager>({
     loginId: Array.isArray(query.loginId) ? query.loginId[0] : query.loginId || '',
     mgrName: Array.isArray(query.mgrName) ? query.mgrName[0] : query.mgrName || '',
     role: Array.isArray(query.role) ? query.role[0] : query.role || '',
@@ -46,7 +46,7 @@ const Page = () => {
     size: Array.isArray(query.size) ? Number(query.size[0]) : Number(query.size) || PageSizeOptions[0],
   });
   const [ resPageInfo, setResPageInfo ] = useState<ResPageInfo>();
-  const [ resManagers, setResManagers ] = useState<ResManagers[]>([]);
+  const [ resManagers, setResManagers ] = useState<ResManager[]>([]);
 
   const init = async () => {
     setLOCKED_YN(await CommonCodeService.getFormSelectItem('LOCKED_YN'));
@@ -85,7 +85,7 @@ const Page = () => {
         }
       }
       return acc;
-    }, {} as ReqManagers);
+    }, {} as ReqManager);
 
     let params = null;
     if (Object.keys(parsedParams).length > 0) {
@@ -149,9 +149,13 @@ const Page = () => {
         <colgroup>
           <col width={50} />
           <col width={120} />
-          <col width={120} />
+          <col width={200} />
           <col width={120} />
           <col width={80} />
+          <col width={80} />
+          <col width={120} />
+          <col width={80} />
+          <col width={120} />
           <col width={80} />
           <col width={120} />
         </colgroup>
@@ -164,6 +168,10 @@ const Page = () => {
             <Th>disabled</Th>
             <Th>locked</Th>
             <Th>pwd-exp date</Th>
+            <Th>modify</Th>
+            <Th>modify</Th>
+            <Th>create</Th>
+            <Th>create</Th>
           </StyThRow>
         </thead>
         <tbody>
@@ -177,31 +185,43 @@ const Page = () => {
                   <Td textAlign="center">
                     <StylLink onClick={() => 
                       router.push({
-                        pathname: `scientist/${item.id}`,
+                        pathname: `${item.id}`,
                         query: queryString.stringify(searchParams),
                       })}>{item.id}</StylLink>
                   </Td>
                   <Td>
                     {item.loginId}
                   </Td>
-                  <Td>
+                  <Td textAlign="center">
                     {item.mgrName}
                   </Td>
-                  <Td>
+                  <Td textAlign="center">
                     {item.disabledYn}
                   </Td>
-                  <Td>
+                  <Td textAlign="center">
                     {item.lockedYn}
                   </Td>
-                  <Td>
+                  <Td textAlign="center">
                     {item.pwdExpDate}
+                  </Td>
+                  <Td textAlign="center">
+                    {item.modifyName}
+                  </Td>
+                  <Td textAlign="center">
+                    {item.modifyTime}
+                  </Td>
+                  <Td textAlign="center">
+                    {item.createName}
+                  </Td>
+                  <Td textAlign="center">
+                    {item.createTime}
                   </Td>
                 </StyTdRow>
               );
             })
           ) : (
             <StyTdRow>
-              <Td colSpan={7} className={'empty'}>
+              <Td colSpan={11} className={'empty'}>
                 no data
               </Td>
             </StyTdRow>

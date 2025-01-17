@@ -5,9 +5,15 @@ export interface Manager {
   role?: string;
   disabledYn?: string;
   lockedYn?: string;
+  createId: string;
+  createTime: string;
+  createName: string;
+  modifyId: string;
+  modifyTime: string;
+  modifyName: string;
 }
 
-export interface ReqManagers {
+export interface ReqManager {
   loginId?: string;
   mgrName?: string;
   role?: string;
@@ -17,7 +23,7 @@ export interface ReqManagers {
   size?: number;
 }
 
-export interface ResManagers {
+export interface ResManager {
   id?: string;
   loginId?: string;
   mgrName?: string;
@@ -25,4 +31,17 @@ export interface ResManagers {
   disabledYn?: string;
   lockedYn?: string;
   pwdExpDate?: string;
+  createId: string;
+  createTime: string;
+  createName: string;
+  modifyId: string;
+  modifyTime: string;
+  modifyName: string;
+}
+
+export interface ChangePassword {
+  id?: string;
+  currentLoginPwd?: string;
+  newLoginPwd?: string;
+  confirmLoginPwd?: string;
 }

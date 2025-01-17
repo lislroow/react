@@ -12,8 +12,8 @@ import {
 } from '@/types/CommonType';
 
 import {
-  ReqScientists,
-  ResScientists,
+  ReqScientist,
+  ResScientist,
 } from '@/types/SampleType';
 
 import SampleService from '@/services/SampleService';
@@ -26,20 +26,20 @@ const Page = () => {
   const router = useRouter();
   const { query } = router;
   const [ FOS, setFOS ] = useState<SelectItem[]>();
-  const reqScientistDef: ReqScientists = {
+  const reqScientistDef: ReqScientist = {
     name: '',
     fosCd: '',
     page: 1,
     size: PageSizeOptions[0],
   };
-  const [ searchParams, setSearchParams ] = useState<ReqScientists>({
+  const [ searchParams, setSearchParams ] = useState<ReqScientist>({
     name: Array.isArray(query.name) ? query.name[0] : query.name || '',
     fosCd: Array.isArray(query.fosCd) ? query.fosCd[0] : query.fosCd || '',
     page: Array.isArray(query.page) ? Number(query.page[0]) : Number(query.page) || 1,
     size: Array.isArray(query.size) ? Number(query.size[0]) : Number(query.size) || PageSizeOptions[0],
   });
   const [ resPageInfo, setResPageInfo ] = useState<ResPageInfo>();
-  const [ resScientists, setResScientists ] = useState<ResScientists[]>([]);
+  const [ resScientists, setResScientists ] = useState<ResScientist[]>([]);
 
   const init = async () => {
     setFOS(await CommonCodeService.getFormSelectItem('FOS'));
@@ -77,7 +77,7 @@ const Page = () => {
         }
       }
       return acc;
-    }, {} as ReqScientists);
+    }, {} as ReqScientist);
 
     let params = null;
     if (Object.keys(parsedParams).length > 0) {
@@ -124,18 +124,26 @@ const Page = () => {
       <StyTable>
         <colgroup>
           <col width={80} />
+          <col width={150}/>
           <col width={120} />
           <col width={120} />
           <col width={120} />
-          <col />
+          <col width={80} />
+          <col width={120} />
+          <col width={80} />
+          <col width={120} />
         </colgroup>
         <thead>
           <StyThRow>
             <Th>no.</Th>
+            <Th>name</Th>
             <Th>year of birth</Th>
             <Th>year of death</Th>
             <Th>field of study</Th>
-            <Th>name</Th>
+            <Th>modify</Th>
+            <Th>modify</Th>
+            <Th>create</Th>
+            <Th>create</Th>
           </StyThRow>
         </thead>
         <tbody>
@@ -144,7 +152,14 @@ const Page = () => {
               return (
                 <StyTdRow key={index}>
                   <Td textAlign="right">
-                    {resPageInfo.total - (resPageInfo.size * (resPageInfo.page -1)) - index}
+                    {item.id}
+                  </Td>
+                  <Td>
+                    <StylLink onClick={() => 
+                      router.push({
+                        pathname: `scientist/${item.id}`,
+                        query: queryString.stringify(searchParams),
+                      })}>{item.name}</StylLink>
                   </Td>
                   <Td textAlign="center">
                     {item.birthYear}
@@ -155,19 +170,24 @@ const Page = () => {
                   <Td>
                     {item.fosNm}
                   </Td>
-                  <Td>
-                    <StylLink onClick={() => 
-                      router.push({
-                        pathname: `scientist/${item.id}`,
-                        query: queryString.stringify(searchParams),
-                      })}>{item.name}</StylLink>
+                  <Td textAlign="center">
+                    {item.modifyName}
+                  </Td>
+                  <Td textAlign="center">
+                    {item.modifyTime}
+                  </Td>
+                  <Td textAlign="center">
+                    {item.createName}
+                  </Td>
+                  <Td textAlign="center">
+                    {item.createTime}
                   </Td>
                 </StyTdRow>
               );
             })
           ) : (
             <StyTdRow>
-              <Td colSpan={5} className={'empty'}>
+              <Td colSpan={9} className={'empty'}>
                 no data
               </Td>
             </StyTdRow>

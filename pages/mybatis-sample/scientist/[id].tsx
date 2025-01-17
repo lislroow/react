@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 import {
-  ResScientists,
+  ResScientist,
   Scientist,
 } from '@/types/SampleType';
 
@@ -115,6 +115,24 @@ const Page = () => {
             onChange={(e) => handleParams('name', e.target.value)} />
           {invalid && !scientist?.name && (
             <span style={{ color: '#FF8080', fontSize: '15px' }}>not allow empty string</span>)}
+        </StylFormField>
+        <StylFormField title="modify id">
+          <StylText>{scientist?.modifyId}</StylText>
+        </StylFormField>
+        <StylFormField title="modify name">
+          <StylText>{scientist?.modifyName}</StylText>
+        </StylFormField>
+        <StylFormField title="modify time">
+          <StylText>{scientist?.modifyTime}</StylText>
+        </StylFormField>
+        <StylFormField title="create id">
+          <StylText>{scientist?.createId}</StylText>
+        </StylFormField>
+        <StylFormField title="create name">
+          <StylText>{scientist?.createName}</StylText>
+        </StylFormField>
+        <StylFormField title="create time">
+          <StylText>{scientist?.createTime}</StylText>
         </StylFormField>
       </StylFieldWrap>
       <StylModal openState={saveModalState}

@@ -13,7 +13,7 @@ const getFormSelectItem = async (cdGrp: string) : Promise<SelectItem[]>  => {
       value: item.cd,
     }));
     result.unshift({
-      label: '전체',
+      label: '선택',
       value: '',
     });
     return result;
