@@ -31,7 +31,7 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
 
   const [ asideStatus, setAsideStatus ] = useState(true);
   const [ user, setUser ] = useState<UserInfo>({});
-  const [ loginStatus, setLoginStatus ] = useState(true);
+  const [ loginStatus, setLoginStatus ] = useState(false);
   const [ expireTime, setExpireTime ] = useState<number>();
   
   const [ usrId, setUsrId ] = useState('');
@@ -40,7 +40,7 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
     setUser(storeUser.getState().user);
     localStorage.setItem('user', JSON.stringify(storeUser.getState().user));
     setUsrId(storeUser.getState().user.id);
-    setLoginStatus(false);
+    setLoginStatus(true);
   });
   
   storeAlert.subscribe(() => {
@@ -52,12 +52,18 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
   useEffect(() => {
     setMenuList(MenuService.getMenuList());
     setPathname(router.pathname);
-    const token = localStorage.getItem('X-ATKID');
-    if (token && usrId) {
-      UserService.getUserInfo(usrId).then((reponse) => {
-        setUser(reponse.data);
-        setLoginStatus(false);
-      });
+    
+    if (UserService.isLogin()) {
+      if (localStorage.getItem('user')) {
+        setUser(JSON.parse(localStorage.getItem('user')));
+        setLoginStatus(true);
+      } else {
+        UserService.getUserInfo().then((response) => {
+          localStorage.setItem('user', JSON.stringify(response.data));
+          setUser(response.data);
+          setLoginStatus(true);
+        });
+      }
     }
   }, []);
 
@@ -118,7 +124,7 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
                     <MenuIcon sx={{ fontSize: '20px' }} />
                   </IconButton>
                 }
-                {loginStatus ? (
+                {!loginStatus ? (
                   !noLayoutUri.includes(router.pathname) && (
                     <div style={{float: 'right', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '25px'}}>
                       <button className={styles.button_sm1} type={'button'} onClick={(e) => router.push('/login')}>
@@ -128,7 +134,7 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
                   )
                 ) : (
                   <div style={{float: 'right', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '25px'}}>
-                    <button className={styles.button_sm1} type={'button'} onClick={() => UserService.getUserInfo(usrId)}>
+                    <button className={styles.button_sm1} type={'button'} onClick={() => UserService.getUserInfo()}>
                       {/* {expireTime > 0 ? expireTime : ''} | 연장 */}
                       {Math.floor(expireTime / 60) + ':' + (expireTime % 60)} | 연장
                     </button>
