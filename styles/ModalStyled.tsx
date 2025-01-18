@@ -7,6 +7,7 @@ const StylModal = ({
   maxWidth = '400px',
   cancelBtnNm = '취소',
   confirmBtnNm = '확인',
+  modelType = 'confirm',
 }) => {
   return (
     <>
@@ -25,10 +26,12 @@ const StylModal = ({
             </div>
             <main>{children}</main>
             <footer>
-              <button type="button" tabIndex={20} 
-                onClick={() => handleCloseClick()}>
-                <div>{cancelBtnNm}</div>
-              </button>
+              {modelType === 'confirm' && (
+                <button type="button" tabIndex={20} 
+                  onClick={() => handleCloseClick()}>
+                  <div>{cancelBtnNm}</div>
+                </button>
+              )}
               <button
                 tabIndex={20}
                 style={{
@@ -39,7 +42,6 @@ const StylModal = ({
                 }}
                 className="close"
                 onClick={() => {
-                  // handleCloseClick();
                   handleOkClick();
                 }}>
                 <div>{confirmBtnNm}</div>

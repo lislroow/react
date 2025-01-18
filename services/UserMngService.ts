@@ -3,6 +3,8 @@ import {
   ReqManager,
   Manager,
   ChangePassword,
+  Registration,
+  SendRegistration,
 } from '@/types/UserMngTypes';
 
 const getManagersSearch = (data: Manager) => {
@@ -13,8 +15,12 @@ const getManager = (id: any) => {
   return http.get(`/auth-api/v1/user-mng/manager/${id}`);
 }
 
-const postManager = (data: Manager) => {
-  return http.post('/auth-api/v1/user-mng/manager', data);
+const postRegistrationSend = (data: SendRegistration) => {
+  return http.post('/auth-api/v1/user-mng/manager/registration/send', data);
+}
+
+const postRegistration = (data: Registration) => {
+  return http.post('/auth-api/v1/user-mng/manager/registration', data);
 }
 
 const deleteManager = (id: any) => {
@@ -26,16 +32,17 @@ const putManager = (data: Manager) => {
 }
 
 const putManagerPassword = (data: ChangePassword) => {
-  return http.put('/auth-api/v1/user-mng/manager/password', data);
+  return http.put('/auth-api/v1/user-mng/manager/password/change', data);
 }
 
-const SampleService = {
+const UserMngService = {
   getManagersSearch,
   getManager,
-  postManager,
+  postRegistrationSend,
+  postRegistration,
   deleteManager,
   putManagerPassword,
   putManager,
 };
 
-export default SampleService;
+export default UserMngService;

@@ -45,3 +45,15 @@ export interface ChangePassword {
   newLoginPwd?: string;
   confirmLoginPwd?: string;
 }
+
+export interface SendRegistration {
+  toEmail?: string;
+  toName?: string;
+  grantRole?: string;
+}
+
+export interface Registration {
+  registerCode?: string;
+  newLoginPwd?: string;
+  confirmLoginPwd?: string;
+}

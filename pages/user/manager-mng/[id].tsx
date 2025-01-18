@@ -43,7 +43,7 @@ const Page = () => {
   
   const handleList = () => {
     router.push({
-      pathname: '/user/user-mng',
+      pathname: '/user/manager-mng',
       query: queryString.stringify(router.query),
     });
   };
@@ -83,7 +83,7 @@ const Page = () => {
     if (!router.isReady) return;
     const id = router.query.id;
     if (!id) {
-      router.replace('/user/user-mng');
+      router.replace('/user/manager-mng');
       return;
     }
     UserMngService.getManager(id)

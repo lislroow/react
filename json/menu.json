@@ -1,17 +1,17 @@
 [
    {
-      "itemId":"/mybatis-sample/scientist",
-      "title":"[sample] scientist",
-      "pathname":"/mybatis-sample/scientist"
-   },
-   {
       "itemId":"/common-code",
       "title":"[common-code] mng",
       "pathname":"/common-code"
    },
    {
-      "itemId":"/user/user-mng",
-      "title":"[user] user-mng",
-      "pathname":"/user/user-mng"
+      "itemId":"/user/manager-mng",
+      "title":"[user] manager-mng",
+      "pathname":"/user/manager-mng"
+   },
+   {
+      "itemId":"/mybatis-sample/scientist",
+      "title":"[sample] scientist",
+      "pathname":"/mybatis-sample/scientist"
    }
  ]

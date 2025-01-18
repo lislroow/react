@@ -14,13 +14,17 @@ import {
 import {
   ReqManager,
   ResManager,
+  SendRegistration,
 } from '@/types/UserMngTypes';
 
 import UserMngService from '@/services/UserMngService';
 import { useRouter } from "next/router";
-import { StylLink } from "@/styles/GeneralStyled";
+import { StylLink, StylText } from "@/styles/GeneralStyled";
 import StylFormSelect, { SelectItem } from "@/styles/FormSelectStyled";
 import CommonCodeService from "@/services/CommonCodeService";
+import StylButtonGroup from "@/styles/ButtonGroupStyled";
+import StylModal from "@/styles/ModalStyled";
+import StylFormField from "@/styles/FormFieldStyled";
 
 const Page = () => {
   const router = useRouter();
@@ -47,6 +51,13 @@ const Page = () => {
   });
   const [ resPageInfo, setResPageInfo ] = useState<ResPageInfo>();
   const [ resManagers, setResManagers ] = useState<ResManager[]>([]);
+  const [ registerModal, setRegisterModal ] = useState<boolean>(false);
+  const [ registerModalMessage, setRegisterModalMessage ] = useState<string>('');
+  const [ sendRegistration, setSendRegistration ] = useState<SendRegistration>({
+    toEmail: 'hi@mgkim.net',
+    toName: '홍길동',
+    grantRole: 'MANAGER,ADMIN',
+  });
 
   const init = async () => {
     setLOCKED_YN(await CommonCodeService.getFormSelectItem('LOCKED_YN'));
@@ -67,10 +78,18 @@ const Page = () => {
       return;
     }
     router.push({
-      pathname: `/user/user-mng`,
+      pathname: `/user/manager-mng`,
       query: queryString.stringify(param),
     });
-  }
+  };
+
+  const handleRegistration = () => {
+    UserMngService.postRegistrationSend(sendRegistration)
+      .then((response) => {
+        setSendRegistration({});
+        setRegisterModal(false);
+      });
+  };
 
   useEffect(() => {
     init();
@@ -145,6 +164,11 @@ const Page = () => {
           </StylSearchBtnArea>
         </StylSearchGroup>
       </StylSearchArea>
+      <StylButtonGroup
+        btn1Label="등록"
+        btn1OnClick={() => setRegisterModal(true)}
+      >
+      </StylButtonGroup>
       <StyTable>
         <colgroup>
           <col width={50} />
@@ -185,7 +209,7 @@ const Page = () => {
                   <Td textAlign="center">
                     <StylLink onClick={() => 
                       router.push({
-                        pathname: `${item.id}`,
+                        pathname: `/user/manager-mng/${item.id}`,
                         query: queryString.stringify(searchParams),
                       })}>{item.id}</StylLink>
                   </Td>
@@ -234,6 +258,43 @@ const Page = () => {
         size={searchParams?.size ?? PageSizeOptions[0]}
         onClick={(value: number) => handleRouteAndSearch('page', value)}
       />
+      <StylModal openState={registerModal}
+        title="사용자 등록 코드 발송"
+        confirmBtnNm="발송"
+        cancelBtnNm="취소"
+        handleOkClick={() => {
+          handleRegistration();
+        }}
+        maxWidth="600px"
+        handleCloseClick={() => {
+          setSendRegistration({});
+          setRegisterModalMessage('');
+          setRegisterModal(false);
+        }}>
+        <main>
+          {registerModalMessage ??
+            <StylText>{registerModalMessage}</StylText>
+          }
+          <StylFormField title="email">
+            <input type="text"
+              className={`el_input el_input_lg`}
+              value={sendRegistration?.toEmail ?? ''}
+              onChange={(e) => setSendRegistration({...sendRegistration, 'toEmail': e.target.value})} />
+          </StylFormField>
+          <StylFormField title="name">
+            <input type="text"
+              className={`el_input el_input_lg`}
+              value={sendRegistration?.toName ?? ''}
+              onChange={(e) => setSendRegistration({...sendRegistration, 'toName': e.target.value})} />
+          </StylFormField>
+          <StylFormField title="grant role">
+            <input type="text"
+              className={`el_input el_input_lg`}
+              value={sendRegistration?.grantRole ?? ''}
+              onChange={(e) => setSendRegistration({...sendRegistration, 'grantRole': e.target.value})} />
+          </StylFormField>
+        </main>
+      </StylModal>
     </div>
   )
 }
