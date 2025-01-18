@@ -1,24 +1,35 @@
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import queryString from "query-string";
+
+import storeAlert, { actAlertShow } from "@/components/redux-store/store-alert";
+import StylModal from "@/styles/ModalStyled";
+import { StylText } from "@/styles/GeneralStyled";
+import StylFormField, { StylFieldWrap } from "@/styles/FormFieldStyled";
+import StylFormSelect, { SelectItem } from "@/styles/FormSelectStyled";
+import StylButtonGroup from "@/styles/ButtonGroupStyled";
 
 import {
-  ResScientist,
-  Scientist,
-} from '@/types/SampleType';
-
-import SampleService from '@/services/SampleService';
-import { useRouter } from "next/router";
-import StylFormField, { StylFieldWrap } from "@/styles/FormFieldStyled";
-import { StylText } from "@/styles/GeneralStyled";
-import StylButtonGroup from "@/styles/ButtonGroupStyled";
-import queryString from "query-string";
-import StylModal from "@/styles/ModalStyled";
-import StylFormSelect, { SelectItem } from "@/styles/FormSelectStyled";
+  ScientistRes,
+  ModifyScientistReq,
+} from '@/types/MybatisSampleType';
 import CommonCodeService from "@/services/CommonCodeService";
+import SampleService from '@/services/MybatisSampleService';
 
 const Page = () => {
   const router = useRouter();
+  const { query } = router;
+  
   const [ FOS, setFOS ] = useState<SelectItem[]>();
-  const [ scientist, setScientist ] = useState<Scientist>();
+
+  const [ scientistRes, setScientistRes ] = useState<ScientistRes>();
+  const [ modifyScientistReq, setModifyScientistReq ] = useState<ModifyScientistReq>({
+    id: null,
+    name: null,
+    birthYear: null,
+    deathYear: null,
+    fosCd: null,
+  });
   const [ invalid, setInvalid ] = useState(false);
   const [ saveModalState, setSaveModalState ] = useState(false);
   const [ deleteModalState, setDeleteModalState ] = useState(false);
@@ -29,7 +40,7 @@ const Page = () => {
   }
 
   const handleParams = (name: string, _value: any) => {
-    setScientist({ ...scientist, [name]: _value });
+    setScientistRes({ ...scientistRes, [name]: _value });
   };
   
   const handleList = () => {
@@ -40,7 +51,7 @@ const Page = () => {
   };
   
   const handleSave = () => {
-    SampleService.putScientist(scientist)
+    SampleService.putScientist(modifyScientistReq)
       .then((response) => {
         router.push({
           pathname: `${router.query.id}`,
@@ -50,7 +61,7 @@ const Page = () => {
   };
   
   const handleDelete = () => {
-    SampleService.deleteScientist(scientist.id)
+    SampleService.deleteScientist(scientistRes.id)
       .then((response) => {
         handleList();
       });
@@ -66,8 +77,28 @@ const Page = () => {
       return;
     }
     SampleService.getScientist(id)
-      .then((response) => setScientist(response.data));
+      .then((response) => {
+        if ('title' in response.data && 'detail' in response.data) {
+          storeAlert.dispatch(actAlertShow(response.data.title, response.data.detail));
+          return;
+        }
+        setScientistRes(response.data);
+      });
   }, [router.isReady]);
+
+  useEffect(() => {
+    if (scientistRes) {
+      // scientistRes > modifyScientistReq
+      setModifyScientistReq(Object.keys(scientistRes).reduce((acc, key) => {
+        let value = scientistRes[key];
+        if (key in modifyScientistReq) {
+          acc[key] = value;
+        }
+        return acc;
+      }, {} as ModifyScientistReq));
+    }
+  }, [scientistRes]);
+  
   
   return (
     <div className="contents">
@@ -82,57 +113,57 @@ const Page = () => {
       </StylButtonGroup>
       <StylFieldWrap>
         <StylFormField title="id">
-          <StylText>{scientist?.id}</StylText>
-        </StylFormField>
-        <StylFormField title="year of birth" required>
-          <input type="text"
-            className={`el_input el_input_lg`}
-            value={scientist?.birthYear ?? ''}
-            tabIndex={1001}
-            onChange={(e) => handleParams('birthYear', e.target.value)} />
-          {invalid && !scientist?.birthYear && (
-            <span style={{ color: '#FF8080', fontSize: '15px' }}>not allow empty string</span>)}
-        </StylFormField>
-        <StylFormField title="year of death">
-          <input type="text"
-            className={`el_input el_input_lg`}
-            value={scientist?.deathYear ?? ''}
-            tabIndex={1002}
-            onChange={(e) => handleParams('deathYear', e.target.value)} />
-        </StylFormField>
-        <StylFormField title="field of study">
-          <StylFormSelect type="type1" items={FOS}
-            value={scientist?.fosCd}
-            size="medium"
-            onChange={(e) => handleParams('fosCd', e.target.value)} />
+          <StylText>{scientistRes?.id}</StylText>
         </StylFormField>
         <StylFormField title="name" required>
           <input type="text"
             className={`el_input el_input_lg`}
             placeholder="input name"
-            value={scientist?.name ?? ''}
+            value={scientistRes?.name ?? ''}
             tabIndex={1003}
             onChange={(e) => handleParams('name', e.target.value)} />
-          {invalid && !scientist?.name && (
+          {invalid && !scientistRes?.name && (
             <span style={{ color: '#FF8080', fontSize: '15px' }}>not allow empty string</span>)}
         </StylFormField>
+        <StylFormField title="year of birth" required>
+          <input type="text"
+            className={`el_input el_input_lg`}
+            value={modifyScientistReq?.birthYear ?? ''}
+            tabIndex={1001}
+            onChange={(e) => handleParams('birthYear', e.target.value)} />
+          {invalid && !modifyScientistReq?.birthYear && (
+            <span style={{ color: '#FF8080', fontSize: '15px' }}>not allow empty string</span>)}
+        </StylFormField>
+        <StylFormField title="year of death">
+          <input type="text"
+            className={`el_input el_input_lg`}
+            value={modifyScientistReq?.deathYear ?? ''}
+            tabIndex={1002}
+            onChange={(e) => handleParams('deathYear', e.target.value)} />
+        </StylFormField>
+        <StylFormField title="field of study">
+          <StylFormSelect type="type1" items={FOS}
+            value={modifyScientistReq?.fosCd}
+            size="medium"
+            onChange={(e) => handleParams('fosCd', e.target.value)} />
+        </StylFormField>
         <StylFormField title="modify id">
-          <StylText>{scientist?.modifyId}</StylText>
+          <StylText>{scientistRes?.modifyId}</StylText>
         </StylFormField>
         <StylFormField title="modify name">
-          <StylText>{scientist?.modifyName}</StylText>
+          <StylText>{scientistRes?.modifyName}</StylText>
         </StylFormField>
         <StylFormField title="modify time">
-          <StylText>{scientist?.modifyTime}</StylText>
+          <StylText>{scientistRes?.modifyTime}</StylText>
         </StylFormField>
         <StylFormField title="create id">
-          <StylText>{scientist?.createId}</StylText>
+          <StylText>{scientistRes?.createId}</StylText>
         </StylFormField>
         <StylFormField title="create name">
-          <StylText>{scientist?.createName}</StylText>
+          <StylText>{scientistRes?.createName}</StylText>
         </StylFormField>
         <StylFormField title="create time">
-          <StylText>{scientist?.createTime}</StylText>
+          <StylText>{scientistRes?.createTime}</StylText>
         </StylFormField>
       </StylFieldWrap>
       <StylModal openState={saveModalState}
@@ -145,7 +176,7 @@ const Page = () => {
       </StylModal>
       <StylModal openState={deleteModalState}
         handleOkClick={() => {
-          if (confirmDeleteId !== scientist.id) {
+          if (confirmDeleteId !== scientistRes.id) {
             return false;
           }
           setDeleteModalState(false);
@@ -153,13 +184,13 @@ const Page = () => {
         }}
         handleCloseClick={() => setDeleteModalState(false)}>
         <main>
-          <StylText>{'삭제 대상 id \'' + scientist?.id + '\' 를 입력해주세요.'}</StylText>
+          <StylText>{'삭제 대상 id \'' + scientistRes?.id + '\' 를 입력해주세요.'}</StylText>
           <div style={{ display: 'flex' }}>
             <div>
               <input type="text"
                 className={`el_input_lg`}
                 style={{ height: '40px', textAlign: 'center' }}
-                placeholder={scientist?.id + ''}
+                placeholder={scientistRes?.id + ''}
                 onChange={(e) => setConfirmDeleteId(Number(e.target.value))} />
             </div>
           </div>

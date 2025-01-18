@@ -12,11 +12,11 @@ import {
 } from '@/types/CommonType';
 
 import {
-  ReqScientist,
-  ResScientist,
-} from '@/types/SampleType';
+  SearchScientistReq,
+  ScientistRes,
+} from '@/types/MybatisSampleType';
 
-import SampleService from '@/services/SampleService';
+import SampleService from '@/services/MybatisSampleService';
 import { useRouter } from "next/router";
 import { StylLink } from "@/styles/GeneralStyled";
 import StylFormSelect, { SelectItem } from "@/styles/FormSelectStyled";
@@ -26,27 +26,23 @@ const Page = () => {
   const router = useRouter();
   const { query } = router;
   const [ FOS, setFOS ] = useState<SelectItem[]>();
-  const reqScientistDef: ReqScientist = {
+  const searchScientistReqDef: SearchScientistReq = {
     name: '',
     fosCd: '',
     page: 1,
     size: PageSizeOptions[0],
   };
-  const [ searchParams, setSearchParams ] = useState<ReqScientist>({
+  const [ searchParams, setSearchParams ] = useState<SearchScientistReq>({
     name: Array.isArray(query.name) ? query.name[0] : query.name || '',
     fosCd: Array.isArray(query.fosCd) ? query.fosCd[0] : query.fosCd || '',
     page: Array.isArray(query.page) ? Number(query.page[0]) : Number(query.page) || 1,
     size: Array.isArray(query.size) ? Number(query.size[0]) : Number(query.size) || PageSizeOptions[0],
   });
-  const [ resPageInfo, setResPageInfo ] = useState<PageInfoRes>();
-  const [ resScientists, setResScientists ] = useState<ResScientist[]>([]);
+  const [ pageInfoRes, setPageInfoRes ] = useState<PageInfoRes>();
+  const [ scientistRes, setScientistRes ] = useState<ScientistRes[]>([]);
 
   const init = async () => {
     setFOS(await CommonCodeService.getFormSelectItem('FOS'));
-  }
-
-  const handleClear = () => {
-    setSearchParams(reqScientistDef);
   };
 
   const handleRouteAndSearch = (name: string = null, _value: any = null) => {
@@ -62,7 +58,7 @@ const Page = () => {
       pathname: `/mybatis-sample/scientist`,
       query: queryString.stringify(param),
     });
-  }
+  };
 
   useEffect(() => {
     init();
@@ -77,19 +73,19 @@ const Page = () => {
         }
       }
       return acc;
-    }, {} as ReqScientist);
+    }, {} as SearchScientistReq);
 
     let params = null;
     if (Object.keys(parsedParams).length > 0) {
       params = {...searchParams, ...parsedParams};
     } else {
-      params = reqScientistDef;
+      params = searchScientistReqDef;
     }
     setSearchParams(params);
     SampleService.getScientistsSearch(params)
       .then((response) => {
-        setResPageInfo(response.data.pageInfo);
-        setResScientists(response.data.pageData);
+        setPageInfoRes(response.data.pageInfo);
+        setScientistRes(response.data.pageData);
       });
   }, [query]);
   
@@ -147,8 +143,8 @@ const Page = () => {
           </StyThRow>
         </thead>
         <tbody>
-          {resScientists.length > 0 ? (
-            resScientists.map((item, index) => {
+          {scientistRes.length > 0 ? (
+            scientistRes.map((item, index) => {
               return (
                 <StyTdRow key={index}>
                   <Td textAlign="right">
@@ -195,7 +191,7 @@ const Page = () => {
         </tbody>
       </StyTable>
       <StylPagination
-        total={resPageInfo?.total ?? 0}
+        total={pageInfoRes?.total ?? 0}
         page={searchParams.page ??  1}
         size={searchParams?.size ?? PageSizeOptions[0]}
         onClick={(value: number) => handleRouteAndSearch('page', value)}

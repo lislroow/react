@@ -62,7 +62,7 @@ const Page = () => {
   const init = async () => {
     setLOCKED_YN(await CommonCodeService.getFormSelectItem('LOCKED_YN'));
     setDISABLED_YN(await CommonCodeService.getFormSelectItem('DISABLED_YN'));
-  }
+  };
 
   const handleRouteAndSearch = (name: string = null, _value: any = null) => {
     let param = null;

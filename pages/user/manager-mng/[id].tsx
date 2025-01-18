@@ -1,35 +1,38 @@
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import queryString from "query-string";
+
+import storeAlert, { actAlertShow } from "@/components/redux-store/store-alert";
+import StylModal from "@/styles/ModalStyled";
+import { StylText } from "@/styles/GeneralStyled";
+import StylFormField, { StylFieldWrap } from "@/styles/FormFieldStyled";
+import StylFormSelect, { SelectItem } from "@/styles/FormSelectStyled";
+import StylButtonGroup from "@/styles/ButtonGroupStyled";
 
 import {
   ModifyManagerReq,
   ManagerRes,
   ChangePasswordReq,
 } from '@/types/UserMngTypes';
-
-import UserMngService from '@/services/UserMngService';
-import { useRouter } from "next/router";
-import StylFormField, { StylFieldWrap } from "@/styles/FormFieldStyled";
-import { StylText } from "@/styles/GeneralStyled";
-import StylButtonGroup from "@/styles/ButtonGroupStyled";
-import queryString from "query-string";
-import StylModal from "@/styles/ModalStyled";
-import StylFormSelect, { SelectItem } from "@/styles/FormSelectStyled";
 import CommonCodeService from "@/services/CommonCodeService";
+import UserMngService from '@/services/UserMngService';
 
 const Page = () => {
   const router = useRouter();
   const { query } = router;
+
   const [ DISABLED_YN, setDISABLED_YN ] = useState<SelectItem[]>();
   const [ LOCKED_YN, setLOCKED_YN ] = useState<SelectItem[]>();
+  
   const [ managerRes, setManagerRes ] = useState<ManagerRes>();
   const [ modifyManagerReq, setModifyManagerReq ] = useState<ModifyManagerReq>({
-    id: '',
-    roles: '',
-    disabledYn: '',
-    lockedYn: '',
+    id: null,
+    roles: null,
+    disabledYn: null,
+    lockedYn: null,
   });
   const [ changePasswordReq, setChangePasswordReq ] = useState<ChangePasswordReq>({
-    id: Array.isArray(query.id) ? query.id[0] : query.id || '',
+    id: null
   });
   const [ invalid, setInvalid ] = useState(false);
   const [ saveModalState, setSaveModalState ] = useState(false);
@@ -93,21 +96,37 @@ const Page = () => {
       return;
     }
     UserMngService.getManager(id)
-      .then((response) => setManagerRes(response.data));
+      .then((response) => {
+        if ('title' in response.data && 'detail' in response.data) {
+          storeAlert.dispatch(actAlertShow(response.data.title, response.data.detail));
+          return;
+        }
+        setManagerRes(response.data);
+      });
   }, [router.isReady]);
   
   useEffect(() => {
     if (managerRes) {
-      const map = Object.keys(managerRes).reduce((acc, key) => {
+      // managerRes > modifyManagerReq
+      setModifyManagerReq(Object.keys(managerRes).reduce((acc, key) => {
         let value = managerRes[key];
         if (key in modifyManagerReq) {
           acc[key] = value;
         }
         return acc;
-      }, {} as ModifyManagerReq);
-      setModifyManagerReq(map);
+      }, {} as ModifyManagerReq));
+      
+      // managerRes > changePasswordReq
+      setChangePasswordReq(Object.keys(managerRes).reduce((acc, key) => {
+        let value = managerRes[key];
+        if (key in changePasswordReq) {
+          acc[key] = value;
+        }
+        return acc;
+      }, {} as ChangePasswordReq));
     }
   }, [managerRes]);
+  
   
   return (
     <div className="contents">
