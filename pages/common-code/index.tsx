@@ -9,7 +9,7 @@ import { SelectItem } from '@/styles/FormSelectStyled';
 
 import {
   PageSizeOptions,
-  ResPageInfo,
+  PageInfoRes,
 } from '@/types/CommonType';
 
 import {
@@ -44,7 +44,7 @@ const Page = () => {
     page: Array.isArray(query.page) ? Number(query.page[0]) : Number(query.page) || 1,
     size: Array.isArray(query.size) ? Number(query.size[0]) : Number(query.size) || PageSizeOptions[0],
   });
-  const [ resPageInfo, setResPageInfo ] = useState<ResPageInfo>();
+  const [ resPageInfo, setResPageInfo ] = useState<PageInfoRes>();
   const [ resCodes, setResCodes ] = useState<ResCodes[]>([]);
 
   const init = async () => {

@@ -8,7 +8,7 @@ import { StyTable, StyTdRow, StyThRow, Td, Th } from '@/styles/TableStyled';
 
 import {
   PageSizeOptions,
-  ResPageInfo,
+  PageInfoRes,
 } from '@/types/CommonType';
 
 import {
@@ -38,7 +38,7 @@ const Page = () => {
     page: Array.isArray(query.page) ? Number(query.page[0]) : Number(query.page) || 1,
     size: Array.isArray(query.size) ? Number(query.size[0]) : Number(query.size) || PageSizeOptions[0],
   });
-  const [ resPageInfo, setResPageInfo ] = useState<ResPageInfo>();
+  const [ resPageInfo, setResPageInfo ] = useState<PageInfoRes>();
   const [ resScientists, setResScientists ] = useState<ResScientist[]>([]);
 
   const init = async () => {

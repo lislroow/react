@@ -2,12 +2,12 @@ export const PageSizeOptions = [
   10, 50, 100
 ];
 
-export interface ReqPageInfo {
+export interface PageInfoReq {
   page: number;
   size: number;
 }
 
-export interface ResPageInfo {
+export interface PageInfoRes {
   page: number;
   size: number;
   start: number;

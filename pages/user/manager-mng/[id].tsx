@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 
 import {
-  ResManager,
-  Manager,
-  ChangePassword,
+  ModifyManagerReq,
+  ManagerRes,
+  ChangePasswordReq,
 } from '@/types/UserMngTypes';
 
 import UserMngService from '@/services/UserMngService';
@@ -21,8 +21,14 @@ const Page = () => {
   const { query } = router;
   const [ DISABLED_YN, setDISABLED_YN ] = useState<SelectItem[]>();
   const [ LOCKED_YN, setLOCKED_YN ] = useState<SelectItem[]>();
-  const [ manager, setManager ] = useState<Manager>();
-  const [ changePassword, setChangePassword ] = useState<ChangePassword>({
+  const [ managerRes, setManagerRes ] = useState<ManagerRes>();
+  const [ modifyManagerReq, setModifyManagerReq ] = useState<ModifyManagerReq>({
+    id: '',
+    roles: '',
+    disabledYn: '',
+    lockedYn: '',
+  });
+  const [ changePasswordReq, setChangePasswordReq ] = useState<ChangePasswordReq>({
     id: Array.isArray(query.id) ? query.id[0] : query.id || '',
   });
   const [ invalid, setInvalid ] = useState(false);
@@ -35,10 +41,10 @@ const Page = () => {
   const init = async () => {
     setDISABLED_YN(await CommonCodeService.getFormSelectItem('DISABLED_YN'));
     setLOCKED_YN(await CommonCodeService.getFormSelectItem('LOCKED_YN'));
-  }
+  };
 
   const handleParams = (name: string, _value: any) => {
-    setManager({ ...manager, [name]: _value });
+    setManagerRes({ ...managerRes, [name]: _value });
   };
   
   const handleList = () => {
@@ -49,7 +55,7 @@ const Page = () => {
   };
   
   const handleSave = () => {
-    UserMngService.putManager(manager)
+    UserMngService.putManager(modifyManagerReq)
       .then((response) => {
         router.push({
           pathname: `${router.query.id}`,
@@ -59,18 +65,18 @@ const Page = () => {
   };
   
   const handleDelete = () => {
-    UserMngService.deleteManager(manager.id)
+    UserMngService.deleteManager(managerRes.id)
       .then((response) => {
         handleList();
       });
   };
   
   const handleChangePassword = () => {
-    if (changePassword.newLoginPwd !== changePassword.confirmLoginPwd) {
+    if (changePasswordReq.newLoginPwd !== changePasswordReq.confirmLoginPwd) {
       setChangePasswordModalMessage('변경할 패스워드가 일치하지 않습니다.');
       return;
     }
-    UserMngService.putManagerPassword(changePassword)
+    UserMngService.putManagerPassword(changePasswordReq)
       .then((response) => {
         setChangePasswordModal(false);
       });
@@ -79,7 +85,7 @@ const Page = () => {
   
   useEffect(() => {
     init();
-
+    
     if (!router.isReady) return;
     const id = router.query.id;
     if (!id) {
@@ -87,8 +93,21 @@ const Page = () => {
       return;
     }
     UserMngService.getManager(id)
-      .then((response) => setManager(response.data));
+      .then((response) => setManagerRes(response.data));
   }, [router.isReady]);
+  
+  useEffect(() => {
+    if (managerRes) {
+      const map = Object.keys(managerRes).reduce((acc, key) => {
+        let value = managerRes[key];
+        if (key in modifyManagerReq) {
+          acc[key] = value;
+        }
+        return acc;
+      }, {} as ModifyManagerReq);
+      setModifyManagerReq(map);
+    }
+  }, [managerRes]);
   
   return (
     <div className="contents">
@@ -108,51 +127,49 @@ const Page = () => {
       </StylButtonGroup>
       <StylFieldWrap>
         <StylFormField title="id">
-          <StylText>{manager?.id}</StylText>
+          <StylText>{managerRes?.id}</StylText>
         </StylFormField>
         <StylFormField title="login id" required>
-          <input type="text"
-            className={`el_input el_input_lg`}
-            value={manager?.loginId ?? ''}
-            onChange={(e) => handleParams('loginId', e.target.value)} />
-          {invalid && !manager?.loginId && (
-            <span style={{ color: '#FF8080', fontSize: '15px' }}>not allow empty string</span>)}
+          <StylText>{managerRes?.loginId}</StylText>
         </StylFormField>
         <StylFormField title="name">
+          <StylText>{managerRes?.mgrName}</StylText>
+        </StylFormField>
+        <StylFormField title="roles">
           <input type="text"
             className={`el_input el_input_lg`}
-            value={manager?.mgrName ?? ''}
-            onChange={(e) => handleParams('mgrName', e.target.value)} />
+            value={modifyManagerReq?.roles ?? ''}
+            onChange={(e) => handleParams('roles', e.target.value)} />
         </StylFormField>
         <StylFormField title="disabled">
           <StylFormSelect type="type1" items={DISABLED_YN}
-            value={manager?.disabledYn}
+            value={modifyManagerReq?.disabledYn}
             size="medium"
             onChange={(e) => handleParams('disabledYn', e.target.value)} />
         </StylFormField>
         <StylFormField title="locked">
           <StylFormSelect type="type1" items={LOCKED_YN}
-            value={manager?.lockedYn}
+            value={modifyManagerReq?.lockedYn}
             size="medium"
             onChange={(e) => handleParams('lockedYn', e.target.value)} />
         </StylFormField>
         <StylFormField title="modify id">
-          <StylText>{manager?.modifyId}</StylText>
+          <StylText>{managerRes?.modifyId}</StylText>
         </StylFormField>
         <StylFormField title="modify name">
-          <StylText>{manager?.modifyName}</StylText>
+          <StylText>{managerRes?.modifyName}</StylText>
         </StylFormField>
         <StylFormField title="modify time">
-          <StylText>{manager?.modifyTime}</StylText>
+          <StylText>{managerRes?.modifyTime}</StylText>
         </StylFormField>
         <StylFormField title="create id">
-          <StylText>{manager?.createId}</StylText>
+          <StylText>{managerRes?.createId}</StylText>
         </StylFormField>
         <StylFormField title="create name">
-          <StylText>{manager?.createName}</StylText>
+          <StylText>{managerRes?.createName}</StylText>
         </StylFormField>
         <StylFormField title="create time">
-          <StylText>{manager?.createTime}</StylText>
+          <StylText>{managerRes?.createTime}</StylText>
         </StylFormField>
       </StylFieldWrap>
       <StylModal openState={saveModalState}
@@ -165,7 +182,7 @@ const Page = () => {
       </StylModal>
       <StylModal openState={deleteModalState}
         handleOkClick={() => {
-          if (confirmDeleteId !== manager.mgrName) {
+          if (confirmDeleteId !== managerRes.mgrName) {
             return false;
           }
           setDeleteModalState(false);
@@ -173,13 +190,13 @@ const Page = () => {
         }}
         handleCloseClick={() => setDeleteModalState(false)}>
         <main>
-          <StylText>{'삭제 대상 \'' + manager?.mgrName + '\' 를 입력해주세요.'}</StylText>
+          <StylText>{'삭제 대상 \'' + managerRes?.mgrName + '\' 를 입력해주세요.'}</StylText>
           <div style={{ display: 'flex' }}>
             <div>
               <input type="text"
                 className={`el_input_lg`}
                 style={{ height: '40px', textAlign: 'center' }}
-                placeholder={manager?.mgrName + ''}
+                placeholder={managerRes?.mgrName + ''}
                 onChange={(e) => setConfirmDeleteId(e.target.value)} />
             </div>
           </div>
@@ -199,20 +216,20 @@ const Page = () => {
           <StylFormField title="current password">
             <input type="text"
               className={`el_input el_input_lg`}
-              value={changePassword?.currentLoginPwd ?? ''}
-              onChange={(e) => setChangePassword({...changePassword, 'currentLoginPwd': e.target.value})} />
+              value={changePasswordReq?.currentLoginPwd ?? ''}
+              onChange={(e) => setChangePasswordReq({...changePasswordReq, 'currentLoginPwd': e.target.value})} />
           </StylFormField>
           <StylFormField title="new password">
             <input type="text"
               className={`el_input el_input_lg`}
-              value={changePassword?.newLoginPwd ?? ''}
-              onChange={(e) => setChangePassword({...changePassword, 'newLoginPwd': e.target.value})} />
+              value={changePasswordReq?.newLoginPwd ?? ''}
+              onChange={(e) => setChangePasswordReq({...changePasswordReq, 'newLoginPwd': e.target.value})} />
           </StylFormField>
           <StylFormField title="confirm password">
             <input type="text"
               className={`el_input el_input_lg`}
-              value={changePassword?.confirmLoginPwd ?? ''}
-              onChange={(e) => setChangePassword({...changePassword, 'confirmLoginPwd': e.target.value})} />
+              value={changePasswordReq?.confirmLoginPwd ?? ''}
+              onChange={(e) => setChangePasswordReq({...changePasswordReq, 'confirmLoginPwd': e.target.value})} />
           </StylFormField>
         </main>
       </StylModal>

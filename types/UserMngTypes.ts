@@ -1,33 +1,26 @@
-export interface Manager {
-  id?: string;
+export interface SearchManagerReq {
   loginId?: string;
   mgrName?: string;
-  role?: string;
-  disabledYn?: string;
-  lockedYn?: string;
-  createId: string;
-  createTime: string;
-  createName: string;
-  modifyId: string;
-  modifyTime: string;
-  modifyName: string;
-}
-
-export interface ReqManager {
-  loginId?: string;
-  mgrName?: string;
-  role?: string;
+  roles?: string;
   disabledYn?: string;
   lockedYn?: string;
   page?: number;
   size?: number;
 }
 
-export interface ResManager {
+
+export interface ModifyManagerReq {
+  id?: string;
+  roles?: string;
+  disabledYn?: string;
+  lockedYn?: string;
+}
+
+export interface ManagerRes {
   id?: string;
   loginId?: string;
   mgrName?: string;
-  role?: string;
+  roles?: string;
   disabledYn?: string;
   lockedYn?: string;
   pwdExpDate?: string;
@@ -39,20 +32,20 @@ export interface ResManager {
   modifyName: string;
 }
 
-export interface ChangePassword {
+export interface ChangePasswordReq {
   id?: string;
   currentLoginPwd?: string;
   newLoginPwd?: string;
   confirmLoginPwd?: string;
 }
 
-export interface SendRegistration {
+export interface SendRegistrationReq {
   toEmail?: string;
   toName?: string;
-  grantRole?: string;
+  grantRoles?: string;
 }
 
-export interface Registration {
+export interface RegistrationReq {
   registerCode?: string;
   newLoginPwd?: string;
   confirmLoginPwd?: string;

@@ -8,13 +8,13 @@ import { StyTable, StyTdRow, StyThRow, Td, Th } from '@/styles/TableStyled';
 
 import {
   PageSizeOptions,
-  ResPageInfo,
+  PageInfoRes,
 } from '@/types/CommonType';
 
 import {
-  ReqManager,
-  ResManager,
-  SendRegistration,
+  SearchManagerReq,
+  ManagerRes,
+  SendRegistrationReq,
 } from '@/types/UserMngTypes';
 
 import UserMngService from '@/services/UserMngService';
@@ -31,42 +31,38 @@ const Page = () => {
   const { query } = router;
   const [ LOCKED_YN, setLOCKED_YN ] = useState<SelectItem[]>();
   const [ DISABLED_YN, setDISABLED_YN ] = useState<SelectItem[]>();
-  const reqManagersDef: ReqManager = {
+  const searchManagerReqDef: SearchManagerReq = {
     loginId: '',
     mgrName: '',
-    role: '',
+    roles: '',
     disabledYn: '',
     lockedYn: '',
     page: 1,
     size: PageSizeOptions[0],
   };
-  const [ searchParams, setSearchParams ] = useState<ReqManager>({
+  const [ searchParams, setSearchParams ] = useState<SearchManagerReq>({
     loginId: Array.isArray(query.loginId) ? query.loginId[0] : query.loginId || '',
     mgrName: Array.isArray(query.mgrName) ? query.mgrName[0] : query.mgrName || '',
-    role: Array.isArray(query.role) ? query.role[0] : query.role || '',
+    roles: Array.isArray(query.role) ? query.role[0] : query.role || '',
     disabledYn: Array.isArray(query.disabledYn) ? query.disabledYn[0] : query.disabledYn || '',
     lockedYn: Array.isArray(query.lockedYn) ? query.lockedYn[0] : query.lockedYn || '',
     page: Array.isArray(query.page) ? Number(query.page[0]) : Number(query.page) || 1,
     size: Array.isArray(query.size) ? Number(query.size[0]) : Number(query.size) || PageSizeOptions[0],
   });
-  const [ resPageInfo, setResPageInfo ] = useState<ResPageInfo>();
-  const [ resManagers, setResManagers ] = useState<ResManager[]>([]);
+  const [ pageInfoRes, setPageInfoRes ] = useState<PageInfoRes>();
+  const [ managerRes, setManagerRes ] = useState<ManagerRes[]>([]);
   const [ registerModal, setRegisterModal ] = useState<boolean>(false);
   const [ registerModalMessage, setRegisterModalMessage ] = useState<string>('');
-  const [ sendRegistration, setSendRegistration ] = useState<SendRegistration>({
+  const [ sendRegistrationReq, setSendRegistrationReq ] = useState<SendRegistrationReq>({
     toEmail: 'hi@mgkim.net',
     toName: '홍길동',
-    grantRole: 'MANAGER,ADMIN',
+    grantRoles: 'MANAGER',
   });
 
   const init = async () => {
     setLOCKED_YN(await CommonCodeService.getFormSelectItem('LOCKED_YN'));
     setDISABLED_YN(await CommonCodeService.getFormSelectItem('DISABLED_YN'));
   }
-
-  const handleClear = () => {
-    setSearchParams(reqManagersDef);
-  };
 
   const handleRouteAndSearch = (name: string = null, _value: any = null) => {
     let param = null;
@@ -84,9 +80,9 @@ const Page = () => {
   };
 
   const handleRegistration = () => {
-    UserMngService.postRegistrationSend(sendRegistration)
+    UserMngService.postRegistrationSend(sendRegistrationReq)
       .then((response) => {
-        setSendRegistration({});
+        setSendRegistrationReq({});
         setRegisterModal(false);
       });
   };
@@ -104,19 +100,19 @@ const Page = () => {
         }
       }
       return acc;
-    }, {} as ReqManager);
+    }, {} as SearchManagerReq);
 
     let params = null;
     if (Object.keys(parsedParams).length > 0) {
       params = {...searchParams, ...parsedParams};
     } else {
-      params = reqManagersDef;
+      params = searchManagerReqDef;
     }
     setSearchParams(params);
     UserMngService.getManagersSearch(params)
       .then((response) => {
-        setResPageInfo(response.data.pageInfo);
-        setResManagers(response.data.pageData);
+        setPageInfoRes(response.data.pageInfo);
+        setManagerRes(response.data.pageData);
       });
   }, [query]);
   
@@ -199,12 +195,12 @@ const Page = () => {
           </StyThRow>
         </thead>
         <tbody>
-          {resManagers.length > 0 ? (
-            resManagers.map((item, index) => {
+          {managerRes.length > 0 ? (
+            managerRes.map((item, index) => {
               return (
                 <StyTdRow key={index}>
                   <Td textAlign="right">
-                    {resPageInfo.total - (resPageInfo.size * (resPageInfo.page -1)) - index}
+                    {pageInfoRes.total - (pageInfoRes.size * (pageInfoRes.page -1)) - index}
                   </Td>
                   <Td textAlign="center">
                     <StylLink onClick={() => 
@@ -253,7 +249,7 @@ const Page = () => {
         </tbody>
       </StyTable>
       <StylPagination
-        total={resPageInfo?.total ?? 0}
+        total={pageInfoRes?.total ?? 0}
         page={searchParams.page ??  1}
         size={searchParams?.size ?? PageSizeOptions[0]}
         onClick={(value: number) => handleRouteAndSearch('page', value)}
@@ -267,7 +263,7 @@ const Page = () => {
         }}
         maxWidth="600px"
         handleCloseClick={() => {
-          setSendRegistration({});
+          setSendRegistrationReq({});
           setRegisterModalMessage('');
           setRegisterModal(false);
         }}>
@@ -278,20 +274,20 @@ const Page = () => {
           <StylFormField title="email">
             <input type="text"
               className={`el_input el_input_lg`}
-              value={sendRegistration?.toEmail ?? ''}
-              onChange={(e) => setSendRegistration({...sendRegistration, 'toEmail': e.target.value})} />
+              value={sendRegistrationReq?.toEmail ?? ''}
+              onChange={(e) => setSendRegistrationReq({...sendRegistrationReq, 'toEmail': e.target.value})} />
           </StylFormField>
           <StylFormField title="name">
             <input type="text"
               className={`el_input el_input_lg`}
-              value={sendRegistration?.toName ?? ''}
-              onChange={(e) => setSendRegistration({...sendRegistration, 'toName': e.target.value})} />
+              value={sendRegistrationReq?.toName ?? ''}
+              onChange={(e) => setSendRegistrationReq({...sendRegistrationReq, 'toName': e.target.value})} />
           </StylFormField>
           <StylFormField title="grant role">
             <input type="text"
               className={`el_input el_input_lg`}
-              value={sendRegistration?.grantRole ?? ''}
-              onChange={(e) => setSendRegistration({...sendRegistration, 'grantRole': e.target.value})} />
+              value={sendRegistrationReq?.grantRoles ?? ''}
+              onChange={(e) => setSendRegistrationReq({...sendRegistrationReq, 'grantRoles': e.target.value})} />
           </StylFormField>
         </main>
       </StylModal>

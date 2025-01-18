@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 import {
-  Registration,
+  RegistrationReq,
 } from '@/types/UserMngTypes';
 
 import UserMngService from '@/services/UserMngService';
@@ -20,7 +20,7 @@ import storeAlert, { actAlertShow } from "@/components/redux-store/store-alert";
 const Page = () => {
   const router = useRouter();
   const { query } = router;
-  const [ registration, setRegistration ] = useState<Registration>();
+  const [ registration, setRegistration ] = useState<RegistrationReq>();
   const [ invalid, setInvalid ] = useState(false);
   const [ resultModalState, setResultModalState ] = useState(false);
   const [ changePasswordModalMessage, setChangePasswordModalMessage ] = useState('');
