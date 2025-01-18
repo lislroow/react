@@ -1,13 +1,13 @@
 import { http } from '@/components/http';
 import {
+  ManagerSearchReq,
   ManagerModifyReq,
-  ManagerSearchRes,
   ChangePasswordReq,
   RegistrationReq,
   SendRegistrationReq,
 } from '@/types/UserMngTypes';
 
-const getManagersSearch = (data: ManagerSearchRes) => {
+const getManagersSearch = (data: ManagerSearchReq) => {
   return http.get('/auth-api/v1/user-mng/managers/search', {params: data});
 }
 

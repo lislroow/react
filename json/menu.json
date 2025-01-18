@@ -10,6 +10,11 @@
       "pathname":"/user/manager-mng"
    },
    {
+      "itemId":"/token-mng",
+      "title":"[token] token-mng",
+      "pathname":"/token-mng"
+   },
+   {
       "itemId":"/mybatis-sample/scientist",
       "title":"[sample] scientist",
       "pathname":"/mybatis-sample/scientist"
