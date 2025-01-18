@@ -1,13 +1,13 @@
 import { http } from '@/components/http';
 import {
-  ModifyManagerReq,
-  ManagerRes,
+  ManagerModifyReq,
+  ManagerSearchRes,
   ChangePasswordReq,
   RegistrationReq,
   SendRegistrationReq,
 } from '@/types/UserMngTypes';
 
-const getManagersSearch = (data: ManagerRes) => {
+const getManagersSearch = (data: ManagerSearchRes) => {
   return http.get('/auth-api/v1/user-mng/managers/search', {params: data});
 }
 
@@ -27,7 +27,7 @@ const deleteManager = (id: any) => {
   return http.delete(`/auth-api/v1/user-mng/manager/${id}`);
 }
 
-const putManager = (data: ModifyManagerReq) => {
+const putManager = (data: ManagerModifyReq) => {
   return http.put('/auth-api/v1/user-mng/manager', data);
 }
 

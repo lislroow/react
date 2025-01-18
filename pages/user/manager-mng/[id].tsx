@@ -10,8 +10,8 @@ import StylFormSelect, { SelectItem } from "@/styles/FormSelectStyled";
 import StylButtonGroup from "@/styles/ButtonGroupStyled";
 
 import {
-  ModifyManagerReq,
-  ManagerRes,
+  ManagerModifyReq,
+  ManagerSearchRes,
   ChangePasswordReq,
 } from '@/types/UserMngTypes';
 import CommonCodeService from "@/services/CommonCodeService";
@@ -19,13 +19,12 @@ import UserMngService from '@/services/UserMngService';
 
 const Page = () => {
   const router = useRouter();
-  const { query } = router;
 
   const [ DISABLED_YN, setDISABLED_YN ] = useState<SelectItem[]>();
   const [ LOCKED_YN, setLOCKED_YN ] = useState<SelectItem[]>();
   
-  const [ managerRes, setManagerRes ] = useState<ManagerRes>();
-  const [ modifyManagerReq, setModifyManagerReq ] = useState<ModifyManagerReq>({
+  const [ managerSearchRes, setManagerSearchRes ] = useState<ManagerSearchRes>();
+  const [ managerModifyReq, setManagerModifyReq ] = useState<ManagerModifyReq>({
     id: null,
     roles: null,
     disabledYn: null,
@@ -34,7 +33,6 @@ const Page = () => {
   const [ changePasswordReq, setChangePasswordReq ] = useState<ChangePasswordReq>({
     id: null
   });
-  const [ invalid, setInvalid ] = useState(false);
   const [ saveModalState, setSaveModalState ] = useState(false);
   const [ deleteModalState, setDeleteModalState ] = useState(false);
   const [ confirmDeleteId, setConfirmDeleteId ] = useState<string>();
@@ -47,7 +45,7 @@ const Page = () => {
   };
 
   const handleParams = (name: string, _value: any) => {
-    setManagerRes({ ...managerRes, [name]: _value });
+    setManagerSearchRes({ ...managerSearchRes, [name]: _value });
   };
   
   const handleList = () => {
@@ -58,7 +56,7 @@ const Page = () => {
   };
   
   const handleSave = () => {
-    UserMngService.putManager(modifyManagerReq)
+    UserMngService.putManager(managerModifyReq)
       .then((response) => {
         router.push({
           pathname: `${router.query.id}`,
@@ -68,7 +66,7 @@ const Page = () => {
   };
   
   const handleDelete = () => {
-    UserMngService.deleteManager(managerRes.id)
+    UserMngService.deleteManager(managerSearchRes.id)
       .then((response) => {
         handleList();
       });
@@ -101,31 +99,31 @@ const Page = () => {
           storeAlert.dispatch(actAlertShow(response.data.title, response.data.detail));
           return;
         }
-        setManagerRes(response.data);
+        setManagerSearchRes(response.data);
       });
   }, [router.isReady]);
   
   useEffect(() => {
-    if (managerRes) {
+    if (managerSearchRes) {
       // managerRes > modifyManagerReq
-      setModifyManagerReq(Object.keys(managerRes).reduce((acc, key) => {
-        let value = managerRes[key];
-        if (key in modifyManagerReq) {
+      setManagerModifyReq(Object.keys(managerSearchRes).reduce((acc, key) => {
+        let value = managerSearchRes[key];
+        if (key in managerModifyReq) {
           acc[key] = value;
         }
         return acc;
-      }, {} as ModifyManagerReq));
+      }, {} as ManagerModifyReq));
       
       // managerRes > changePasswordReq
-      setChangePasswordReq(Object.keys(managerRes).reduce((acc, key) => {
-        let value = managerRes[key];
+      setChangePasswordReq(Object.keys(managerSearchRes).reduce((acc, key) => {
+        let value = managerSearchRes[key];
         if (key in changePasswordReq) {
           acc[key] = value;
         }
         return acc;
       }, {} as ChangePasswordReq));
     }
-  }, [managerRes]);
+  }, [managerSearchRes]);
   
   
   return (
@@ -146,49 +144,49 @@ const Page = () => {
       </StylButtonGroup>
       <StylFieldWrap>
         <StylFormField title="id">
-          <StylText>{managerRes?.id}</StylText>
+          <StylText>{managerSearchRes?.id}</StylText>
         </StylFormField>
         <StylFormField title="login id" required>
-          <StylText>{managerRes?.loginId}</StylText>
+          <StylText>{managerSearchRes?.loginId}</StylText>
         </StylFormField>
         <StylFormField title="name">
-          <StylText>{managerRes?.mgrName}</StylText>
+          <StylText>{managerSearchRes?.mgrName}</StylText>
         </StylFormField>
         <StylFormField title="roles">
           <input type="text"
             className={`el_input el_input_lg`}
-            value={modifyManagerReq?.roles ?? ''}
+            value={managerModifyReq?.roles ?? ''}
             onChange={(e) => handleParams('roles', e.target.value)} />
         </StylFormField>
         <StylFormField title="disabled">
           <StylFormSelect type="type1" items={DISABLED_YN}
-            value={modifyManagerReq?.disabledYn}
+            value={managerModifyReq?.disabledYn}
             size="medium"
             onChange={(e) => handleParams('disabledYn', e.target.value)} />
         </StylFormField>
         <StylFormField title="locked">
           <StylFormSelect type="type1" items={LOCKED_YN}
-            value={modifyManagerReq?.lockedYn}
+            value={managerModifyReq?.lockedYn}
             size="medium"
             onChange={(e) => handleParams('lockedYn', e.target.value)} />
         </StylFormField>
         <StylFormField title="modify id">
-          <StylText>{managerRes?.modifyId}</StylText>
+          <StylText>{managerSearchRes?.modifyId}</StylText>
         </StylFormField>
         <StylFormField title="modify name">
-          <StylText>{managerRes?.modifyName}</StylText>
+          <StylText>{managerSearchRes?.modifyName}</StylText>
         </StylFormField>
         <StylFormField title="modify time">
-          <StylText>{managerRes?.modifyTime}</StylText>
+          <StylText>{managerSearchRes?.modifyTime}</StylText>
         </StylFormField>
         <StylFormField title="create id">
-          <StylText>{managerRes?.createId}</StylText>
+          <StylText>{managerSearchRes?.createId}</StylText>
         </StylFormField>
         <StylFormField title="create name">
-          <StylText>{managerRes?.createName}</StylText>
+          <StylText>{managerSearchRes?.createName}</StylText>
         </StylFormField>
         <StylFormField title="create time">
-          <StylText>{managerRes?.createTime}</StylText>
+          <StylText>{managerSearchRes?.createTime}</StylText>
         </StylFormField>
       </StylFieldWrap>
       <StylModal openState={saveModalState}
@@ -201,7 +199,7 @@ const Page = () => {
       </StylModal>
       <StylModal openState={deleteModalState}
         handleOkClick={() => {
-          if (confirmDeleteId !== managerRes.mgrName) {
+          if (confirmDeleteId !== managerSearchRes.mgrName) {
             return false;
           }
           setDeleteModalState(false);
@@ -209,13 +207,13 @@ const Page = () => {
         }}
         handleCloseClick={() => setDeleteModalState(false)}>
         <main>
-          <StylText>{'삭제 대상 \'' + managerRes?.mgrName + '\' 를 입력해주세요.'}</StylText>
+          <StylText>{'삭제 대상 \'' + managerSearchRes?.mgrName + '\' 를 입력해주세요.'}</StylText>
           <div style={{ display: 'flex' }}>
             <div>
               <input type="text"
                 className={`el_input_lg`}
                 style={{ height: '40px', textAlign: 'center' }}
-                placeholder={managerRes?.mgrName + ''}
+                placeholder={managerSearchRes?.mgrName + ''}
                 onChange={(e) => setConfirmDeleteId(e.target.value)} />
             </div>
           </div>

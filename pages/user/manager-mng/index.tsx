@@ -12,8 +12,8 @@ import {
 } from '@/types/CommonType';
 
 import {
-  SearchManagerReq,
-  ManagerRes,
+  ManagerSearchReq,
+  ManagerSearchRes,
   SendRegistrationReq,
 } from '@/types/UserMngTypes';
 
@@ -31,7 +31,7 @@ const Page = () => {
   const { query } = router;
   const [ LOCKED_YN, setLOCKED_YN ] = useState<SelectItem[]>();
   const [ DISABLED_YN, setDISABLED_YN ] = useState<SelectItem[]>();
-  const searchManagerReqDef: SearchManagerReq = {
+  const managerSearchReqDef: ManagerSearchReq = {
     loginId: '',
     mgrName: '',
     roles: '',
@@ -40,17 +40,9 @@ const Page = () => {
     page: 1,
     size: PageSizeOptions[0],
   };
-  const [ searchParams, setSearchParams ] = useState<SearchManagerReq>({
-    loginId: Array.isArray(query.loginId) ? query.loginId[0] : query.loginId || '',
-    mgrName: Array.isArray(query.mgrName) ? query.mgrName[0] : query.mgrName || '',
-    roles: Array.isArray(query.role) ? query.role[0] : query.role || '',
-    disabledYn: Array.isArray(query.disabledYn) ? query.disabledYn[0] : query.disabledYn || '',
-    lockedYn: Array.isArray(query.lockedYn) ? query.lockedYn[0] : query.lockedYn || '',
-    page: Array.isArray(query.page) ? Number(query.page[0]) : Number(query.page) || 1,
-    size: Array.isArray(query.size) ? Number(query.size[0]) : Number(query.size) || PageSizeOptions[0],
-  });
+  const [ searchParams, setSearchParams ] = useState<ManagerSearchReq>(managerSearchReqDef);
   const [ pageInfoRes, setPageInfoRes ] = useState<PageInfoRes>();
-  const [ managerRes, setManagerRes ] = useState<ManagerRes[]>([]);
+  const [ managerSearchResList, setManagerSearchResList ] = useState<ManagerSearchRes[]>([]);
   const [ registerModal, setRegisterModal ] = useState<boolean>(false);
   const [ registerModalMessage, setRegisterModalMessage ] = useState<string>('');
   const [ sendRegistrationReq, setSendRegistrationReq ] = useState<SendRegistrationReq>({
@@ -100,19 +92,20 @@ const Page = () => {
         }
       }
       return acc;
-    }, {} as SearchManagerReq);
+    }, {} as ManagerSearchReq);
 
     let params = null;
     if (Object.keys(parsedParams).length > 0) {
       params = {...searchParams, ...parsedParams};
     } else {
-      params = searchManagerReqDef;
+      params = managerSearchReqDef;
     }
     setSearchParams(params);
+    
     UserMngService.getManagersSearch(params)
       .then((response) => {
         setPageInfoRes(response.data.pageInfo);
-        setManagerRes(response.data.pageData);
+        setManagerSearchResList(response.data.pageData);
       });
   }, [query]);
   
@@ -195,8 +188,8 @@ const Page = () => {
           </StyThRow>
         </thead>
         <tbody>
-          {managerRes.length > 0 ? (
-            managerRes.map((item, index) => {
+          {managerSearchResList.length > 0 ? (
+            managerSearchResList.map((item, index) => {
               return (
                 <StyTdRow key={index}>
                   <Td textAlign="right">

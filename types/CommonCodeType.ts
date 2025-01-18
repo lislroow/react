@@ -1,14 +1,9 @@
-export interface ReqCodeGroups {
+export interface CodeGroupSearchReq {
   cdGrp?: string;
+  page?: number;
+  size?: number;
 }
-
-export interface ResCodeGroups {
-  cdGrp?: string;
-  cdGrpNm?: string;
-  useYn?: string;
-}
-
-export interface ReqCodes {
+export interface CodeSearchReq {
   cdGrp?: string;
   cdGrpNm?: string;
   cd?: string;
@@ -18,16 +13,13 @@ export interface ReqCodes {
   size?: number;
 }
 
-export interface ResCodes {
+export interface CodeGroupSearchRes {
   cdGrp?: string;
   cdGrpNm?: string;
-  cd?: string;
-  seq?: number;
-  cdNm?: string;
   useYn?: string;
 }
 
-export interface Code {
+export interface CodeSearchRes {
   cdGrp?: string;
   cdGrpNm?: string;
   cd?: string;

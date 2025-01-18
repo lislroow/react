@@ -1,11 +1,11 @@
-export interface SearchScientistReq {
+export interface ScientistSearchReq {
   name?: string;
   fosCd?: string;
   page?: number;
   size?: number;
 }
 
-export interface ScientistRes {
+export interface ScientistSearchRes {
   id: number;
   name: string;
   fosNm: string;
@@ -19,7 +19,7 @@ export interface ScientistRes {
   modifyName: string;
 }
 
-export interface ModifyScientistReq {
+export interface ScientistModifyReq {
   id: number;
   name: string;
   birthYear: number;
@@ -27,7 +27,7 @@ export interface ModifyScientistReq {
   fosCd: string;
 }
 
-export interface AddScientistReq {
+export interface ScientistAddReq {
   name: string;
   birthYear: number;
   deathYear: number;

@@ -10,8 +10,8 @@ import StylFormSelect, { SelectItem } from "@/styles/FormSelectStyled";
 import StylButtonGroup from "@/styles/ButtonGroupStyled";
 
 import {
-  ScientistRes,
-  ModifyScientistReq,
+  ScientistSearchRes,
+  ScientistModifyReq,
 } from '@/types/MybatisSampleType';
 import CommonCodeService from "@/services/CommonCodeService";
 import SampleService from '@/services/MybatisSampleService';
@@ -22,8 +22,8 @@ const Page = () => {
   
   const [ FOS, setFOS ] = useState<SelectItem[]>();
 
-  const [ scientistRes, setScientistRes ] = useState<ScientistRes>();
-  const [ modifyScientistReq, setModifyScientistReq ] = useState<ModifyScientistReq>({
+  const [ scientistSearchRes, setScientistSearchRes ] = useState<ScientistSearchRes>();
+  const [ scientistModifyReq, setScientistModifyReq ] = useState<ScientistModifyReq>({
     id: null,
     name: null,
     birthYear: null,
@@ -40,7 +40,7 @@ const Page = () => {
   }
 
   const handleParams = (name: string, _value: any) => {
-    setScientistRes({ ...scientistRes, [name]: _value });
+    setScientistSearchRes({ ...scientistSearchRes, [name]: _value });
   };
   
   const handleList = () => {
@@ -51,7 +51,7 @@ const Page = () => {
   };
   
   const handleSave = () => {
-    SampleService.putScientist(modifyScientistReq)
+    SampleService.putScientist(scientistModifyReq)
       .then((response) => {
         router.push({
           pathname: `${router.query.id}`,
@@ -61,7 +61,7 @@ const Page = () => {
   };
   
   const handleDelete = () => {
-    SampleService.deleteScientist(scientistRes.id)
+    SampleService.deleteScientist(scientistSearchRes.id)
       .then((response) => {
         handleList();
       });
@@ -82,22 +82,22 @@ const Page = () => {
           storeAlert.dispatch(actAlertShow(response.data.title, response.data.detail));
           return;
         }
-        setScientistRes(response.data);
+        setScientistSearchRes(response.data);
       });
   }, [router.isReady]);
 
   useEffect(() => {
-    if (scientistRes) {
+    if (scientistSearchRes) {
       // scientistRes > modifyScientistReq
-      setModifyScientistReq(Object.keys(scientistRes).reduce((acc, key) => {
-        let value = scientistRes[key];
-        if (key in modifyScientistReq) {
+      setScientistModifyReq(Object.keys(scientistSearchRes).reduce((acc, key) => {
+        let value = scientistSearchRes[key];
+        if (key in scientistModifyReq) {
           acc[key] = value;
         }
         return acc;
-      }, {} as ModifyScientistReq));
+      }, {} as ScientistModifyReq));
     }
-  }, [scientistRes]);
+  }, [scientistSearchRes]);
   
   
   return (
@@ -113,57 +113,57 @@ const Page = () => {
       </StylButtonGroup>
       <StylFieldWrap>
         <StylFormField title="id">
-          <StylText>{scientistRes?.id}</StylText>
+          <StylText>{scientistSearchRes?.id}</StylText>
         </StylFormField>
         <StylFormField title="name" required>
           <input type="text"
             className={`el_input el_input_lg`}
             placeholder="input name"
-            value={scientistRes?.name ?? ''}
+            value={scientistSearchRes?.name ?? ''}
             tabIndex={1003}
             onChange={(e) => handleParams('name', e.target.value)} />
-          {invalid && !scientistRes?.name && (
+          {invalid && !scientistSearchRes?.name && (
             <span style={{ color: '#FF8080', fontSize: '15px' }}>not allow empty string</span>)}
         </StylFormField>
         <StylFormField title="year of birth" required>
           <input type="text"
             className={`el_input el_input_lg`}
-            value={modifyScientistReq?.birthYear ?? ''}
+            value={scientistModifyReq?.birthYear ?? ''}
             tabIndex={1001}
             onChange={(e) => handleParams('birthYear', e.target.value)} />
-          {invalid && !modifyScientistReq?.birthYear && (
+          {invalid && !scientistModifyReq?.birthYear && (
             <span style={{ color: '#FF8080', fontSize: '15px' }}>not allow empty string</span>)}
         </StylFormField>
         <StylFormField title="year of death">
           <input type="text"
             className={`el_input el_input_lg`}
-            value={modifyScientistReq?.deathYear ?? ''}
+            value={scientistModifyReq?.deathYear ?? ''}
             tabIndex={1002}
             onChange={(e) => handleParams('deathYear', e.target.value)} />
         </StylFormField>
         <StylFormField title="field of study">
           <StylFormSelect type="type1" items={FOS}
-            value={modifyScientistReq?.fosCd}
+            value={scientistModifyReq?.fosCd}
             size="medium"
             onChange={(e) => handleParams('fosCd', e.target.value)} />
         </StylFormField>
         <StylFormField title="modify id">
-          <StylText>{scientistRes?.modifyId}</StylText>
+          <StylText>{scientistSearchRes?.modifyId}</StylText>
         </StylFormField>
         <StylFormField title="modify name">
-          <StylText>{scientistRes?.modifyName}</StylText>
+          <StylText>{scientistSearchRes?.modifyName}</StylText>
         </StylFormField>
         <StylFormField title="modify time">
-          <StylText>{scientistRes?.modifyTime}</StylText>
+          <StylText>{scientistSearchRes?.modifyTime}</StylText>
         </StylFormField>
         <StylFormField title="create id">
-          <StylText>{scientistRes?.createId}</StylText>
+          <StylText>{scientistSearchRes?.createId}</StylText>
         </StylFormField>
         <StylFormField title="create name">
-          <StylText>{scientistRes?.createName}</StylText>
+          <StylText>{scientistSearchRes?.createName}</StylText>
         </StylFormField>
         <StylFormField title="create time">
-          <StylText>{scientistRes?.createTime}</StylText>
+          <StylText>{scientistSearchRes?.createTime}</StylText>
         </StylFormField>
       </StylFieldWrap>
       <StylModal openState={saveModalState}
@@ -176,7 +176,7 @@ const Page = () => {
       </StylModal>
       <StylModal openState={deleteModalState}
         handleOkClick={() => {
-          if (confirmDeleteId !== scientistRes.id) {
+          if (confirmDeleteId !== scientistSearchRes.id) {
             return false;
           }
           setDeleteModalState(false);
@@ -184,13 +184,13 @@ const Page = () => {
         }}
         handleCloseClick={() => setDeleteModalState(false)}>
         <main>
-          <StylText>{'삭제 대상 id \'' + scientistRes?.id + '\' 를 입력해주세요.'}</StylText>
+          <StylText>{'삭제 대상 id \'' + scientistSearchRes?.id + '\' 를 입력해주세요.'}</StylText>
           <div style={{ display: 'flex' }}>
             <div>
               <input type="text"
                 className={`el_input_lg`}
                 style={{ height: '40px', textAlign: 'center' }}
-                placeholder={scientistRes?.id + ''}
+                placeholder={scientistSearchRes?.id + ''}
                 onChange={(e) => setConfirmDeleteId(Number(e.target.value))} />
             </div>
           </div>

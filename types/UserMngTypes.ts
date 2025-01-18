@@ -1,4 +1,4 @@
-export interface SearchManagerReq {
+export interface ManagerSearchReq {
   loginId?: string;
   mgrName?: string;
   roles?: string;
@@ -9,14 +9,14 @@ export interface SearchManagerReq {
 }
 
 
-export interface ModifyManagerReq {
+export interface ManagerModifyReq {
   id?: string;
   roles?: string;
   disabledYn?: string;
   lockedYn?: string;
 }
 
-export interface ManagerRes {
+export interface ManagerSearchRes {
   id?: string;
   loginId?: string;
   mgrName?: string;

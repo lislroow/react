@@ -1,19 +1,19 @@
 import { http } from '@/components/http';
 import {
-  ReqCodeGroups,
-  ReqCodes,
+  CodeGroupSearchReq,
+  CodeSearchReq,
 } from '@/types/CommonCodeType';
 
-const getCodeGroupssSearch = (data: ReqCodeGroups) => {
-  return http.get('/story-api/v1/common-code/mng/codes/search', {params: data});
+const getCodeGroupsSearch = (data: CodeGroupSearchReq) => {
+  return http.get('/story-api/v1/common-code/mng/code-groups/search', {params: data});
 }
 
-const getCodesSearch = (data: ReqCodes) => {
+const getCodesSearch = (data: CodeSearchReq) => {
   return http.get('/story-api/v1/common-code/mng/codes/search', {params: data});
 }
 
 const CommonCodeMngService = {
-  getCodeGroupssSearch,
+  getCodeGroupssSearch: getCodeGroupsSearch,
   getCodesSearch,
 };
 

@@ -12,8 +12,8 @@ import {
 } from '@/types/CommonType';
 
 import {
-  SearchScientistReq,
-  ScientistRes,
+  ScientistSearchReq,
+  ScientistSearchRes,
 } from '@/types/MybatisSampleType';
 
 import SampleService from '@/services/MybatisSampleService';
@@ -26,20 +26,15 @@ const Page = () => {
   const router = useRouter();
   const { query } = router;
   const [ FOS, setFOS ] = useState<SelectItem[]>();
-  const searchScientistReqDef: SearchScientistReq = {
-    name: '',
-    fosCd: '',
+  const searchScientistReqDef: ScientistSearchReq = {
+    name: null,
+    fosCd: null,
     page: 1,
     size: PageSizeOptions[0],
   };
-  const [ searchParams, setSearchParams ] = useState<SearchScientistReq>({
-    name: Array.isArray(query.name) ? query.name[0] : query.name || '',
-    fosCd: Array.isArray(query.fosCd) ? query.fosCd[0] : query.fosCd || '',
-    page: Array.isArray(query.page) ? Number(query.page[0]) : Number(query.page) || 1,
-    size: Array.isArray(query.size) ? Number(query.size[0]) : Number(query.size) || PageSizeOptions[0],
-  });
+  const [ searchParams, setSearchParams ] = useState<ScientistSearchReq>(searchScientistReqDef);
   const [ pageInfoRes, setPageInfoRes ] = useState<PageInfoRes>();
-  const [ scientistRes, setScientistRes ] = useState<ScientistRes[]>([]);
+  const [ scientistSearchResList, setScientistSearchResList ] = useState<ScientistSearchRes[]>([]);
 
   const init = async () => {
     setFOS(await CommonCodeService.getFormSelectItem('FOS'));
@@ -73,7 +68,7 @@ const Page = () => {
         }
       }
       return acc;
-    }, {} as SearchScientistReq);
+    }, {} as ScientistSearchReq);
 
     let params = null;
     if (Object.keys(parsedParams).length > 0) {
@@ -82,10 +77,11 @@ const Page = () => {
       params = searchScientistReqDef;
     }
     setSearchParams(params);
+    
     SampleService.getScientistsSearch(params)
       .then((response) => {
         setPageInfoRes(response.data.pageInfo);
-        setScientistRes(response.data.pageData);
+        setScientistSearchResList(response.data.pageData);
       });
   }, [query]);
   
@@ -143,8 +139,8 @@ const Page = () => {
           </StyThRow>
         </thead>
         <tbody>
-          {scientistRes.length > 0 ? (
-            scientistRes.map((item, index) => {
+          {scientistSearchResList.length > 0 ? (
+            scientistSearchResList.map((item, index) => {
               return (
                 <StyTdRow key={index}>
                   <Td textAlign="right">

@@ -1,41 +1,29 @@
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
+import { Box, Button, Container, TextField, Typography } from "@mui/material";
+
+import { StylText } from "@/styles/GeneralStyled";
+import StylModal from "@/styles/ModalStyled";
 
 import {
   RegistrationReq,
 } from '@/types/UserMngTypes';
-
 import UserMngService from '@/services/UserMngService';
-import { useRouter } from "next/router";
-import StylFormField, { StylFieldWrap } from "@/styles/FormFieldStyled";
-import { StylText } from "@/styles/GeneralStyled";
-import StylButtonGroup from "@/styles/ButtonGroupStyled";
-import queryString from "query-string";
-import StylModal from "@/styles/ModalStyled";
-import StylFormSelect, { SelectItem } from "@/styles/FormSelectStyled";
-import CommonCodeService from "@/services/CommonCodeService";
-import UserService from "@/services/UserService";
-import { Box, Button, Container, TextField, Typography } from "@mui/material";
-import storeAlert, { actAlertShow } from "@/components/redux-store/store-alert";
 
 const Page = () => {
   const router = useRouter();
-  const { query } = router;
-  const [ registration, setRegistration ] = useState<RegistrationReq>();
-  const [ invalid, setInvalid ] = useState(false);
+
+  const [ registrationReq, setRegistrationReq ] = useState<RegistrationReq>();
   const [ resultModalState, setResultModalState ] = useState(false);
   const [ changePasswordModalMessage, setChangePasswordModalMessage ] = useState('');
   
-  const handleParams = (name: string, _value: any) => {
-    setRegistration({ ...registration, [name]: _value });
-  };
-  
   const validate = ():boolean => {
-    if (registration.newLoginPwd !== registration.confirmLoginPwd) {
+    if (registrationReq.newLoginPwd !== registrationReq.confirmLoginPwd) {
+      setChangePasswordModalMessage('패스워드가 일치하지 않습니다.');
       return false;
     }
     return true;
   };
-
 
   const handleSubmit = () => {
     try {
@@ -47,18 +35,19 @@ const Page = () => {
 
     }
     
-    UserMngService.postRegistration(registration)
+    UserMngService.postRegistration(registrationReq)
       .then((response) => {
         setResultModalState(true);
       });
   };
   
   useEffect(() => {
-    setRegistration({
-      registerCode: Array.isArray(query.code) ? query.code[0] : query.code || '',
+    setRegistrationReq({
+      registerCode: Array.isArray(router.query.code) ? router.query.code[0] : router.query.code || '',
     });
     
   }, [router.isReady]);
+  
   
   return (
     <div className="contents">
@@ -68,13 +57,13 @@ const Page = () => {
           <TextField label="new password" 
             margin="normal"
             required fullWidth autoFocus
-            value={registration?.newLoginPwd ?? ''}
-            onChange={(e) => setRegistration({...registration, 'newLoginPwd': e.target.value})} />
+            value={registrationReq?.newLoginPwd ?? ''}
+            onChange={(e) => setRegistrationReq({...registrationReq, 'newLoginPwd': e.target.value})} />
           <TextField label="confirm password" 
             margin="normal"
             required fullWidth
-            value={registration?.confirmLoginPwd ?? ''}
-            onChange={(e) => setRegistration({...registration, 'confirmLoginPwd': e.target.value})} />
+            value={registrationReq?.confirmLoginPwd ?? ''}
+            onChange={(e) => setRegistrationReq({...registrationReq, 'confirmLoginPwd': e.target.value})} />
           <Button onClick={(e) => handleSubmit()} fullWidth variant="contained">
             register
           </Button>

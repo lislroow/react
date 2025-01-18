@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import queryString from 'query-string';
 
 import styles from '@/css/global.module.css';
@@ -11,22 +12,20 @@ import {
   PageSizeOptions,
   PageInfoRes,
 } from '@/types/CommonType';
-
 import {
-  ReqCodes,
-  ResCodes,
+  CodeSearchReq,
+  CodeSearchRes,
 } from '@/types/CommonCodeType';
-
 import CommonCodeMngService from '@/services/CommonCodeMngService';
 import CommonCodeService from '@/services/CommonCodeService';
-import { useRouter } from "next/router";
 import StylFormSelect from "@/styles/FormSelectStyled";
 
 const Page = () => {
   const router = useRouter();
-  const { query } = router;
+  
   const [ USE_YN, setUSE_YN ] = useState<SelectItem[]>();
-  const reqCodesDef: ReqCodes = {
+
+  const codeSearchReqDef: CodeSearchReq = {
     cdGrp: '',
     cdGrpNm: '',
     cd: '',
@@ -35,25 +34,13 @@ const Page = () => {
     page: 1,
     size: PageSizeOptions[0],
   };
-  const [ searchParams, setSearchParams ] = useState<ReqCodes>({
-    cdGrp: Array.isArray(query.cdGrp) ? query.cdGrp[0] : query.cdGrp || '',
-    cdGrpNm: Array.isArray(query.cdGrpNm) ? query.cdGrpNm[0] : query.cdGrpNm || '',
-    cd: Array.isArray(query.cd) ? query.cd[0] : query.cd || '',
-    cdNm: Array.isArray(query.cdNm) ? query.cdNm[0] : query.cdNm || '',
-    useYn: Array.isArray(query.useYn) ? query.useYn[0] : query.useYn || '',
-    page: Array.isArray(query.page) ? Number(query.page[0]) : Number(query.page) || 1,
-    size: Array.isArray(query.size) ? Number(query.size[0]) : Number(query.size) || PageSizeOptions[0],
-  });
-  const [ resPageInfo, setResPageInfo ] = useState<PageInfoRes>();
-  const [ resCodes, setResCodes ] = useState<ResCodes[]>([]);
+  const [ searchParams, setSearchParams ] = useState<CodeSearchReq>(codeSearchReqDef);
+  const [ pageInfoRes, setPageInfoRes ] = useState<PageInfoRes>();
+  const [ codeSearchResList, setCodeSearchResList ] = useState<CodeSearchRes[]>([]);
 
   const init = async () => {
     setUSE_YN(await CommonCodeService.getFormSelectItem('USE_YN'));
   }
-
-  const handleClear = () => {
-    setSearchParams(reqCodesDef);
-  };
 
   const handleRouteAndSearch = (name: string = null, _value: any = null) => {
     let param = null;
@@ -74,8 +61,8 @@ const Page = () => {
     init();
 
     const parsedParams = Object.keys(searchParams).reduce((acc, key) => {
-      if (key in query) {
-        let value = query[key];
+      if (key in router.query) {
+        let value = router.query[key];
         if (key === 'page' || key === 'size') {
           acc[key] = Array.isArray(value) ? Number(value[0]) : Number(value) || 1;
         } else {
@@ -83,21 +70,22 @@ const Page = () => {
         }
       }
       return acc;
-    }, {} as ReqCodes);
+    }, {} as CodeSearchReq);
 
     let params = null;
     if (Object.keys(parsedParams).length > 0) {
       params = {...searchParams, ...parsedParams};
     } else {
-      params = reqCodesDef;
+      params = codeSearchReqDef;
     }
     setSearchParams(params);
+    
     CommonCodeMngService.getCodesSearch(params)
       .then((response) => {
-        setResPageInfo(response.data.pageInfo);
-        setResCodes(response.data.pageData);
+        setPageInfoRes(response.data.pageInfo);
+        setCodeSearchResList(response.data.pageData);
       });
-  }, [query]);
+  }, [router.query]);
   
   
   return (
@@ -175,12 +163,12 @@ const Page = () => {
           </StyThRow>
         </thead>
         <tbody>
-          {resCodes.length > 0 ? (
-            resCodes.map((item, index) => {
+          {codeSearchResList.length > 0 ? (
+            codeSearchResList.map((item, index) => {
               return (
                 <StyTdRow key={index}>
                   <Td textAlign="right">
-                    {resCodes.length - index}
+                    {codeSearchResList.length - index}
                   </Td>
                   <Td>
                     {item.cdGrp}
@@ -213,7 +201,7 @@ const Page = () => {
         </tbody>
       </StyTable>
       <StylPagination
-        total={resPageInfo?.total ?? 0}
+        total={pageInfoRes?.total ?? 0}
         page={searchParams.page ??  1}
         size={searchParams?.size ?? PageSizeOptions[0]}
         onClick={(value: number) => handleRouteAndSearch('page', value)}
