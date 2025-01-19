@@ -1,3 +1,4 @@
+import router from 'next/router';
 import storeAlert, { actAlertShow } from '@/components/redux-store/store-alert';
 import UserService from '@/services/UserService';
 
@@ -51,7 +52,7 @@ export const refreshToken = async () => {
     localStorage.setItem('X-ATKID', atkUuid);
     localStorage.setItem('X-SESSION-SEC', clientSessionSec);
   } catch (error) {
-    console.error('토큰 갱신 실패:', error);
+    UserService.logout(router);
     throw error;
   }
 };
@@ -62,11 +63,7 @@ const interceptor = (axiosInstance: AxiosInstance) => (error: AxiosError<any>) =
   const originalRequest = error.config;
   if (error.response?.status === 401 && error.response?.data?.title === 'A100') {
     return refreshToken()
-      .then(() => _axios(originalRequest!))
-      .catch(refreshError => {
-        console.error('토큰 갱신 중 오류 발생:', refreshError);
-        return Promise.reject(refreshError);
-      });
+      .then(() => _axios(originalRequest!));
   } else {
     storeAlert.dispatch(actAlertShow(error.response?.data.title, error.response?.data.detail.split('\n')[0]));
   }
