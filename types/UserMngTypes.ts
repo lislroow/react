@@ -2,7 +2,7 @@ export interface ManagerSearchReq {
   loginId?: string;
   mgrName?: string;
   roles?: string;
-  disabledYn?: string;
+  enableYn?: string;
   lockedYn?: string;
   page?: number;
   size?: number;
@@ -12,7 +12,7 @@ export interface ManagerSearchReq {
 export interface ManagerModifyReq {
   id?: string;
   roles?: string;
-  disabledYn?: string;
+  enableYn?: string;
   lockedYn?: string;
 }
 
@@ -21,7 +21,7 @@ export interface ManagerSearchRes {
   loginId?: string;
   mgrName?: string;
   roles?: string;
-  disabledYn?: string;
+  enableYn?: string;
   lockedYn?: string;
   pwdExpDate?: string;
   createId: string;

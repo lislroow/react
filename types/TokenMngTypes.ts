@@ -1,17 +1,17 @@
 export interface TokenSearchReq {
   tokenId?: string;
-  id?: string;
-  clientIp?: string;
-  useYn?: string;
+  clientId?: string;
+  enableYn?: string;
+  lockedYn?: string;
   page?: number;
   size?: number;
 }
 
 export interface TokenSearchRes {
   tokenId?: string;
-  id?: string;
-  clientIp?: string;
-  useYn?: string;
+  clientId?: string;
+  enableYn?: string;
+  lockedYn?: string;
   createId: string;
   createTime: string;
   createName: string;

@@ -20,14 +20,14 @@ import UserMngService from '@/services/UserMngService';
 const Page = () => {
   const router = useRouter();
 
-  const [ DISABLED_YN, setDISABLED_YN ] = useState<SelectItem[]>();
+  const [ ENABLE_YN, setENABLE_YN ] = useState<SelectItem[]>();
   const [ LOCKED_YN, setLOCKED_YN ] = useState<SelectItem[]>();
   
   const [ managerSearchRes, setManagerSearchRes ] = useState<ManagerSearchRes>();
   const [ managerModifyReq, setManagerModifyReq ] = useState<ManagerModifyReq>({
     id: null,
     roles: null,
-    disabledYn: null,
+    enableYn: null,
     lockedYn: null,
   });
   const [ changePasswordReq, setChangePasswordReq ] = useState<ChangePasswordReq>({
@@ -40,7 +40,7 @@ const Page = () => {
   const [ changePasswordModalMessage, setChangePasswordModalMessage ] = useState('');
   
   const init = async () => {
-    setDISABLED_YN(await CommonCodeService.getFormSelectItem('DISABLED_YN'));
+    setENABLE_YN(await CommonCodeService.getFormSelectItem('ENABLE_YN'));
     setLOCKED_YN(await CommonCodeService.getFormSelectItem('LOCKED_YN'));
   };
 
@@ -158,11 +158,11 @@ const Page = () => {
             value={managerModifyReq?.roles ?? ''}
             onChange={(e) => handleParams('roles', e.target.value)} />
         </StylFormField>
-        <StylFormField title="disabled">
-          <StylFormSelect type="type1" items={DISABLED_YN}
-            value={managerModifyReq?.disabledYn}
+        <StylFormField title="enable">
+          <StylFormSelect type="type1" items={ENABLE_YN}
+            value={managerModifyReq?.enableYn}
             size="medium"
-            onChange={(e) => handleParams('disabledYn', e.target.value)} />
+            onChange={(e) => handleParams('enableYn', e.target.value)} />
         </StylFormField>
         <StylFormField title="locked">
           <StylFormSelect type="type1" items={LOCKED_YN}

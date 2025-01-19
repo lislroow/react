@@ -28,12 +28,13 @@ import StylFormField from "@/styles/FormFieldStyled";
 const Page = () => {
   const router = useRouter();
   const { query } = router;
-  const [ USE_YN, setUSE_YN ] = useState<SelectItem[]>();
+  const [ ENABLE_YN, setENABLE_YN ] = useState<SelectItem[]>();
+  const [ LOCKED_YN, setLOCKED_YN ] = useState<SelectItem[]>();
   const tokenSearchReqDef: TokenSearchReq = {
     tokenId: '',
-    id: '',
-    clientIp: '',
-    useYn: '',
+    clientId: '',
+    enableYn: '',
+    lockedYn: '',
     page: 1,
     size: PageSizeOptions[0],
   };
@@ -42,7 +43,8 @@ const Page = () => {
   const [ tokenSearchResList, setTokenSearchResList ] = useState<TokenSearchRes[]>([]);
 
   const init = async () => {
-    setUSE_YN(await CommonCodeService.getFormSelectItem('USE_YN'));
+    setENABLE_YN(await CommonCodeService.getFormSelectItem('ENABLE_YN'));
+    setLOCKED_YN(await CommonCodeService.getFormSelectItem('LOCKED_YN'));
   };
 
   const handleRouteAndSearch = (name: string = null, _value: any = null) => {
@@ -97,36 +99,36 @@ const Page = () => {
         <StylSearchGroup>
           <StylSearchItem>
             <div className="param-title">token id</div>
-            <input type="text" className="el_input_select2" placeholder="login id"
+            <input type="text" className="el_input_select2" placeholder="token id"
               value={searchParams?.tokenId}
               onKeyDown={(e) => e.key === 'Enter' && handleRouteAndSearch()}
               onChange={(e) => setSearchParams({
                 ...searchParams,
                 tokenId: e.target.value,
               })} />
-            <div className="param-title">id</div>
-            <input type="text" className="el_input_select2" placeholder="name"
-              value={searchParams?.id}
+            <div className="param-title">client id</div>
+            <input type="text" className="el_input_select2" placeholder="client id"
+              value={searchParams?.clientId}
               onKeyDown={(e) => e.key === 'Enter' && handleRouteAndSearch()}
               onChange={(e) => setSearchParams({
                 ...searchParams,
-                id: e.target.value,
+                clientId: e.target.value,
               })} />
-            <div className="param-title">client ip</div>
-            <input type="text" className="el_input_select2" placeholder="name"
-              value={searchParams?.clientIp}
-              onKeyDown={(e) => e.key === 'Enter' && handleRouteAndSearch()}
-              onChange={(e) => setSearchParams({
-                ...searchParams,
-                clientIp: e.target.value,
-              })} />
-            <div className="param-title">disabled</div>
-            <StylFormSelect type="type1" items={USE_YN}
-              value={searchParams?.useYn}
+            <div className="param-title">enable</div>
+            <StylFormSelect type="type1" items={ENABLE_YN}
+              value={searchParams?.enableYn}
               size="large"
               onChange={(e) => setSearchParams({
                 ...searchParams,
-                useYn: e.target.value,
+                enableYn: e.target.value,
+              })} />
+            <div className="param-title">locked</div>
+            <StylFormSelect type="type1" items={LOCKED_YN}
+              value={searchParams?.lockedYn}
+              size="large"
+              onChange={(e) => setSearchParams({
+                ...searchParams,
+                lockedYn: e.target.value,
               })} />
           </StylSearchItem>
           <StylSearchBtnArea>
@@ -138,7 +140,7 @@ const Page = () => {
         <colgroup>
           <col width={50} />
           <col width={120} />
-          <col width={200} />
+          <col width={80} />
           <col width={80} />
           <col width={80} />
           <col width={120} />
@@ -148,9 +150,9 @@ const Page = () => {
         <thead>
           <StyThRow>
             <Th>no.</Th>
-            <Th>id</Th>
-            <Th>client ip</Th>
-            <Th>use</Th>
+            <Th>client id</Th>
+            <Th>enable</Th>
+            <Th>locked</Th>
             <Th>modify</Th>
             <Th>modify</Th>
             <Th>create</Th>
@@ -166,13 +168,13 @@ const Page = () => {
                     {pageInfoRes.total - (pageInfoRes.size * (pageInfoRes.page -1)) - index}
                   </Td>
                   <Td textAlign="center">
-                    {item.id}
-                  </Td>
-                  <Td>
-                    {item.clientIp}
+                    {item.clientId}
                   </Td>
                   <Td textAlign="center">
-                    {item.useYn}
+                    {item.enableYn}
+                  </Td>
+                  <Td textAlign="center">
+                    {item.lockedYn}
                   </Td>
                   <Td textAlign="center">
                     {item.modifyName}

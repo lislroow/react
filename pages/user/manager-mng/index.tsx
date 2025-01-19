@@ -30,12 +30,12 @@ const Page = () => {
   const router = useRouter();
   const { query } = router;
   const [ LOCKED_YN, setLOCKED_YN ] = useState<SelectItem[]>();
-  const [ DISABLED_YN, setDISABLED_YN ] = useState<SelectItem[]>();
+  const [ ENABLE_YN, setENABLE_YN ] = useState<SelectItem[]>();
   const managerSearchReqDef: ManagerSearchReq = {
     loginId: '',
     mgrName: '',
     roles: '',
-    disabledYn: '',
+    enableYn: '',
     lockedYn: '',
     page: 1,
     size: PageSizeOptions[0],
@@ -53,7 +53,7 @@ const Page = () => {
 
   const init = async () => {
     setLOCKED_YN(await CommonCodeService.getFormSelectItem('LOCKED_YN'));
-    setDISABLED_YN(await CommonCodeService.getFormSelectItem('DISABLED_YN'));
+    setENABLE_YN(await CommonCodeService.getFormSelectItem('ENABLE_YN'));
   };
 
   const handleRouteAndSearch = (name: string = null, _value: any = null) => {
@@ -131,13 +131,13 @@ const Page = () => {
                 ...searchParams,
                 mgrName: e.target.value,
               })} />
-            <div className="param-title">disabled</div>
-            <StylFormSelect type="type1" items={DISABLED_YN}
-              value={searchParams?.disabledYn}
+            <div className="param-title">enable</div>
+            <StylFormSelect type="type1" items={ENABLE_YN}
+              value={searchParams?.enableYn}
               size="large"
               onChange={(e) => setSearchParams({
                 ...searchParams,
-                disabledYn: e.target.value,
+                enableYn: e.target.value,
               })} />
             <div className="param-title">locked</div>
             <StylFormSelect type="type1" items={LOCKED_YN}
@@ -209,7 +209,7 @@ const Page = () => {
                     {item.mgrName}
                   </Td>
                   <Td textAlign="center">
-                    {item.disabledYn}
+                    {item.enableYn}
                   </Td>
                   <Td textAlign="center">
                     {item.lockedYn}
