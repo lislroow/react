@@ -3,10 +3,11 @@ import { Navigation } from 'react-minimal-side-navigation';
 import { AppProps } from 'next/app';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { IconButton, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import { IconButton, Typography } from '@mui/material';
 import '@/css/globals.css';
 import styles from '@/css/global.module.css';
+import StylAlert from '@/styles/AlertStyled';
 
 import storeUser from '@/components/redux-store/store-user';
 import storeAlert from '@/components/redux-store/store-alert';
@@ -16,7 +17,7 @@ import { UserInfo } from '@/types/UserTypes';
 
 import MenuService from '@/services/MenuService';
 import UserService from '@/services/UserService';
-import StylAlert from '@/styles/AlertStyled';
+import CodeService from '@/services/CodeService';
 
 const AppStructer = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
@@ -56,6 +57,8 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
     setMenuList(MenuService.getMenuList());
     setPathname(router.pathname);
     
+    CodeService.initAllCodes();
+
     if (UserService.isLogin()) {
       if (localStorage.getItem('user')) {
         setUser(JSON.parse(localStorage.getItem('user')));

@@ -1,8 +1,8 @@
 [
    {
-      "itemId":"/common-code",
-      "title":"[common-code] mng",
-      "pathname":"/common-code"
+      "itemId":"/common/code-mng",
+      "title":"[common] code-mng",
+      "pathname":"/common/code-mng"
    },
    {
       "itemId":"/user/manager-mng",

@@ -15,9 +15,9 @@ import {
 import {
   CodeSearchReq,
   CodeSearchRes,
-} from '@/types/CommonCodeMngType';
-import CommonCodeMngService from '@/services/CommonCodeMngService';
-import CommonCodeService from '@/services/CommonCodeService';
+} from '@/types/CodeMngType';
+import CodeMngService from '@/services/CodeMngService';
+import CodeService from '@/services/CodeService';
 import StylFormSelect from "@/styles/FormSelectStyled";
 
 const Page = () => {
@@ -39,7 +39,7 @@ const Page = () => {
   const [ codeSearchResList, setCodeSearchResList ] = useState<CodeSearchRes[]>([]);
 
   const init = async () => {
-    setUSE_YN(await CommonCodeService.getFormSelectItem('USE_YN'));
+    setUSE_YN(CodeService.getFormSelectItem('USE_YN'));
   }
 
   const handleRouteAndSearch = (name: string = null, _value: any = null) => {
@@ -52,7 +52,7 @@ const Page = () => {
       return;
     }
     router.push({
-      pathname: `/common-code`,
+      pathname: `/common/code-mng`,
       query: queryString.stringify(param),
     });
   }
@@ -80,7 +80,7 @@ const Page = () => {
     }
     setSearchParams(params);
     
-    CommonCodeMngService.getCodesSearch(params)
+    CodeMngService.getCodesSearch(params)
       .then((response) => {
         setPageInfoRes(response.data.pageInfo);
         setCodeSearchResList(response.data.pageData);

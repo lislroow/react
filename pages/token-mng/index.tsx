@@ -20,7 +20,7 @@ import TokenMngService from '@/services/TokenMngService';
 import { useRouter } from "next/router";
 import { StylLink, StylText } from "@/styles/GeneralStyled";
 import StylFormSelect, { SelectItem } from "@/styles/FormSelectStyled";
-import CommonCodeService from "@/services/CommonCodeService";
+import CodeService from "@/services/CodeService";
 import StylButtonGroup from "@/styles/ButtonGroupStyled";
 import StylModal from "@/styles/ModalStyled";
 import StylFormField from "@/styles/FormFieldStyled";
@@ -43,8 +43,8 @@ const Page = () => {
   const [ tokenSearchResList, setTokenSearchResList ] = useState<TokenSearchRes[]>([]);
 
   const init = async () => {
-    setENABLE_YN(await CommonCodeService.getFormSelectItem('ENABLE_YN'));
-    setLOCKED_YN(await CommonCodeService.getFormSelectItem('LOCKED_YN'));
+    setENABLE_YN(CodeService.getFormSelectItem('ENABLE_YN'));
+    setLOCKED_YN(CodeService.getFormSelectItem('LOCKED_YN'));
   };
 
   const handleRouteAndSearch = (name: string = null, _value: any = null) => {

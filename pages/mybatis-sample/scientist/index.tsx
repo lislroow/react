@@ -20,7 +20,7 @@ import SampleService from '@/services/MybatisSampleService';
 import { useRouter } from "next/router";
 import { StylLink } from "@/styles/GeneralStyled";
 import StylFormSelect, { SelectItem } from "@/styles/FormSelectStyled";
-import CommonCodeService from "@/services/CommonCodeService";
+import CodeService from "@/services/CodeService";
 
 const Page = () => {
   const router = useRouter();
@@ -37,7 +37,7 @@ const Page = () => {
   const [ scientistSearchResList, setScientistSearchResList ] = useState<ScientistSearchRes[]>([]);
 
   const init = async () => {
-    setFOS(await CommonCodeService.getFormSelectItem('FOS'));
+    setFOS(CodeService.getFormSelectItem('FOS'));
   };
 
   const handleRouteAndSearch = (name: string = null, _value: any = null) => {

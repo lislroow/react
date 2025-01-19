@@ -13,7 +13,7 @@ import {
   ScientistSearchRes,
   ScientistModifyReq,
 } from '@/types/MybatisSampleType';
-import CommonCodeService from "@/services/CommonCodeService";
+import CodeService from "@/services/CodeService";
 import SampleService from '@/services/MybatisSampleService';
 
 const Page = () => {
@@ -36,7 +36,7 @@ const Page = () => {
   const [ confirmDeleteId, setConfirmDeleteId ] = useState<number>();
   
   const init = async () => {
-    setFOS(await CommonCodeService.getFormSelectItem('FOS'));
+    setFOS(CodeService.getFormSelectItem('FOS'));
   }
 
   const handleParams = (name: string, _value: any) => {
