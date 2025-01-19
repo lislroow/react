@@ -1,15 +1,14 @@
+import storage from '@/components/storage';
 import menu from '@/json/menu.json';
 import { MenuInfo } from '@/types/CommonType';
 
-const getMenuList = (): MenuInfo[] => {
-  let menuList = null;
-  menuList = localStorage.getItem('menu');
-  if (!menuList) {
-    menuList = JSON.stringify(menu);
-    localStorage.setItem('menu', JSON.stringify(menu));
+const initMenu = (): MenuInfo[] => {
+  if (!storage.getMenu()) {
+    storage.setMenu(menu);
+    console.log('menu: ' + JSON.stringify(menu));
   }
-  return JSON.parse(menuList);
-}
+  return storage.getMenu();
+};
 
 const getPathnameByMenuId = function(mlist1: MenuInfo[], itemId: string): string {
   for (let menu of mlist1) {
@@ -40,7 +39,7 @@ const getTitleByPathname = function(mlist2: MenuInfo[], pathname: string): strin
     }
   }
   return '';
-}
+};
 
 const getMenuIdByPathname = function(mlist3: MenuInfo[], pathname: string): string {
   for (let menu of mlist3) {
@@ -54,10 +53,10 @@ const getMenuIdByPathname = function(mlist3: MenuInfo[], pathname: string): stri
     }
   }
   return '';
-}
+};
 
 const MenuService = {
-  getMenuList,
+  initMenu,
   getPathnameByMenuId,
   getTitleByPathname,
   getMenuIdByPathname,

@@ -1,7 +1,8 @@
 import { Cookies } from 'react-cookie';
 import { NextRouter, useRouter } from 'next/router';
 
-import { http } from '@/components/http';
+import { getLastActiveTime, http } from '@/components/http';
+import storage from '@/components/storage';
 
 const loginByIdPwd = (userType: string, formData: FormData) => {
   if (userType === 'manager') {
@@ -34,7 +35,7 @@ const loginBySocial = (social: string) => {
 }
 
 const isLogin = (): Boolean => {
-  return localStorage.getItem('X-RTKID') !== null;
+  return storage.getX_RTKID() !== null;
 };
 
 const logout = (router: NextRouter) => {
@@ -43,24 +44,23 @@ const logout = (router: NextRouter) => {
   Object.entries(allCookies).map(([key, value]) => {
     cookies.remove(key);
   });
-  localStorage.clear();
-  sessionStorage.clear();
+  storage.clear();
   router.push(`/auth-api/v1/member/logout?redirect_uri=/`);
 };
 
-const updateLastAccess = () => {
-  localStorage.setItem('lastAccess', Date.now()+'');
+const updateLastAccessTime = () => {
+  storage.setLastActiveTime(Date.now());
 };
 
 const getRemainTime = (): number => {
-  const lastAccess = Number(localStorage.getItem('lastAccess') ?? -1);
-  const sessionSec = Number(localStorage.getItem('X-SESSION-SEC') ?? 1800);
+  const lastAccess = storage.getLastActiveTime();
+  const sessionSec = storage.getX_SESSION_SEC(1800);
   const expireTime = Math.floor((lastAccess - Date.now()) / 1000) + sessionSec;
   return expireTime < 0 ? -1 : expireTime;
 }
 
 const getUserType = (): string => {
-  return localStorage.getItem('X-RTKID')?.split(":")[0] || '';
+  return storage.getX_RTKID()?.split(":")[0] || '';
 }
 
 const getInfo = () => {
@@ -72,7 +72,7 @@ const UserService = {
   loginBySocial,
   isLogin,
   logout,
-  updateLastAccess,
+  updateLastAccessTime,
   getRemainTime,
   getUserType,
   getInfo,

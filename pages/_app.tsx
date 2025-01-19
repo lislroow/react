@@ -18,6 +18,7 @@ import { UserInfo } from '@/types/UserTypes';
 import MenuService from '@/services/MenuService';
 import UserService from '@/services/UserService';
 import CodeService from '@/services/CodeService';
+import storage from '@/components/storage';
 
 const AppStructer = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
@@ -41,8 +42,8 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
   const [ usrId, setUsrId ] = useState('');
 
   storeUser.subscribe(() => {
+    storage.setUser(storeUser.getState().user);
     setUser(storeUser.getState().user);
-    localStorage.setItem('user', JSON.stringify(storeUser.getState().user));
     setUsrId(storeUser.getState().user.id);
     setLoginStatus(true);
   });
@@ -54,18 +55,19 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
   });
 
   useEffect(() => {
-    setMenuList(MenuService.getMenuList());
+    setMenuList(MenuService.initMenu());
     setPathname(router.pathname);
     
     CodeService.initAllCodes();
 
     if (UserService.isLogin()) {
-      if (localStorage.getItem('user')) {
-        setUser(JSON.parse(localStorage.getItem('user')));
+      const user = storage.getUser();
+      if (user) {
+        setUser(user);
         setLoginStatus(true);
       } else {
         UserService.getInfo().then((response) => {
-          localStorage.setItem('user', JSON.stringify(response.data));
+          storage.setUser(response.data);
           setUser(response.data);
           setLoginStatus(true);
         });
@@ -80,7 +82,7 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
     const timer = setInterval(() => {
       const remainTime = UserService.getRemainTime();
       if (remainTime < 0) {
-        const token = localStorage.getItem('X-RTKID');
+        const token = storage.getX_RTKID();
         if (token) {
           clearInterval(timer);
           UserService.logout(router);

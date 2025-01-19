@@ -3,17 +3,17 @@ import storeAlert, { actAlertShow } from '@/components/redux-store/store-alert';
 import UserService from '@/services/UserService';
 
 import axios, { AxiosInstance, AxiosResponse, AxiosError, InternalAxiosRequestConfig } from 'axios';
+import storage from './storage';
 
 export const getLastActiveTime = (): number => {
-  let lastActiveTime = localStorage.getItem('lastActiveTime');
+  let lastActiveTime = storage.getLastActiveTime();
   if (!lastActiveTime) {
     fetch(`/auth/v1/session`)
       .then((res) => res.json())
       .then((user) => console.log(JSON.stringify(user)));
-    localStorage.setItem('lastActiveTime', Date.now().toString());
+    storage.setLastActiveTime(Date.now());
   }
-  lastActiveTime = localStorage.getItem('lastActiveTime');
-  return lastActiveTime ? parseInt(lastActiveTime) : 0;
+  return storage.getLastActiveTime();
 };
 
 
@@ -45,12 +45,12 @@ export const http = axios.create({
 export const refreshToken = async () => {
   try {
     const response = await axios.post('/auth-api/v1/token/refresh', {
-      "rtkUuid": localStorage.getItem('X-RTKID')
+      "rtkUuid": storage.getX_RTKID()
     });
     const { rtkUuid, atkUuid, clientSessionSec } = response.data;
-    localStorage.setItem('X-RTKID', rtkUuid);
-    localStorage.setItem('X-ATKID', atkUuid);
-    localStorage.setItem('X-SESSION-SEC', clientSessionSec);
+    storage.setX_RTKID(rtkUuid);
+    storage.setX_ATKID(atkUuid);
+    storage.setX_SESSION_SEC(clientSessionSec);
   } catch (error) {
     UserService.logout(router);
     throw error;
@@ -72,10 +72,10 @@ const interceptor = (axiosInstance: AxiosInstance) => (error: AxiosError<any>) =
 
 http.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const tokenId = localStorage.getItem('X-ATKID');
+    const tokenId = storage.getX_ATKID();
     if (tokenId) {
       config.headers['Authorization'] = 'Bearer ' + tokenId;
-      UserService.updateLastAccess();
+      UserService.updateLastAccessTime();
     }
     document.body.classList.add('spinner');
     return config;

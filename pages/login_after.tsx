@@ -5,6 +5,7 @@ import storeUser, { actUpdate } from '@/components/redux-store/store-user';
 
 import { refreshToken } from '@/components/http';
 import UserService from '@/services/UserService';
+import storage from '@/components/storage';
 
 const Page = () => {
   const router = useRouter();
@@ -18,9 +19,9 @@ const Page = () => {
       }, {});
     
     if (cookies['X-RTKID']) {
-      localStorage.setItem('X-RTKID', cookies['X-RTKID']);
+      storage.setX_RTKID(cookies['X-RTKID']);
       refreshToken().then(() => 
-        UserService.getUserInfo().then((reponse) => {
+        UserService.getInfo().then((reponse) => {
           storeUser.dispatch(actUpdate(reponse.data));
           router.push('/');
         })
