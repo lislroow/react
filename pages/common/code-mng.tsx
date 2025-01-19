@@ -95,7 +95,7 @@ const Page = () => {
           <StylSearchItem>
             <div className="param-title">code group</div>
             <input type="text" className="el_input_select2" placeholder="code group"
-              value={searchParams?.cdGrp}
+              value={searchParams?.cdGrp ?? ''}
               onKeyDown={(e) => e.key === 'Enter' && handleRouteAndSearch()}
               onChange={(e) => setSearchParams({
                 ...searchParams,
@@ -103,7 +103,7 @@ const Page = () => {
               })} />
             <div className="param-title">code group name</div>
             <input type="text" className="el_input_select2" placeholder="code group name"
-              value={searchParams?.cdGrpNm}
+              value={searchParams?.cdGrpNm ?? ''}
               onKeyDown={(e) => e.key === 'Enter' && handleRouteAndSearch()}
               onChange={(e) => setSearchParams({
                 ...searchParams,
@@ -113,7 +113,7 @@ const Page = () => {
           <StylSearchItem>
             <div className="param-title">code</div>
             <input type="text" className="el_input_select2" placeholder="code"
-              value={searchParams?.cd}
+              value={searchParams?.cd ?? ''}
               onKeyDown={(e) => e.key === 'Enter' && handleRouteAndSearch()}
               onChange={(e) => setSearchParams({
                 ...searchParams,
@@ -121,7 +121,7 @@ const Page = () => {
               })} />
             <div className="param-title">code name</div>
             <input type="text" className="el_input_select2" placeholder="code name"
-              value={searchParams?.cdNm}
+              value={searchParams?.cdNm ?? ''}
               onKeyDown={(e) => e.key === 'Enter' && handleRouteAndSearch()}
               onChange={(e) => setSearchParams({
                 ...searchParams,
@@ -129,7 +129,7 @@ const Page = () => {
               })} />
             <div className="param-title">use yn</div>
             <StylFormSelect type="type1" items={USE_YN}
-              value={searchParams?.useYn}
+              value={searchParams?.useYn ?? ''}
               size="large"
               onChange={(e) => setSearchParams({
                 ...searchParams,

@@ -117,7 +117,7 @@ const Page = () => {
           <StylSearchItem>
             <div className="param-title">login id</div>
             <input type="text" className="el_input_select2" placeholder="login id"
-              value={searchParams?.loginId}
+              value={searchParams?.loginId ?? ''}
               onKeyDown={(e) => e.key === 'Enter' && handleRouteAndSearch()}
               onChange={(e) => setSearchParams({
                 ...searchParams,
@@ -125,7 +125,7 @@ const Page = () => {
               })} />
             <div className="param-title">name</div>
             <input type="text" className="el_input_select2" placeholder="name"
-              value={searchParams?.mgrName}
+              value={searchParams?.mgrName ?? ''}
               onKeyDown={(e) => e.key === 'Enter' && handleRouteAndSearch()}
               onChange={(e) => setSearchParams({
                 ...searchParams,
@@ -133,7 +133,7 @@ const Page = () => {
               })} />
             <div className="param-title">enable</div>
             <StylFormSelect type="type1" items={ENABLE_YN}
-              value={searchParams?.enableYn}
+              value={searchParams?.enableYn ?? ''}
               size="large"
               onChange={(e) => setSearchParams({
                 ...searchParams,
@@ -141,7 +141,7 @@ const Page = () => {
               })} />
             <div className="param-title">locked</div>
             <StylFormSelect type="type1" items={LOCKED_YN}
-              value={searchParams?.lockedYn}
+              value={searchParams?.lockedYn ?? ''}
               size="large"
               onChange={(e) => setSearchParams({
                 ...searchParams,

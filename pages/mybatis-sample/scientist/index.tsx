@@ -1,10 +1,13 @@
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router";
 import queryString from 'query-string';
 
 import styles from '@/css/global.module.css';
 import StylPagination from '@/styles/PaginationStyled';
+import StylFormSelect, { SelectItem } from "@/styles/FormSelectStyled";
 import { StylSearchArea, StylSearchGroup, StylSearchItem, StylSearchBtnArea } from "@/styles/SearchStyled";
 import { StyTable, StyTdRow, StyThRow, Td, Th } from '@/styles/TableStyled';
+import { StylLink } from "@/styles/GeneralStyled";
 
 import {
   PageSizeOptions,
@@ -17,9 +20,6 @@ import {
 } from '@/types/MybatisSampleType';
 
 import SampleService from '@/services/MybatisSampleService';
-import { useRouter } from "next/router";
-import { StylLink } from "@/styles/GeneralStyled";
-import StylFormSelect, { SelectItem } from "@/styles/FormSelectStyled";
 import CodeService from "@/services/CodeService";
 
 const Page = () => {
@@ -93,7 +93,7 @@ const Page = () => {
           <StylSearchItem>
             <div className="param-title">name</div>
             <input type="text" className="el_input_select2" placeholder="name"
-              value={searchParams?.name}
+              value={searchParams?.name ?? ''}
               onKeyDown={(e) => e.key === 'Enter' && handleRouteAndSearch()}
               onChange={(e) => setSearchParams({
                 ...searchParams,
@@ -101,7 +101,7 @@ const Page = () => {
               })} />
             <div className="param-title">field of study</div>
             <StylFormSelect type="type1" items={FOS}
-              value={searchParams?.fosCd}
+              value={searchParams?.fosCd ?? ''}
               size="large"
               onChange={(e) => setSearchParams({
                 ...searchParams,

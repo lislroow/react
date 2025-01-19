@@ -144,13 +144,13 @@ const Page = () => {
       </StylButtonGroup>
       <StylFieldWrap>
         <StylFormField title="id">
-          <StylText>{managerSearchRes?.id}</StylText>
+          <StylText>{managerSearchRes?.id ?? ''}</StylText>
         </StylFormField>
         <StylFormField title="login id" required>
           <StylText>{managerSearchRes?.loginId}</StylText>
         </StylFormField>
         <StylFormField title="name">
-          <StylText>{managerSearchRes?.mgrName}</StylText>
+          <StylText>{managerSearchRes?.mgrName ?? ''}</StylText>
         </StylFormField>
         <StylFormField title="roles">
           <input type="text"
@@ -160,13 +160,13 @@ const Page = () => {
         </StylFormField>
         <StylFormField title="enable">
           <StylFormSelect type="type1" items={ENABLE_YN}
-            value={managerModifyReq?.enableYn}
+            value={managerModifyReq?.enableYn ?? ''}
             size="medium"
             onChange={(e) => handleParams('enableYn', e.target.value)} />
         </StylFormField>
         <StylFormField title="locked">
           <StylFormSelect type="type1" items={LOCKED_YN}
-            value={managerModifyReq?.lockedYn}
+            value={managerModifyReq?.lockedYn ?? ''}
             size="medium"
             onChange={(e) => handleParams('lockedYn', e.target.value)} />
         </StylFormField>

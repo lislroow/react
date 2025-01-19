@@ -143,7 +143,7 @@ const Page = () => {
         </StylFormField>
         <StylFormField title="field of study">
           <StylFormSelect type="type1" items={FOS}
-            value={scientistModifyReq?.fosCd}
+            value={scientistModifyReq?.fosCd ?? ''}
             size="medium"
             onChange={(e) => handleParams('fosCd', e.target.value)} />
         </StylFormField>
