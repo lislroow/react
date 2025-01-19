@@ -64,7 +64,7 @@ const getUserType = (): string => {
 }
 
 const getInfo = () => {
-  return http.get(`/auth-api/v1/info`, {});
+  return http.get(`/auth-api/v1/user/info`, {});
 }
 
 const UserService = {
