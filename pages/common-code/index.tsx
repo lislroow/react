@@ -15,7 +15,7 @@ import {
 import {
   CodeSearchReq,
   CodeSearchRes,
-} from '@/types/CommonCodeType';
+} from '@/types/CommonCodeMngType';
 import CommonCodeMngService from '@/services/CommonCodeMngService';
 import CommonCodeService from '@/services/CommonCodeService';
 import StylFormSelect from "@/styles/FormSelectStyled";
