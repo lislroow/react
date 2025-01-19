@@ -61,7 +61,7 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
         setUser(JSON.parse(localStorage.getItem('user')));
         setLoginStatus(true);
       } else {
-        UserService.getUserInfo().then((response) => {
+        UserService.getInfo().then((response) => {
           localStorage.setItem('user', JSON.stringify(response.data));
           setUser(response.data);
           setLoginStatus(true);
@@ -138,11 +138,11 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
                 ) : (
                   !noLayoutUri.some(uri => router.pathname.startsWith(uri)) && (
                     <div style={{float: 'right', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '25px'}}>
-                      <button className={styles.button_sm1} type={'button'} onClick={() => UserService.getUserInfo()}>
+                      <button className={styles.button_sm1} type={'button'} onClick={() => UserService.getInfo()}>
                         {/* {expireTime > 0 ? expireTime : ''} | 연장 */}
                         {Math.floor(expireTime / 60) + ':' + (expireTime % 60)} | 연장
                       </button>
-                      <Typography>{user?.nickname}</Typography>
+                      <Typography>{user?.username}</Typography>
                       <button className={styles.button_sm2} type={'button'} onClick={() => UserService.logout(router)}>
                         로그아웃
                       </button>

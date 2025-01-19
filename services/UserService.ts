@@ -3,7 +3,7 @@ import { NextRouter, useRouter } from 'next/router';
 
 import { http } from '@/components/http';
 
-const login = (userType: string, formData: FormData) => {
+const loginByIdPwd = (userType: string, formData: FormData) => {
   if (userType === 'manager') {
     return http.post('/auth-api/v1/manager/login', formData, {
       headers: {
@@ -59,42 +59,23 @@ const getRemainTime = (): number => {
   return expireTime < 0 ? -1 : expireTime;
 }
 
-const getUserInfo = () => {
-  const userType = localStorage.getItem('X-RTKID')?.split(":")[0] || '';
-  switch (userType) {
-    case 'member':
-      return getMemberMyInfo();
-    case 'manager':
-      return getManagerMyInfo();
-    default:
-      console.log(`${userType} is not yet!`);
-      return null;
-    }
-}
-
 const getUserType = (): string => {
   return localStorage.getItem('X-RTKID')?.split(":")[0] || '';
 }
 
-const getMemberMyInfo = () => {
-  return http.get(`/auth-api/v1/user/member/myinfo`, {});
-}
-
-const getManagerMyInfo = () => {
-  return http.get(`/auth-api/v1/user/manager/myinfo`, {});
+const getInfo = () => {
+  return http.get(`/auth-api/v1/info`, {});
 }
 
 const UserService = {
-  login,
+  loginByIdPwd,
   loginBySocial,
   isLogin,
   logout,
   updateLastAccess,
   getRemainTime,
   getUserType,
-  getUserInfo,
-  getMemberMyInfo,
-  getManagerMyInfo,
+  getInfo,
 };
 
 export default UserService;

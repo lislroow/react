@@ -1,5 +1,6 @@
 export interface UserInfo {
   id?: string;
+  roles?: string;
   loginId?: string;
-  nickname?: string;
+  username?: string;
 }

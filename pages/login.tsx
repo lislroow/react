@@ -29,11 +29,11 @@ const Page = () => {
     router.push(`/auth-api/v1/member/login/oauth2/authorization/${social}`);
   }
 
-  const handleIdLogin = () => {
+  const handleIdPwdLogin = () => {
     const formData = new FormData();
     formData.append('username', username);
     formData.append('password', password);
-    UserService.login(userType, formData)
+    UserService.loginByIdPwd(userType, formData)
       .then(() => {
         const cookies = document.cookie
           .split('; ')
@@ -46,7 +46,7 @@ const Page = () => {
         if (cookies['X-RTKID']) {
           localStorage.setItem('X-RTKID', cookies['X-RTKID']);
           refreshToken().then(() => 
-            UserService.getUserInfo().then((reponse) => {
+            UserService.getInfo().then((reponse) => {
               storeUser.dispatch(actUpdate(reponse.data));
               router.push('/');
             })
@@ -61,6 +61,7 @@ const Page = () => {
         return Promise.reject(error);
       });
   }
+
   useEffect(() => {
     if (UserService.isLogin()) {
       router.push('/');
@@ -106,8 +107,8 @@ const Page = () => {
                 </label>
               </div>
             </div>
-            <Button onClick={(e) => handleIdLogin()} fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
-              id /pw login
+            <Button onClick={(e) => handleIdPwdLogin()} fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+              id /pwd login
             </Button>
           </form>
           <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2 }}>
