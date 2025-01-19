@@ -3,12 +3,20 @@ import { NextRouter, useRouter } from 'next/router';
 
 import { http } from '@/components/http';
 
-const login = (formData: FormData) => {
-  return http.post('/auth-api/v1/member/login', formData, {
-    headers: {
-      'Content-Type': 'multipart/form-data',
-    },
-  });
+const login = (userType: string, formData: FormData) => {
+  if (userType === 'manager') {
+    return http.post('/auth-api/v1/manager/login', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  } else if (userType === 'member') {
+    return http.post('/auth-api/v1/member/login', formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+  }
 }
 
 const loginBySocial = (social: string) => {

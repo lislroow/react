@@ -14,6 +14,7 @@ const Page = () => {
   // const [username, setUsername] = useState('mgkim0818@naver.com'); // member
   const [username, setUsername] = useState('myeonggu.kim@kakao.com'); // manager
   const [password, setPassword] = useState('1');
+  const [userType, setUserType] = useState('manager');
 
   const handleSocialLogin = (social: string) => {
     switch (social) {
@@ -32,7 +33,7 @@ const Page = () => {
     const formData = new FormData();
     formData.append('username', username);
     formData.append('password', password);
-    UserService.login(formData)
+    UserService.login(userType, formData)
       .then(() => {
         const cookies = document.cookie
           .split('; ')
@@ -77,6 +78,34 @@ const Page = () => {
             <TextField margin="normal" required fullWidth id="password" name="password" autoComplete="current-password" 
               label="password" value={password} onChange={(e) => setPassword(e.target.value)}
               type="password" />
+            <div className="el_input_radioWrap">
+              <div className="el_input_radioInnerWrap">
+                <input
+                  type="radio"
+                  id={'userType1'}
+                  name="userType1"
+                  className="el_input_radio"
+                  checked={userType === 'manager'}
+                  onChange={(e) => setUserType('manager')}
+                />
+                <label htmlFor="userType1" className="el_label3">
+                  관리자
+                </label>
+              </div>
+              <div className="el_input_radioInnerWrap">
+                <input
+                  type="radio"
+                  id={'userType2'}
+                  name="userType2"
+                  className="el_input_radio"
+                  checked={userType === 'member'}
+                  onChange={(e) => setUserType('member')}
+                />
+                <label htmlFor="userType2" className="el_label3">
+                  사용자
+                </label>
+              </div>
+            </div>
             <Button onClick={(e) => handleIdLogin()} fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               id /pw login
             </Button>
