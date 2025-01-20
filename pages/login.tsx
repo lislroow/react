@@ -8,6 +8,7 @@ import storeUser, { actUpdate } from '@/components/redux-store/store-user';
 import { refreshToken } from '@/components/http';
 import UserService from '@/services/UserService';
 import storage from '@/components/storage';
+import cookie from '@/components/cookie';
 
 const Page = () => {
   const router = useRouter();
@@ -36,19 +37,10 @@ const Page = () => {
     formData.append('password', password);
     UserService.loginByIdPwd(userType, formData)
       .then(() => {
-        const cookies = document.cookie
-          .split('; ')
-          .reduce<Record<string, string>>((acc, cookie) => {
-            const [key, value] = cookie.split('=');
-            acc[key] = value;
-            return acc;
-          }, {});
-          
-        if (cookies['X-RTKID']) {
-          storage.setX_RTKID(cookies['X-RTKID']);
+        const rtk = cookie.getCookie('X-RTKID');
+        if (rtk) {
+          storage.setX_RTKID(rtk);
           router.push('/');
-        } else {
-          console.log('X-RTKID is null');
         }
       })
       .catch(error => {

@@ -20,6 +20,7 @@ import { UserInfo } from '@/types/UserTypes';
 import MenuService from '@/services/MenuService';
 import UserService from '@/services/UserService';
 import CodeService from '@/services/CodeService';
+import cookie from '@/components/cookie';
 
 const AppStructer = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
@@ -74,16 +75,9 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
 
   useEffect(() => {
     if (router.isReady) {
-      const cookies = document.cookie
-        .split('; ')
-        .reduce<Record<string, string>>((acc, cookie) => {
-          const [key, value] = cookie.split('=');
-          acc[key] = value;
-          return acc;
-        }, {});
-
-      if (cookies['X-RTKID'] && !UserService.isLogin()) {
-        storage.setX_RTKID(cookies['X-RTKID']);
+      const rtk = cookie.getCookie('X-RTKID');
+      if (rtk && !UserService.isLogin()) {
+        storage.setX_RTKID(rtk);
         refreshToken().then(() => init());
       }
     }
