@@ -48,17 +48,24 @@ const Page = () => {
   };
 
   const handleRouteAndSearch = (name: string = null, _value: any = null) => {
-    let param = null;
+    let queryParam = Object.keys(searchParams).reduce((obj, key) => {
+      if (searchParams[key] !== '' && searchParams[key] !== null) {
+        obj[key] = searchParams[key];
+      }
+      return obj;
+    }, {});
+    
     if (name === 'page' || name === 'size') {
-      param = { ...searchParams, [name]: _value };
+      queryParam = { ...queryParam, [name]: _value };
     } else if (name ===  null) {
-      param = { ...searchParams, page: 1, size: PageSizeOptions[0]};
+      queryParam = { ...queryParam, page: 1, size: PageSizeOptions[0]};
     } else {
       return;
     }
+    
     router.push({
       pathname: `/token-mng`,
-      query: queryString.stringify(param),
+      query: queryString.stringify(queryParam),
     });
   };
 
