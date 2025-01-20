@@ -144,8 +144,6 @@ const Page = () => {
           <col width={80} />
           <col width={80} />
           <col width={120} />
-          <col width={80} />
-          <col width={120} />
         </colgroup>
         <thead>
           <StyThRow>
@@ -155,8 +153,6 @@ const Page = () => {
             <Th>locked</Th>
             <Th>modify</Th>
             <Th>modify</Th>
-            <Th>create</Th>
-            <Th>create</Th>
           </StyThRow>
         </thead>
         <tbody>
@@ -182,18 +178,12 @@ const Page = () => {
                   <Td textAlign="center">
                     {item.modifyTime}
                   </Td>
-                  <Td textAlign="center">
-                    {item.createName}
-                  </Td>
-                  <Td textAlign="center">
-                    {item.createTime}
-                  </Td>
                 </StyTdRow>
               );
             })
           ) : (
             <StyTdRow>
-              <Td colSpan={8} className={'empty'}>
+              <Td colSpan={6} className={'empty'}>
                 no data
               </Td>
             </StyTdRow>
