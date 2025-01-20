@@ -12,8 +12,8 @@ import {
 } from '@/types/CommonType';
 
 import {
-  TokenSearchReq,
-  TokenSearchRes,
+  ClientTokenSearchReq,
+  ClientTokenSearchRes,
 } from '@/types/TokenMngTypes';
 
 import TokenMngService from '@/services/TokenMngService';
@@ -29,22 +29,20 @@ const Page = () => {
   const router = useRouter();
   const { query } = router;
   const [ ENABLE_YN, setENABLE_YN ] = useState<SelectItem[]>();
-  const [ LOCKED_YN, setLOCKED_YN ] = useState<SelectItem[]>();
-  const tokenSearchReqDef: TokenSearchReq = {
-    tokenId: '',
+  const clientTokenSearchReqDef: ClientTokenSearchReq = {
     clientId: '',
+    tokenKey: '',
+    contactName: '',
     enableYn: '',
-    lockedYn: '',
     page: 1,
     size: PageSizeOptions[0],
   };
-  const [ searchParams, setSearchParams ] = useState<TokenSearchReq>(tokenSearchReqDef);
+  const [ searchParams, setSearchParams ] = useState<ClientTokenSearchReq>(clientTokenSearchReqDef);
   const [ pageInfoRes, setPageInfoRes ] = useState<PageInfoRes>();
-  const [ tokenSearchResList, setTokenSearchResList ] = useState<TokenSearchRes[]>([]);
+  const [ clientTokenSearchResList, setClientTokenSearchResList ] = useState<ClientTokenSearchRes[]>([]);
 
   const init = async () => {
     setENABLE_YN(CodeService.getFormSelectItem('ENABLE_YN'));
-    setLOCKED_YN(CodeService.getFormSelectItem('LOCKED_YN'));
   };
 
   const handleRouteAndSearch = (name: string = null, _value: any = null) => {
@@ -82,20 +80,20 @@ const Page = () => {
         }
       }
       return acc;
-    }, {} as TokenSearchReq);
+    }, {} as ClientTokenSearchReq);
 
     let params = null;
     if (Object.keys(parsedParams).length > 0) {
       params = {...searchParams, ...parsedParams};
     } else {
-      params = tokenSearchReqDef;
+      params = clientTokenSearchReqDef;
     }
     setSearchParams(params);
     
     TokenMngService.getTokensSearch(params)
       .then((response) => {
         setPageInfoRes(response.data.pageInfo);
-        setTokenSearchResList(response.data.pageData);
+        setClientTokenSearchResList(response.data.pageData);
       });
   }, [query]);
   
@@ -105,21 +103,29 @@ const Page = () => {
       <StylSearchArea>
         <StylSearchGroup>
           <StylSearchItem>
-            <div className="param-title">token id</div>
-            <input type="text" className="el_input_select2" placeholder="token id"
-              value={searchParams?.tokenId ?? ''}
-              onKeyDown={(e) => e.key === 'Enter' && handleRouteAndSearch()}
-              onChange={(e) => setSearchParams({
-                ...searchParams,
-                tokenId: e.target.value,
-              })} />
             <div className="param-title">client id</div>
-            <input type="text" className="el_input_select2" placeholder="client id"
+            <input type="text" className="el_input_select2" placeholder="token id"
               value={searchParams?.clientId ?? ''}
               onKeyDown={(e) => e.key === 'Enter' && handleRouteAndSearch()}
               onChange={(e) => setSearchParams({
                 ...searchParams,
                 clientId: e.target.value,
+              })} />
+            <div className="param-title">token key</div>
+            <input type="text" className="el_input_select2" placeholder="client id"
+              value={searchParams?.tokenKey ?? ''}
+              onKeyDown={(e) => e.key === 'Enter' && handleRouteAndSearch()}
+              onChange={(e) => setSearchParams({
+                ...searchParams,
+                tokenKey: e.target.value,
+              })} />
+            <div className="param-title">contact name</div>
+            <StylFormSelect type="type1" items={ENABLE_YN}
+              value={searchParams?.contactName ?? ''}
+              size="large"
+              onChange={(e) => setSearchParams({
+                ...searchParams,
+                contactName: e.target.value,
               })} />
             <div className="param-title">enable</div>
             <StylFormSelect type="type1" items={ENABLE_YN}
@@ -128,14 +134,6 @@ const Page = () => {
               onChange={(e) => setSearchParams({
                 ...searchParams,
                 enableYn: e.target.value,
-              })} />
-            <div className="param-title">locked</div>
-            <StylFormSelect type="type1" items={LOCKED_YN}
-              value={searchParams?.lockedYn ?? ''}
-              size="large"
-              onChange={(e) => setSearchParams({
-                ...searchParams,
-                lockedYn: e.target.value,
               })} />
           </StylSearchItem>
           <StylSearchBtnArea>
@@ -146,38 +144,72 @@ const Page = () => {
       <StyTable>
         <colgroup>
           <col width={50} />
+          <col width={90} />
           <col width={120} />
+          <col width={130} />
+
           <col width={80} />
           <col width={80} />
+          <col width={80} />
+          <col width={80} />
+          <col width={80} />
+          <col width={80} />
+
           <col width={80} />
           <col width={120} />
         </colgroup>
         <thead>
           <StyThRow>
             <Th>no.</Th>
+            <Th>contact name</Th>
+            <Th>contact email</Th>
+            <Th>token key</Th>
+
             <Th>client id</Th>
+            <Th>client ip</Th>
+            <Th>client name</Th>
+            <Th>roles</Th>
             <Th>enable</Th>
-            <Th>locked</Th>
+            <Th>exp date</Th>
+
             <Th>modify</Th>
             <Th>modify</Th>
           </StyThRow>
         </thead>
         <tbody>
-          {tokenSearchResList.length > 0 ? (
-            tokenSearchResList.map((item, index) => {
+          {clientTokenSearchResList.length > 0 ? (
+            clientTokenSearchResList.map((item, index) => {
               return (
                 <StyTdRow key={index}>
                   <Td textAlign="right">
                     {pageInfoRes.total - (pageInfoRes.size * (pageInfoRes.page -1)) - index}
                   </Td>
                   <Td textAlign="center">
+                    {item.contactName}
+                  </Td>
+                  <Td textAlign="center">
+                    {item.contactEmail}
+                  </Td>
+                  <Td textAlign="center">
+                    {item.tokenKey}
+                  </Td>
+                  <Td textAlign="center">
                     {item.clientId}
+                  </Td>
+                  <Td textAlign="center">
+                    {item.clientIp}
+                  </Td>
+                  <Td textAlign="center">
+                    {item.clientName}
+                  </Td>
+                  <Td textAlign="center">
+                    {item.roles}
                   </Td>
                   <Td textAlign="center">
                     {item.enableYn}
                   </Td>
                   <Td textAlign="center">
-                    {item.lockedYn}
+                    {item.expDate}
                   </Td>
                   <Td textAlign="center">
                     {item.modifyName}
@@ -190,7 +222,7 @@ const Page = () => {
             })
           ) : (
             <StyTdRow>
-              <Td colSpan={6} className={'empty'}>
+              <Td colSpan={12} className={'empty'}>
                 no data
               </Td>
             </StyTdRow>

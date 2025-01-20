@@ -1,17 +1,22 @@
-export interface TokenSearchReq {
-  tokenId?: string;
+export interface ClientTokenSearchReq {
   clientId?: string;
+  tokenKey?: string;
+  contactName?: string;
   enableYn?: string;
-  lockedYn?: string;
   page?: number;
   size?: number;
 }
 
-export interface TokenSearchRes {
-  tokenId?: string;
+export interface ClientTokenSearchRes {
+  contactName?: string;
+  contactEmail?: string;
+  tokenKey?: string;
   clientId?: string;
+  clientIp?: string;
+  clientName?: string;
+  roles?: string;
   enableYn?: string;
-  lockedYn?: string;
+  expDate?: string;
   createId: string;
   createTime: string;
   createName: string;
