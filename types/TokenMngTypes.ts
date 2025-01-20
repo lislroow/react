@@ -1,4 +1,4 @@
-export interface ClientTokenSearchReq {
+export interface SearchClientTokenReq {
   clientId?: string;
   tokenKey?: string;
   contactName?: string;
@@ -7,7 +7,7 @@ export interface ClientTokenSearchReq {
   size?: number;
 }
 
-export interface ClientTokenSearchRes {
+export interface SearchClientTokenRes {
   contactName?: string;
   contactEmail?: string;
   tokenKey?: string;
@@ -23,4 +23,13 @@ export interface ClientTokenSearchRes {
   modifyId: string;
   modifyTime: string;
   modifyName: string;
+}
+
+export interface AddTokenClientReq {
+  clientId?: string;
+  clientName?: string;
+  clientIp?: string;
+  roles?: string;
+  enableYn?: string;
+  expDate?: string;
 }

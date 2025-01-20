@@ -12,8 +12,9 @@ import {
 } from '@/types/CommonType';
 
 import {
-  ClientTokenSearchReq,
-  ClientTokenSearchRes,
+  AddTokenClientReq,
+  SearchClientTokenReq,
+  SearchClientTokenRes,
 } from '@/types/TokenMngTypes';
 
 import TokenMngService from '@/services/TokenMngService';
@@ -29,7 +30,7 @@ const Page = () => {
   const router = useRouter();
   const { query } = router;
   const [ ENABLE_YN, setENABLE_YN ] = useState<SelectItem[]>();
-  const clientTokenSearchReqDef: ClientTokenSearchReq = {
+  const searchClientTokenReqDef: SearchClientTokenReq = {
     clientId: '',
     tokenKey: '',
     contactName: '',
@@ -37,9 +38,19 @@ const Page = () => {
     page: 1,
     size: PageSizeOptions[0],
   };
-  const [ searchParams, setSearchParams ] = useState<ClientTokenSearchReq>(clientTokenSearchReqDef);
+  const [ searchParams, setSearchParams ] = useState<SearchClientTokenReq>(searchClientTokenReqDef);
   const [ pageInfoRes, setPageInfoRes ] = useState<PageInfoRes>();
-  const [ clientTokenSearchResList, setClientTokenSearchResList ] = useState<ClientTokenSearchRes[]>([]);
+  const [ searchClientTokenResList, setSearchClientTokenResList ] = useState<SearchClientTokenRes[]>([]);
+  const [ registerModal, setRegisterModal ] = useState<boolean>(false);
+    const [ registerModalMessage, setRegisterModalMessage ] = useState<string>('');
+    const [ addTokenClientReq, setAddTokenClientReq ] = useState<AddTokenClientReq>({
+      clientId: '3202501000000002',
+      clientName: 'OO 기관 OO 시스템',
+      clientIp: '172.28.200.111',
+      roles: 'CLIENT',
+      enableYn: 'Y',
+      expDate: '2025-02-14',
+    });
 
   const init = async () => {
     setENABLE_YN(CodeService.getFormSelectItem('ENABLE_YN'));
@@ -67,6 +78,14 @@ const Page = () => {
     });
   };
 
+  const handleRegistration = () => {
+    TokenMngService.postAddClientToken(addTokenClientReq)
+      .then((response) => {
+        // setAddTokenClientReq({});
+        setRegisterModal(false);
+      });
+  };
+
   useEffect(() => {
     init();
 
@@ -80,20 +99,20 @@ const Page = () => {
         }
       }
       return acc;
-    }, {} as ClientTokenSearchReq);
+    }, {} as SearchClientTokenReq);
 
     let params = null;
     if (Object.keys(parsedParams).length > 0) {
       params = {...searchParams, ...parsedParams};
     } else {
-      params = clientTokenSearchReqDef;
+      params = searchClientTokenReqDef;
     }
     setSearchParams(params);
     
-    TokenMngService.getTokensSearch(params)
+    TokenMngService.getSearchClientTokens(params)
       .then((response) => {
         setPageInfoRes(response.data.pageInfo);
-        setClientTokenSearchResList(response.data.pageData);
+        setSearchClientTokenResList(response.data.pageData);
       });
   }, [query]);
   
@@ -141,6 +160,11 @@ const Page = () => {
           </StylSearchBtnArea>
         </StylSearchGroup>
       </StylSearchArea>
+      <StylButtonGroup
+        btn1Label="등록"
+        btn1OnClick={() => setRegisterModal(true)}
+      >
+      </StylButtonGroup>
       <StyTable>
         <colgroup>
           <col width={50} />
@@ -177,8 +201,8 @@ const Page = () => {
           </StyThRow>
         </thead>
         <tbody>
-          {clientTokenSearchResList.length > 0 ? (
-            clientTokenSearchResList.map((item, index) => {
+          {searchClientTokenResList.length > 0 ? (
+            searchClientTokenResList.map((item, index) => {
               return (
                 <StyTdRow key={index}>
                   <Td textAlign="right">
@@ -235,6 +259,61 @@ const Page = () => {
         size={searchParams?.size ?? PageSizeOptions[0]}
         onClick={(value: number) => handleRouteAndSearch('page', value)}
       />
+      <StylModal open={registerModal}
+        title="ClientToken 등록"
+        confirmBtnNm="등록"
+        cancelBtnNm="취소"
+        handleOkClick={() => {
+          handleRegistration();
+        }}
+        maxWidth="600px"
+        handleCloseClick={() => {
+          //setAddTokenClientReq({});
+          setRegisterModalMessage('');
+          setRegisterModal(false);
+        }}>
+        <main>
+          {registerModalMessage ??
+            <StylText>{registerModalMessage}</StylText>
+          }
+          <StylFormField title="client id">
+            <input type="text"
+              className={`el_input el_input_lg`}
+              value={addTokenClientReq?.clientId ?? ''}
+              onChange={(e) => setAddTokenClientReq({...addTokenClientReq, 'clientId': e.target.value})} />
+          </StylFormField>
+          <StylFormField title="client name">
+            <input type="text"
+              className={`el_input el_input_lg`}
+              value={addTokenClientReq?.clientName ?? ''}
+              onChange={(e) => setAddTokenClientReq({...addTokenClientReq, 'clientName': e.target.value})} />
+          </StylFormField>
+          <StylFormField title="client ip">
+            <input type="text"
+              className={`el_input el_input_lg`}
+              value={addTokenClientReq?.clientIp ?? ''}
+              onChange={(e) => setAddTokenClientReq({...addTokenClientReq, 'clientIp': e.target.value})} />
+          </StylFormField>
+          <StylFormField title="roles">
+            <input type="text"
+              className={`el_input el_input_lg`}
+              value={addTokenClientReq?.roles ?? ''}
+              onChange={(e) => setAddTokenClientReq({...addTokenClientReq, 'roles': e.target.value})} />
+          </StylFormField>
+          <StylFormField title="enable">
+            <input type="text"
+              className={`el_input el_input_lg`}
+              value={addTokenClientReq?.enableYn ?? ''}
+              onChange={(e) => setAddTokenClientReq({...addTokenClientReq, 'enableYn': e.target.value})} />
+          </StylFormField>
+          <StylFormField title="exp date">
+            <input type="text"
+              className={`el_input el_input_lg`}
+              value={addTokenClientReq?.expDate ?? ''}
+              onChange={(e) => setAddTokenClientReq({...addTokenClientReq, 'expDate': e.target.value})} />
+          </StylFormField>
+        </main>
+      </StylModal>
     </div>
   )
 }
