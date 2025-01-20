@@ -37,9 +37,9 @@ const Page = () => {
     formData.append('password', password);
     UserService.loginByIdPwd(userType, formData)
       .then(() => {
-        const rtk = cookie.getCookie('X-RTKID');
+        const rtk = cookie.getCookie('X-RTK');
         if (rtk) {
-          storage.setX_RTKID(rtk);
+          storage.setX_RTK(rtk);
           router.push('/');
         }
       })

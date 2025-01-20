@@ -45,12 +45,12 @@ export const http = axios.create({
 export const refreshToken = async () => {
   try {
     const response = await axios.post('/auth-api/v1/token/refresh', {
-      "rtkUuid": storage.getX_RTKID()
+      "rtk": storage.getX_RTK()
     });
-    const { rtkUuid, atkUuid, clientSessionSec } = response.data;
-    storage.setX_RTKID(rtkUuid);
-    storage.setX_ATKID(atkUuid);
-    storage.setX_SESSION_SEC(clientSessionSec);
+    const { rtk, atk, session } = response.data;
+    storage.setX_RTK(rtk);
+    storage.setX_ATK(atk);
+    storage.setX_SESSION(session);
     return response;
   } catch (error) {
     UserService.logout(router);
@@ -73,7 +73,7 @@ const interceptor = (axiosInstance: AxiosInstance) => (error: AxiosError<any>) =
 
 http.interceptors.request.use(
   (config: InternalAxiosRequestConfig) => {
-    const tokenId = storage.getX_ATKID();
+    const tokenId = storage.getX_ATK();
     if (tokenId) {
       config.headers['Authorization'] = 'Bearer ' + tokenId;
       UserService.updateLastAccessTime();

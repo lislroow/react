@@ -21,32 +21,32 @@ const getCodes = (): AllCodeRes[] => {
 }
 
 const setLastActiveTime = (now?: number): void => {
-  localStorage.setItem('lastActiveTime', now.toString());
+  localStorage.setItem('last', now.toString());
 }
 const getLastActiveTime = (): number => {
-  const lastActiveTime = localStorage.getItem('lastActiveTime');
+  const lastActiveTime = localStorage.getItem('last');
   return lastActiveTime ? parseInt(lastActiveTime) : 0;
 }
 
-const setX_RTKID = (rtkUuid: string): void => {
-  localStorage.setItem('X-RTKID', rtkUuid);
+const setX_RTK = (rtk: string): void => {
+  localStorage.setItem('X-RTK', rtk);
 }
-const getX_RTKID = (): string => {
-  return localStorage.getItem('X-RTKID');
-}
-
-const setX_ATKID = (rtkUuid: string): void => {
-  localStorage.setItem('X-ATKID', rtkUuid);
-}
-const getX_ATKID = (): string => {
-  return localStorage.getItem('X-ATKID');
+const getX_RTK = (): string => {
+  return localStorage.getItem('X-RTK');
 }
 
-const setX_SESSION_SEC = (clientSessionSec?: number): void => {
-  localStorage.setItem('X-SESSION-SEC', clientSessionSec.toString());
+const setX_ATK = (atk: string): void => {
+  localStorage.setItem('X-ATK', atk);
 }
-const getX_SESSION_SEC = (def?: number): number => {
-  const sessionSec = localStorage.getItem('X-SESSION-SEC');
+const getX_ATK = (): string => {
+  return localStorage.getItem('X-ATK');
+}
+
+const setX_SESSION = (session?: number): void => {
+  localStorage.setItem('X-SESSION', session.toString());
+}
+const getX_SESSION = (def?: number): number => {
+  const sessionSec = localStorage.getItem('X-SESSION');
   return sessionSec ? parseInt(sessionSec) : def;
 }
 
@@ -73,12 +73,12 @@ const storage = {
   getCodes,
   setLastActiveTime,
   getLastActiveTime,
-  setX_RTKID,
-  getX_RTKID,
-  setX_ATKID,
-  getX_ATKID,
-  setX_SESSION_SEC,
-  getX_SESSION_SEC,
+  setX_RTK,
+  getX_RTK,
+  setX_ATK,
+  getX_ATK,
+  setX_SESSION,
+  getX_SESSION,
   setUser,
   getUser,
   setMenu,

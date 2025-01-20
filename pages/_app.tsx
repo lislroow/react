@@ -75,9 +75,9 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
 
   useEffect(() => {
     if (router.isReady) {
-      const rtk = cookie.getCookie('X-RTKID');
+      const rtk = cookie.getCookie('X-RTK');
       if (rtk && !UserService.isLogin()) {
-        storage.setX_RTKID(rtk);
+        storage.setX_RTK(rtk);
         refreshToken().then(() => init());
       }
     }
@@ -90,7 +90,7 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
     const timer = setInterval(() => {
       const remainTime = UserService.getRemainTime();
       if (remainTime < 0) {
-        const token = storage.getX_RTKID();
+        const token = storage.getX_RTK();
         if (token) {
           clearInterval(timer);
           UserService.logout(router);

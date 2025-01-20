@@ -35,7 +35,7 @@ const loginBySocial = (social: string) => {
 }
 
 const isLogin = (): Boolean => {
-  return storage.getX_RTKID() !== null && storage.getX_ATKID() !== null;
+  return storage.getX_RTK() !== null && storage.getX_ATK() !== null;
 };
 
 const logout = (router: NextRouter) => {
@@ -54,13 +54,13 @@ const updateLastAccessTime = () => {
 
 const getRemainTime = (): number => {
   const lastAccess = storage.getLastActiveTime();
-  const sessionSec = storage.getX_SESSION_SEC(1800);
+  const sessionSec = storage.getX_SESSION(1800);
   const expireTime = Math.floor((lastAccess - Date.now()) / 1000) + sessionSec;
   return expireTime < 0 ? -1 : expireTime;
 }
 
 const getUserType = (): string => {
-  return storage.getX_RTKID()?.split(":")[0] || '';
+  return storage.getX_RTK()?.split(":")[0] || '';
 }
 
 const getInfo = () => {
