@@ -9,6 +9,8 @@ import '@/css/globals.css';
 import styles from '@/css/global.module.css';
 import StylAlert from '@/styles/AlertStyled';
 
+import { refreshToken } from '@/components/http';
+import storage from '@/components/storage';
 import storeUser from '@/components/redux-store/store-user';
 import storeAlert from '@/components/redux-store/store-alert';
 
@@ -18,7 +20,6 @@ import { UserInfo } from '@/types/UserTypes';
 import MenuService from '@/services/MenuService';
 import UserService from '@/services/UserService';
 import CodeService from '@/services/CodeService';
-import storage from '@/components/storage';
 
 const AppStructer = ({ Component, pageProps }: AppProps) => {
   const router = useRouter();
@@ -49,11 +50,9 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
     setAlertMessage(storeAlert.getState().alert.message || '');
   });
 
-  useEffect(() => {
+  const init = () => {
     setMenuList(MenuService.initMenu());
-    
     CodeService.initAllCodes();
-
     if (UserService.isLogin()) {
       const user = storage.getUser();
       if (user) {
@@ -67,7 +66,28 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
         });
       }
     }
+  };
+  
+  useEffect(() => {
+    init();
   }, []);
+
+  useEffect(() => {
+    if (router.isReady) {
+      const cookies = document.cookie
+        .split('; ')
+        .reduce<Record<string, string>>((acc, cookie) => {
+          const [key, value] = cookie.split('=');
+          acc[key] = value;
+          return acc;
+        }, {});
+
+      if (cookies['X-RTKID'] && !UserService.isLogin()) {
+        storage.setX_RTKID(cookies['X-RTKID']);
+        refreshToken().then(() => init());
+      }
+    }
+  }, [router.query]);
 
 
   useEffect(() => {
@@ -138,7 +158,6 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
                   !noLayoutUri.some(uri => router.pathname.startsWith(uri)) && (
                     <div style={{float: 'right', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '25px'}}>
                       <button className={styles.button_sm1} type={'button'} onClick={() => UserService.getInfo()}>
-                        {/* {expireTime > 0 ? expireTime : ''} | 연장 */}
                         {Math.floor(expireTime / 60) + ':' + (expireTime % 60)} | 연장
                       </button>
                       <Typography>{user?.username}</Typography>

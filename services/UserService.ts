@@ -35,7 +35,7 @@ const loginBySocial = (social: string) => {
 }
 
 const isLogin = (): Boolean => {
-  return storage.getX_RTKID() !== null;
+  return storage.getX_RTKID() !== null && storage.getX_ATKID() !== null;
 };
 
 const logout = (router: NextRouter) => {

@@ -51,6 +51,7 @@ export const refreshToken = async () => {
     storage.setX_RTKID(rtkUuid);
     storage.setX_ATKID(atkUuid);
     storage.setX_SESSION_SEC(clientSessionSec);
+    return response;
   } catch (error) {
     UserService.logout(router);
     throw error;

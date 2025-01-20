@@ -46,12 +46,7 @@ const Page = () => {
           
         if (cookies['X-RTKID']) {
           storage.setX_RTKID(cookies['X-RTKID']);
-          refreshToken().then(() => 
-            UserService.getInfo().then((reponse) => {
-              storeUser.dispatch(actUpdate(reponse.data));
-              router.push('/');
-            })
-          );
+          router.push('/');
         } else {
           console.log('X-RTKID is null');
         }
