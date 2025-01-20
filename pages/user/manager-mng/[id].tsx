@@ -33,10 +33,10 @@ const Page = () => {
   const [ changePasswordReq, setChangePasswordReq ] = useState<ChangePasswordReq>({
     id: null
   });
-  const [ saveModalState, setSaveModalState ] = useState(false);
-  const [ deleteModalState, setDeleteModalState ] = useState(false);
-  const [ confirmDeleteId, setConfirmDeleteId ] = useState<string>();
-  const [ changePasswordModal, setChangePasswordModal ] = useState(false);
+  const [ saveModalOpen, setSaveModalOpen ] = useState(false);
+  const [ deleteModalOpen, setDeleteModalOpen ] = useState(false);
+  const [ deleteModalConfirm, setDeleteModalConfirm ] = useState<string>();
+  const [ changePasswordModalOpen, setChangePasswordModalOpen ] = useState(false);
   const [ changePasswordModalMessage, setChangePasswordModalMessage ] = useState('');
   
   const init = async () => {
@@ -79,7 +79,7 @@ const Page = () => {
     }
     UserMngService.putManagerPassword(changePasswordReq)
       .then((response) => {
-        setChangePasswordModal(false);
+        setChangePasswordModalOpen(false);
       });
   };
 
@@ -132,13 +132,13 @@ const Page = () => {
         btn1Label="목록"
         btn1OnClick={() => handleList()}
         btn2Label="저장"
-        btn2OnClick={() => setSaveModalState(true)}
+        btn2OnClick={() => setSaveModalOpen(true)}
         btn3Label="삭제"
-        btn3OnClick={() => setDeleteModalState(true)}
+        btn3OnClick={() => setDeleteModalOpen(true)}
         btn4Label="패스워드 변경"
         btn4OnClick={() => {
           setChangePasswordModalMessage('');
-          setChangePasswordModal(true);
+          setChangePasswordModalOpen(true);
         }}
       >
       </StylButtonGroup>
@@ -189,23 +189,23 @@ const Page = () => {
           <StylText>{managerSearchRes?.createTime}</StylText>
         </StylFormField>
       </StylFieldWrap>
-      <StylModal openState={saveModalState}
+      <StylModal open={saveModalOpen}
         handleOkClick={() => {
-          setSaveModalState(false);
+          setSaveModalOpen(false);
           handleSave();
         }}
-        handleCloseClick={() => setSaveModalState(false)}>
+        handleCloseClick={() => setSaveModalOpen(false)}>
         <StylText>저장하시겠습니까?</StylText>
       </StylModal>
-      <StylModal openState={deleteModalState}
+      <StylModal open={deleteModalOpen}
         handleOkClick={() => {
-          if (confirmDeleteId !== managerSearchRes.mgrName) {
+          if (deleteModalConfirm !== managerSearchRes.mgrName) {
             return false;
           }
-          setDeleteModalState(false);
+          setDeleteModalOpen(false);
           handleDelete();
         }}
-        handleCloseClick={() => setDeleteModalState(false)}>
+        handleCloseClick={() => setDeleteModalOpen(false)}>
         <main>
           <StylText>{'삭제 대상 \'' + managerSearchRes?.mgrName + '\' 를 입력해주세요.'}</StylText>
           <div style={{ display: 'flex' }}>
@@ -214,12 +214,12 @@ const Page = () => {
                 className={`el_input_lg`}
                 style={{ height: '40px', textAlign: 'center' }}
                 placeholder={managerSearchRes?.mgrName + ''}
-                onChange={(e) => setConfirmDeleteId(e.target.value)} />
+                onChange={(e) => setDeleteModalConfirm(e.target.value)} />
             </div>
           </div>
         </main>
       </StylModal>
-      <StylModal openState={changePasswordModal}
+      <StylModal open={changePasswordModalOpen}
         title="패스워드 변경"
         confirmBtnNm="변경"
         cancelBtnNm="취소"
@@ -227,7 +227,7 @@ const Page = () => {
           handleChangePassword();
         }}
         maxWidth="600px"
-        handleCloseClick={() => setChangePasswordModal(false)}>
+        handleCloseClick={() => setChangePasswordModalOpen(false)}>
         <main>
           <StylText>{changePasswordModalMessage}</StylText>
           <StylFormField title="current password">

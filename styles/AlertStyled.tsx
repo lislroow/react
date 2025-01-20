@@ -8,8 +8,8 @@ const StylAlert = ({
 }) => {
   return (
     <>
-      <div className={attr.openState ? `${styles.openModal} ${styles.modal}` : 'modal'}>
-        {attr.openState && (
+      <div className={attr.open ? `${styles.openModal} ${styles.modal}` : 'modal'}>
+        {attr.open && (
           <Box className={styles.warning_alert_modal_wrapper}>
             <div className={styles.header}>
               <button className={styles.closeIconWrapper} onClick={() => handleClose()} type={'button'}>

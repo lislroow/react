@@ -14,7 +14,7 @@ const Page = () => {
   const router = useRouter();
 
   const [ registrationReq, setRegistrationReq ] = useState<RegistrationReq>();
-  const [ resultModalState, setResultModalState ] = useState(false);
+  const [ resultModalOpen, setResultModalOpen ] = useState(false);
   const [ changePasswordModalMessage, setChangePasswordModalMessage ] = useState('');
   
   const validate = ():boolean => {
@@ -37,7 +37,7 @@ const Page = () => {
     
     UserMngService.postRegistration(registrationReq)
       .then((response) => {
-        setResultModalState(true);
+        setResultModalOpen(true);
       });
   };
   
@@ -69,16 +69,16 @@ const Page = () => {
           </Button>
         </Box>
       </Container>
-      <StylModal openState={resultModalState}
+      <StylModal open={resultModalOpen}
         modelType='inform'
         handleOkClick={() => {
-          setResultModalState(false);
+          setResultModalOpen(false);
           router.push({
             pathname: '/login',
           });
         }}
         handleCloseClick={() => {
-          setResultModalState(false);
+          setResultModalOpen(false);
           router.push({
             pathname: '/login',
           });

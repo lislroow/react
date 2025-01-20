@@ -31,9 +31,9 @@ const Page = () => {
     fosCd: null,
   });
   const [ invalid, setInvalid ] = useState(false);
-  const [ saveModalState, setSaveModalState ] = useState(false);
-  const [ deleteModalState, setDeleteModalState ] = useState(false);
-  const [ confirmDeleteId, setConfirmDeleteId ] = useState<number>();
+  const [ saveModalOpen, setSaveModalOpen ] = useState(false);
+  const [ deleteModalOpen, setDeleteModalOpen ] = useState(false);
+  const [ deleteModalConfirm, setDeleteModalConfirm ] = useState<number>();
   
   const init = async () => {
     setFOS(CodeService.getFormSelectItem('FOS'));
@@ -106,9 +106,9 @@ const Page = () => {
         btn1Label="목록"
         btn1OnClick={() => handleList()}
         btn2Label="저장"
-        btn2OnClick={() => setSaveModalState(true)}
+        btn2OnClick={() => setSaveModalOpen(true)}
         btn3Label="삭제"
-        btn3OnClick={() => setDeleteModalState(true)}
+        btn3OnClick={() => setDeleteModalOpen(true)}
       >
       </StylButtonGroup>
       <StylFieldWrap>
@@ -166,23 +166,23 @@ const Page = () => {
           <StylText>{scientistSearchRes?.createTime}</StylText>
         </StylFormField>
       </StylFieldWrap>
-      <StylModal openState={saveModalState}
+      <StylModal open={saveModalOpen}
         handleOkClick={() => {
-          setSaveModalState(false);
+          setSaveModalOpen(false);
           handleSave();
         }}
-        handleCloseClick={() => setSaveModalState(false)}>
+        handleCloseClick={() => setSaveModalOpen(false)}>
         <StylText>저장하시겠습니까?</StylText>
       </StylModal>
-      <StylModal openState={deleteModalState}
+      <StylModal open={deleteModalOpen}
         handleOkClick={() => {
-          if (confirmDeleteId !== scientistSearchRes.id) {
+          if (deleteModalConfirm !== scientistSearchRes.id) {
             return false;
           }
-          setDeleteModalState(false);
+          setDeleteModalOpen(false);
           handleDelete();
         }}
-        handleCloseClick={() => setDeleteModalState(false)}>
+        handleCloseClick={() => setDeleteModalOpen(false)}>
         <main>
           <StylText>{'삭제 대상 id \'' + scientistSearchRes?.id + '\' 를 입력해주세요.'}</StylText>
           <div style={{ display: 'flex' }}>
@@ -191,7 +191,7 @@ const Page = () => {
                 className={`el_input_lg`}
                 style={{ height: '40px', textAlign: 'center' }}
                 placeholder={scientistSearchRes?.id + ''}
-                onChange={(e) => setConfirmDeleteId(Number(e.target.value))} />
+                onChange={(e) => setDeleteModalConfirm(Number(e.target.value))} />
             </div>
           </div>
         </main>

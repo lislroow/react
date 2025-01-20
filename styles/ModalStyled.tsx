@@ -1,5 +1,5 @@
 const StylModal = ({
-  openState,
+  open,
   handleCloseClick,
   handleOkClick,
   title = '',
@@ -11,8 +11,8 @@ const StylModal = ({
 }) => {
   return (
     <>
-      <div className={openState ? 'openModal modal' : 'modal'}>
-        {openState ? (
+      <div className={open ? 'openModal modal' : 'modal'}>
+        {open ? (
           <section className={'modal_wrapper'}>
             <header>
               <button className={'closeIconWrapper'} onClick={() => handleCloseClick()} tabIndex={0}  type={'button'}>

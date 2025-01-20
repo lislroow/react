@@ -108,7 +108,7 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
     <div>
       <StylAlert handleClose={() => setAlertDisplay(false)}
         attr={{
-          openState: alertDisplay,
+          open: alertDisplay,
           message: `[${alertTitle}] ${alertMessage}`}}>
       </StylAlert>
       <div>

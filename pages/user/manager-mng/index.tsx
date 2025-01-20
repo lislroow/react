@@ -244,7 +244,7 @@ const Page = () => {
         size={searchParams?.size ?? PageSizeOptions[0]}
         onClick={(value: number) => handleRouteAndSearch('page', value)}
       />
-      <StylModal openState={registerModal}
+      <StylModal open={registerModal}
         title="사용자 등록 코드 발송"
         confirmBtnNm="발송"
         cancelBtnNm="취소"
