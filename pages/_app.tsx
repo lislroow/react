@@ -28,8 +28,6 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
   ];
 
   const [ menuList, setMenuList ] = useState<MenuInfo[]>();
-  const [ pathname, setPathname ] = useState<string | null>(null);
-
   const [ alertDisplay, setAlertDisplay] = useState(false);
   const [ alertTitle, setAlertTitle] = useState('');
   const [ alertMessage, setAlertMessage] = useState('');
@@ -38,13 +36,10 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
   const [ user, setUser ] = useState<UserInfo>({});
   const [ loginStatus, setLoginStatus ] = useState(false);
   const [ expireTime, setExpireTime ] = useState<number>();
-  
-  const [ usrId, setUsrId ] = useState('');
 
   storeUser.subscribe(() => {
     storage.setUser(storeUser.getState().user);
     setUser(storeUser.getState().user);
-    setUsrId(storeUser.getState().user.id);
     setLoginStatus(true);
   });
   
@@ -56,7 +51,6 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
 
   useEffect(() => {
     setMenuList(MenuService.initMenu());
-    setPathname(router.pathname);
     
     CodeService.initAllCodes();
 
