@@ -44,7 +44,7 @@ export const http = axios.create({
 
 export const refreshToken = async () => {
   try {
-    const response = await axios.post('/auth-api/v1/token/refresh', {
+    const response = await axios.post('/auth-api/v1/token/refresh-token', {
       "rtk": storage.getX_RTK()
     });
     const { rtk, atk, session } = response.data;
