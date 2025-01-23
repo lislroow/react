@@ -23,5 +23,10 @@
       "itemId":"/jpa-sample/star",
       "title":"[jpa] star",
       "pathname":"/jpa-sample/star"
+   },
+   {
+      "itemId":"/jpa-sample/satellite",
+      "title":"[jpa] satellite",
+      "pathname":"/jpa-sample/satellite"
    }
  ]

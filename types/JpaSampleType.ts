@@ -1,3 +1,41 @@
+// satellite
+export interface SatelliteSearchReq {
+  name?: string;
+  page?: number;
+  size?: number;
+}
+
+export interface SatelliteSearchRes {
+  id: number;
+  name: string;
+  radius: number;
+  mass: number;
+  planetName: string;
+  distanceFromPlanet: number;
+  orbitalEccentricity: number;
+  createId: string;
+  createTime: string;
+  createName: string;
+  modifyId: string;
+  modifyTime: string;
+  modifyName: string;
+}
+
+export interface SatelliteAddReq {
+  name: string;
+  radius: number;
+  mass: number;
+  planetName: string;
+  distanceFromPlanet: number;
+  orbitalEccentricity: number;
+}
+
+export interface SatelliteModifyReq extends SatelliteAddReq {
+  id: number;
+}
+
+
+// star
 export interface StarSearchReq {
   name?: string;
   page?: number;
