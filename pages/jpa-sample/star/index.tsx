@@ -165,10 +165,10 @@ const Page = () => {
                         query: queryString.stringify(searchParams),
                       })}>{item.name}</StylLink>
                   </Td>
-                  <Td textAlign="center">
+                  <Td>
                     {item.distance}
                   </Td>
-                  <Td textAlign="center">
+                  <Td>
                     {item.brightness}
                   </Td>
                   <Td>
