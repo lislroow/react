@@ -28,5 +28,10 @@
       "itemId":"/jpa-sample/satellite",
       "title":"[jpa] satellite",
       "pathname":"/jpa-sample/satellite"
+   },
+   {
+      "itemId":"/jpa-sample/planet",
+      "title":"[jpa] planet",
+      "pathname":"/jpa-sample/planet"
    }
  ]
