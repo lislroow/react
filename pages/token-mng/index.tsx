@@ -35,7 +35,7 @@ const Page = () => {
     tokenKey: '',
     contactName: '',
     enableYn: '',
-    page: 1,
+    page: 0,
     size: PageSizeOptions[0],
   };
   const [ searchParams, setSearchParams ] = useState<SearchClientTokenReq>(searchClientTokenReqDef);
@@ -67,7 +67,7 @@ const Page = () => {
     if (name === 'page' || name === 'size') {
       queryParam = { ...queryParam, [name]: _value };
     } else if (name ===  null) {
-      queryParam = { ...queryParam, page: 1, size: PageSizeOptions[0]};
+      queryParam = { ...queryParam, page: 0, size: PageSizeOptions[0]};
     } else {
       return;
     }
@@ -93,7 +93,7 @@ const Page = () => {
       if (key in query) {
         let value = query[key];
         if (key === 'page' || key === 'size') {
-          acc[key] = Array.isArray(value) ? Number(value[0]) : Number(value) || 1;
+          acc[key] = Array.isArray(value) ? Number(value[0]) : Number(value) || 0;
         } else {
           acc[key] = Array.isArray(value) ? value[0] : value || '';
         }
@@ -201,7 +201,7 @@ const Page = () => {
           </StyThRow>
         </thead>
         <tbody>
-          {searchClientTokenResList.length > 0 ? (
+          {searchClientTokenResList?.length > 0 ? (
             searchClientTokenResList.map((item, index) => {
               return (
                 <StyTdRow key={index}>
@@ -255,7 +255,7 @@ const Page = () => {
       </StyTable>
       <StylPagination
         total={pageInfoRes?.total ?? 0}
-        page={searchParams.page ??  1}
+        page={searchParams.page ??  0}
         size={searchParams?.size ?? PageSizeOptions[0]}
         onClick={(value: number) => handleRouteAndSearch('page', value)}
       />

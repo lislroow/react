@@ -25,6 +25,15 @@ const getCodeByCdGrp = (cdGrp: string) => {
 
 const getFormSelectItem = (cdGrp: string) : SelectItem[]  => {
   const codes = getCodes(cdGrp);
+  if (!codes) {
+    const result: SelectItem[] =  [
+      {
+        label: '선택',
+        value: '',
+      }
+    ];
+    return result;
+  }
   const result: SelectItem[] =  codes.map(item => ({
     label: item.cdNm,
     value: item.cd,

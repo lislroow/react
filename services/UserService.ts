@@ -59,10 +59,6 @@ const getRemainTime = (): number => {
   return expireTime < 0 ? -1 : expireTime;
 }
 
-const getUserType = (): string => {
-  return storage.getX_RTK()?.split(":")[0] || '';
-}
-
 const getInfo = () => {
   return http.get(`/auth-api/v1/user/info`, {});
 }
@@ -74,7 +70,6 @@ const UserService = {
   logout,
   updateLastAccessTime,
   getRemainTime,
-  getUserType,
   getInfo,
 };
 

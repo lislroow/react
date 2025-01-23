@@ -1,8 +1,8 @@
 import { http } from '@/components/http';
 import {
-  ScientistSearchReq as ScientistSearchReq,
-  ScientistAddReq as ScientistAddReq,
-  ScientistModifyReq as ScientistModifyReq,
+  ScientistSearchReq,
+  ScientistAddReq,
+  ScientistModifyReq,
 } from '@/types/MybatisSampleType';
 
 const getScientistsSearch = (data: ScientistSearchReq) => {

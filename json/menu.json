@@ -16,7 +16,12 @@
    },
    {
       "itemId":"/mybatis-sample/scientist",
-      "title":"[sample] scientist",
+      "title":"[mybatis] scientist",
       "pathname":"/mybatis-sample/scientist"
+   },
+   {
+      "itemId":"/jpa-sample/star",
+      "title":"[jpa] star",
+      "pathname":"/jpa-sample/star"
    }
  ]

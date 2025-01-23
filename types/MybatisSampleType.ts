@@ -19,15 +19,15 @@ export interface ScientistSearchRes {
   modifyName: string;
 }
 
-export interface ScientistModifyReq {
-  id: number;
+export interface ScientistAddReq {
   name: string;
   birthYear: number;
   deathYear: number;
   fosCd: string;
 }
 
-export interface ScientistAddReq {
+export interface ScientistModifyReq {
+  id: number;
   name: string;
   birthYear: number;
   deathYear: number;

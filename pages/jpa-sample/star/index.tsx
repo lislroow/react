@@ -15,29 +15,31 @@ import {
 } from '@/types/CommonType';
 
 import {
-  ScientistSearchReq,
-  ScientistSearchRes,
-} from '@/types/MybatisSampleType';
+  StarSearchReq,
+  StarSearchRes,
+} from '@/types/JpaSampleType';
 
-import SampleService from '@/services/MybatisSampleService';
+import SampleService from '@/services/JpaSampleService';
 import CodeService from "@/services/CodeService";
 
 const Page = () => {
   const router = useRouter();
   const { query } = router;
-  const [ FOS, setFOS ] = useState<SelectItem[]>();
-  const searchScientistReqDef: ScientistSearchReq = {
+  const [ CSM, setCSM ] = useState<SelectItem[]>();
+  const searchStarReqDef: StarSearchReq = {
     name: '',
-    fosCd: '',
     page: 0,
     size: PageSizeOptions[0],
   };
-  const [ searchParams, setSearchParams ] = useState<ScientistSearchReq>(searchScientistReqDef);
+  const [ searchParams, setSearchParams ] = useState<StarSearchReq>(searchStarReqDef);
   const [ pageInfoRes, setPageInfoRes ] = useState<PageInfoRes>();
-  const [ scientistSearchResList, setScientistSearchResList ] = useState<ScientistSearchRes[]>([]);
+  const [ starSearchResList, setStarSearchResList ] = useState<StarSearchRes[]>([]);
+  const [ searchMode, setSearchMode ] = useState({
+    name: 'eq',
+  });
 
   const init = async () => {
-    setFOS(CodeService.getFormSelectItem('FOS'));
+    setCSM(CodeService.getFormSelectItem('CHAR_SRCH_MODE'));
   };
 
   const handleRouteAndSearch = (name: string = null, _value: any = null) => {
@@ -51,12 +53,12 @@ const Page = () => {
     if (name === 'page' || name === 'size') {
       queryParam = { ...queryParam, [name]: _value };
     } else if (name ===  null) {
-      queryParam = { ...queryParam, page: 0, size: PageSizeOptions[0]};
+      queryParam = { ...queryParam, page: 1, size: PageSizeOptions[0]};
     } else {
       return;
     }
     router.push({
-      pathname: `/mybatis-sample/scientist`,
+      pathname: `/jpa-sample/star`,
       query: queryString.stringify(queryParam),
     });
   };
@@ -74,20 +76,26 @@ const Page = () => {
         }
       }
       return acc;
-    }, {} as ScientistSearchReq);
+    }, {} as StarSearchReq);
 
     let params = null;
     if (Object.keys(parsedParams).length > 0) {
       params = {...searchParams, ...parsedParams};
     } else {
-      params = searchScientistReqDef;
+      params = searchStarReqDef;
     }
     setSearchParams(params);
     
-    SampleService.getScientistsSearch(params)
+    SampleService.getStarsSearch(params)
       .then((response) => {
-        setPageInfoRes(response.data.pageInfo);
-        setScientistSearchResList(response.data.pageData);
+        setPageInfoRes({
+          page: response.data.pagable?.pageNumber-1,
+          size: response.data.pagable?.offest,
+          start: -1,
+          end: -1,
+          total: response.data.totalElements,
+        });
+        setStarSearchResList(response.data.content);
       });
   }, [query]);
   
@@ -106,12 +114,12 @@ const Page = () => {
                 name: e.target.value,
               })} />
             <div className="param-title">field of study</div>
-            <StylFormSelect type="type1" items={FOS}
-              value={searchParams?.fosCd ?? ''}
+            <StylFormSelect type="type1" items={CSM}
+              value={searchMode?.name ?? ''}
               size="large"
-              onChange={(e) => setSearchParams({
-                ...searchParams,
-                fosCd: e.target.value,
+              onChange={(e) => setSearchMode({
+                ...searchMode,
+                name: e.target.value,
               })} />
           </StylSearchItem>
           <StylSearchBtnArea>
@@ -126,6 +134,7 @@ const Page = () => {
           <col width={120} />
           <col width={120} />
           <col width={120} />
+          <col width={120} />
           <col width={80} />
           <col width={120} />
         </colgroup>
@@ -133,16 +142,17 @@ const Page = () => {
           <StyThRow>
             <Th>no.</Th>
             <Th>name</Th>
-            <Th>year of birth</Th>
-            <Th>year of death</Th>
-            <Th>field of study</Th>
+            <Th>distance</Th>
+            <Th>brightness</Th>
+            <Th>mass</Th>
+            <Th>temperature</Th>
             <Th>modify</Th>
             <Th>modify</Th>
           </StyThRow>
         </thead>
         <tbody>
-          {scientistSearchResList?.length > 0 ? (
-            scientistSearchResList.map((item, index) => {
+          {starSearchResList?.length > 0 ? (
+            starSearchResList.map((item, index) => {
               return (
                 <StyTdRow key={index}>
                   <Td textAlign="right">
@@ -151,18 +161,21 @@ const Page = () => {
                   <Td>
                     <StylLink onClick={() => 
                       router.push({
-                        pathname: `scientist/${item.id}`,
+                        pathname: `star/${item.id}`,
                         query: queryString.stringify(searchParams),
                       })}>{item.name}</StylLink>
                   </Td>
                   <Td textAlign="center">
-                    {item.birthYear}
+                    {item.distance}
                   </Td>
                   <Td textAlign="center">
-                    {item.deathYear}
+                    {item.brightness}
                   </Td>
                   <Td>
-                    {item.fosNm}
+                    {item.mass}
+                  </Td>
+                  <Td>
+                    {item.temperature}
                   </Td>
                   <Td textAlign="center">
                     {item.modifyName}
@@ -175,7 +188,7 @@ const Page = () => {
             })
           ) : (
             <StyTdRow>
-              <Td colSpan={7} className={'empty'}>
+              <Td colSpan={8} className={'empty'}>
                 no data
               </Td>
             </StyTdRow>
@@ -184,7 +197,7 @@ const Page = () => {
       </StyTable>
       <StylPagination
         total={pageInfoRes?.total ?? 0}
-        page={searchParams.page ??  0}
+        page={searchParams.page ??  1}
         size={searchParams?.size ?? PageSizeOptions[0]}
         onClick={(value: number) => handleRouteAndSearch('page', value)}
       />
