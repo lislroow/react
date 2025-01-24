@@ -53,7 +53,7 @@ const Page = () => {
     });
 
   const init = async () => {
-    setENABLE_YN(CodeService.getFormSelectItem('ENABLE_YN'));
+    setENABLE_YN(CodeService.getYN('활성', '비활성'));
   };
 
   const handleRouteAndSearch = (name: string = null, _value: any = null) => {

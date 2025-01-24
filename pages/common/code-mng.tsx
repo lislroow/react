@@ -39,7 +39,7 @@ const Page = () => {
   const [ codeSearchResList, setCodeSearchResList ] = useState<CodeSearchRes[]>([]);
 
   const init = async () => {
-    setUSE_YN(CodeService.getFormSelectItem('USE_YN'));
+    setUSE_YN(CodeService.getYN('사용', '미사용'));
   }
 
   const handleRouteAndSearch = (name: string = null, _value: any = null) => {

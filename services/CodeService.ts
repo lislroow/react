@@ -12,6 +12,24 @@ const initAllCodes = () : void => {
     );
 }
 
+const getYN = (labelY?: string, labelN?: string) => {
+  const codes = [
+    {
+      label: '선택',
+      value: '',
+    },
+    {
+      label: labelY || 'Y',
+      value: 'Y',
+    },
+    {
+      label: labelN || 'N',
+      value: 'N',
+    },
+  ]
+  return codes;
+}
+
 const getCodes = (cdGrp: string) => {
   const allCodes : AllCodeRes[] = storage.getCodes();
   const codes = allCodes.find(item => item.cdGrp === cdGrp);
@@ -47,6 +65,7 @@ const getFormSelectItem = (cdGrp: string) : SelectItem[]  => {
 
 const CommonCodeService = {
   initAllCodes,
+  getYN,
   getCodes,
   getCodeByCdGrp,
   getFormSelectItem,

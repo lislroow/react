@@ -37,7 +37,7 @@ const Page = () => {
   const [ scientistSearchResList, setScientistSearchResList ] = useState<ScientistSearchRes[]>([]);
 
   const init = async () => {
-    setFOS(CodeService.getFormSelectItem('FOS'));
+    setFOS(CodeService.getFormSelectItem('scientist:fos'));
   };
 
   const handleRouteAndSearch = (name: string = null, _value: any = null) => {

@@ -40,8 +40,8 @@ const Page = () => {
   const [ changePasswordModalMessage, setChangePasswordModalMessage ] = useState('');
   
   const init = async () => {
-    setENABLE_YN(CodeService.getFormSelectItem('ENABLE_YN'));
-    setLOCKED_YN(CodeService.getFormSelectItem('LOCKED_YN'));
+    setENABLE_YN(CodeService.getYN('활성', '비활성'));
+    setLOCKED_YN(CodeService.getYN('잠김', '정상'));
   };
 
   const handleParams = (name: string, _value: any) => {

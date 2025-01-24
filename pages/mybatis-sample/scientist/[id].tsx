@@ -36,7 +36,7 @@ const Page = () => {
   const [ deleteModalConfirm, setDeleteModalConfirm ] = useState<number>();
   
   const init = async () => {
-    setFOS(CodeService.getFormSelectItem('FOS'));
+    setFOS(CodeService.getFormSelectItem('scientist:fos'));
   }
 
   const handleParams = (name: string, _value: any) => {

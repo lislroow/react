@@ -52,8 +52,8 @@ const Page = () => {
   });
 
   const init = async () => {
-    setLOCKED_YN(CodeService.getFormSelectItem('LOCKED_YN'));
-    setENABLE_YN(CodeService.getFormSelectItem('ENABLE_YN'));
+    setLOCKED_YN(CodeService.getYN('활성', '비활성'));
+    setENABLE_YN(CodeService.getYN('잠김', '정상'));
   };
 
   const handleRouteAndSearch = (name: string = null, _value: any = null) => {
