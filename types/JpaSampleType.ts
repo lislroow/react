@@ -42,9 +42,9 @@ export interface SatelliteSearchRes {
   name: string;
   radius: number;
   mass: number;
-  planetName: string;
   distanceFromPlanet: number;
   orbitalEccentricity: number;
+  memo: string;
   createId: string;
   createTime: string;
   createName: string;
@@ -56,9 +56,9 @@ export interface SatelliteAddReq {
   name: string;
   radius: number;
   mass: number;
-  planetName: string;
   distanceFromPlanet: number;
   orbitalEccentricity: number;
+  memo: string;
 }
 export interface SatelliteModifyReq extends SatelliteAddReq {
   id: number;

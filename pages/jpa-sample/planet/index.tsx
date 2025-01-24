@@ -53,7 +53,7 @@ const Page = () => {
     if (name === 'page' || name === 'size') {
       queryParam = { ...queryParam, [name]: _value };
     } else if (name ===  null) {
-      queryParam = { ...queryParam, page: 1, size: PageSizeOptions[0]};
+      queryParam = { ...queryParam, page: 0, size: PageSizeOptions[0]};
     } else {
       return;
     }

@@ -145,9 +145,9 @@ const Page = () => {
             <Th>name</Th>
             <Th>radius</Th>
             <Th>mass</Th>
-            <Th>planet name</Th>
             <Th>distance from plant</Th>
             <Th>orbital eccentricity</Th>
+            <Th>memo</Th>
             <Th>modify</Th>
             <Th>modify</Th>
           </StyThRow>
@@ -174,13 +174,13 @@ const Page = () => {
                     {item.mass?.toExponential()}
                   </Td>
                   <Td>
-                    {item.planetName}
-                  </Td>
-                  <Td>
                     {item.distanceFromPlanet}
                   </Td>
                   <Td>
                     {item.orbitalEccentricity}
+                  </Td>
+                  <Td>
+                    {item.memo}
                   </Td>
                   <Td textAlign="center">
                     {item.modifyName}
