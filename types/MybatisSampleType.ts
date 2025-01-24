@@ -1,6 +1,7 @@
 export interface ScientistSearchReq {
   name?: string;
   fosCd?: string;
+  century?: number;
   page?: number;
   size?: number;
 }

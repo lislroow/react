@@ -26,18 +26,30 @@ const Page = () => {
   const router = useRouter();
   const { query } = router;
   const [ FOS, setFOS ] = useState<SelectItem[]>();
+  const [ century, setCentury ] = useState<SelectItem[]>();
   const searchScientistReqDef: ScientistSearchReq = {
     name: '',
     fosCd: '',
+    century: undefined,
     page: 0,
     size: PageSizeOptions[0],
   };
   const [ searchParams, setSearchParams ] = useState<ScientistSearchReq>(searchScientistReqDef);
   const [ pageInfoRes, setPageInfoRes ] = useState<PageInfoRes>();
   const [ scientistSearchResList, setScientistSearchResList ] = useState<ScientistSearchRes[]>([]);
-
   const init = async () => {
     setFOS(CodeService.getFormSelectItem('scientist:fos'));
+    let codes: SelectItem[] = [{
+      label: '전체',
+      value: undefined,
+    }];
+    for (let i=20; i>14; i--) {
+      codes.push({
+        label: `${i}세기`,
+        value: (i) + '',
+      });
+    }
+    setCentury(codes);
   };
 
   const handleRouteAndSearch = (name: string = null, _value: any = null) => {
@@ -112,6 +124,14 @@ const Page = () => {
               onChange={(e) => setSearchParams({
                 ...searchParams,
                 fosCd: e.target.value,
+              })} />
+            <div className="param-title">century</div>
+            <StylFormSelect type="type1" items={century}
+              value={searchParams?.century ?? ''}
+              size="large"
+              onChange={(e) => setSearchParams({
+                ...searchParams,
+                century: e.target.value,
               })} />
           </StylSearchItem>
           <StylSearchBtnArea>
