@@ -5,7 +5,7 @@ import { AllCodeRes } from '@/types/CodeType';
 
 const initAllCodes = () : void => {
   !storage.hasCodes() && (
-    http.get('/story-api/v1/common/codes/all')
+    http.get('/story-api/v1/common/code-enum/all')
         .then((response) => {
           storage.setCodes(response.data);
       })
@@ -20,7 +20,7 @@ const getCodes = (cdGrp: string) => {
 }
 
 const getCodeByCdGrp = (cdGrp: string) => {
-  return http.get(`/story-api/v1/common-code/codes/${cdGrp}`);
+  return http.get(`/story-api/v1/common-code/code-enum/${cdGrp}`);
 };
 
 const getFormSelectItem = (cdGrp: string) : SelectItem[]  => {
