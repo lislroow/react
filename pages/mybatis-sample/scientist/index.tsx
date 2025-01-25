@@ -41,7 +41,7 @@ const Page = () => {
     setFOS(CodeService.getFormSelectItem('scientist:fos'));
     let codes: SelectItem[] = [{
       label: '전체',
-      value: undefined,
+      value: '',
     }];
     for (let i=20; i>14; i--) {
       codes.push({
@@ -154,7 +154,7 @@ const Page = () => {
             <Th>no.</Th>
             <Th>name</Th>
             <Th>year of birth</Th>
-            <Th>year of death</Th>
+            <Th>year of death4444</Th>
             <Th>field of study</Th>
             <Th>modify</Th>
             <Th>modify</Th>

@@ -113,7 +113,7 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
       </StylAlert>
       <div>
         <main className='flex' style={{width: '100%', minHeight: '100vh', height: 'auto'}}>
-          {!noLayoutUri.some(uri => router.pathname.startsWith(uri)) && 
+          {!noLayoutUri.some(uri => router?.pathname.startsWith(uri)) && 
             <aside className={asideStatus ? 'aside-show' : 'aside-hidden'}>
               <div className="flex items-center justify-center text-center py-4">
                 <Link href='/'> 
@@ -135,13 +135,13 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
           <section className='content' style={{padding: '14px', flex: 1}}>
             <div>
               <div>
-                {!noLayoutUri.some(uri => router.pathname.startsWith(uri)) && 
+                {!noLayoutUri.some(uri => router?.pathname.startsWith(uri)) && 
                   <IconButton size="medium" color="primary" aria-label="medium-button" onClick={(e) => setAsideStatus(!asideStatus)}>
                     <MenuIcon sx={{ fontSize: '20px' }} />
                   </IconButton>
                 }
                 {!loginStatus ? (
-                  !noLayoutUri.some(uri => router.pathname.startsWith(uri)) && (
+                  !noLayoutUri.some(uri => router?.pathname.startsWith(uri)) && (
                     <div style={{float: 'right', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '25px'}}>
                       <button className={styles.button_sm1} type={'button'} onClick={(e) => router.push('/login')}>
                         로그인
@@ -149,10 +149,10 @@ const AppStructer = ({ Component, pageProps }: AppProps) => {
                     </div>
                   )
                 ) : (
-                  !noLayoutUri.some(uri => router.pathname.startsWith(uri)) && (
+                  !noLayoutUri.some(uri => router?.pathname.startsWith(uri)) && (
                     <div style={{float: 'right', display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '25px'}}>
                       <button className={styles.button_sm1} type={'button'} onClick={() => UserService.getInfo()}>
-                        {Math.floor(expireTime / 60) + ':' + (expireTime % 60)} | 연장
+                        {String(Math.floor(expireTime / 60)).padStart(2, '0') + ':' + String(expireTime % 60).padStart(2, '0')} | 연장
                       </button>
                       <Typography>{user?.username}</Typography>
                       <button className={styles.button_sm2} type={'button'} onClick={() => UserService.logout(router)}>
