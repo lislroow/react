@@ -13,7 +13,7 @@ const getCodesSearch = (data: CodeSearchReq) => {
 }
 
 const CodeMngService = {
-  getCodeGroupssSearch: getCodeGroupsSearch,
+  getCodeGroupsSearch,
   getCodesSearch,
 };
 

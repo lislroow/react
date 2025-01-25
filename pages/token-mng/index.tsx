@@ -79,7 +79,7 @@ const Page = () => {
   };
 
   const handleRegistration = () => {
-    TokenMngService.postAddClientToken(addTokenClientReq)
+    TokenMngService.postClientToken(addTokenClientReq)
       .then((response) => {
         // setAddTokenClientReq({});
         setRegisterModal(false);
@@ -109,7 +109,7 @@ const Page = () => {
     }
     setSearchParams(params);
     
-    TokenMngService.getSearchClientTokens(params)
+    TokenMngService.getClientTokensSearch(params)
       .then((response) => {
         setPageInfoRes(response.data.pageInfo);
         setSearchClientTokenResList(response.data.pageData);

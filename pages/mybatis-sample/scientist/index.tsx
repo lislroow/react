@@ -116,7 +116,7 @@ const Page = () => {
     }
     setSearchParams(params);
     
-    SampleService.getSearchScientists(params)
+    SampleService.getScientistsSearch(params)
       .then((response) => {
         setPageInfoRes(response.data.pageInfo);
         setScientistSearchResList(response.data.pageData);

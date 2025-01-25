@@ -13,7 +13,7 @@ const getScientistsSearchExcelDown = (data: ScientistSearchReq) => {
   excelDown('/story-api/excel-down/v1/mybatis-sample/scientists/search', data);
 }
 
-const getSearchScientists = (data: ScientistSearchReq) => {
+const getScientistsSearch = (data: ScientistSearchReq) => {
   return http.get('/story-api/v1/mybatis-sample/scientists/search', {params: data});
 }
 
@@ -36,7 +36,7 @@ const putScientist = (data: ScientistModifyReq) => {
 const SampleService = {
   getScientistsAllExcelDown,
   getScientistsSearchExcelDown,
-  getSearchScientists,
+  getScientistsSearch,
   getScientist,
   postScientist,
   deleteScientist,

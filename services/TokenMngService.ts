@@ -3,18 +3,18 @@ import {
   SearchClientTokenReq,
 } from '@/types/TokenMngTypes';
 
-const getSearchClientTokens = (data: SearchClientTokenReq) => {
+const getClientTokensSearch = (data: SearchClientTokenReq) => {
   return http.get('/auth-api/v1/token-mng/search', {params: data});
 }
 
-const postAddClientToken = (data: SearchClientTokenReq) => {
+const postClientToken = (data: SearchClientTokenReq) => {
   return http.post('/auth-api/v1/token-mng/token-client', data);
 }
 
 
 const TokenMngService = {
-  getSearchClientTokens,
-  postAddClientToken,
+  getClientTokensSearch,
+  postClientToken,
 };
 
 export default TokenMngService;
