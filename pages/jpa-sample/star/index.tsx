@@ -19,8 +19,9 @@ import {
   StarSearchRes,
 } from '@/types/JpaSampleType';
 
-import SampleService from '@/services/JpaSampleService';
+import JpaSampleService from '@/services/JpaSampleService';
 import CodeService from "@/services/CodeService";
+import StylButtonGroup from "@/styles/ButtonGroupStyled";
 
 const Page = () => {
   const router = useRouter();
@@ -42,6 +43,25 @@ const Page = () => {
     setCSM(CodeService.getFormSelectItem('CHAR_SRCH_MODE'));
   };
 
+  const handleAllExcelDown = () => {
+    JpaSampleService.getStarsAllExcelDown();
+  };
+
+  const handleSearchExcelDown = () => {
+    const parsedParams = Object.keys(searchParams).reduce((acc, key) => {
+      if (key in query) {
+        let value = query[key];
+        if (key === 'page' || key === 'size') {
+          acc[key] = Array.isArray(value) ? Number(value[0]) : Number(value) || 0;
+        } else {
+          acc[key] = Array.isArray(value) ? value[0] : value || '';
+        }
+      }
+      return acc;
+    }, {} as StarSearchReq);
+    JpaSampleService.getStarsSearchExcelDown(parsedParams);
+  };
+
   const handleRouteAndSearch = (name: string = null, _value: any = null) => {
     let queryParam = Object.keys(searchParams).reduce((obj, key) => {
       if (searchParams[key] !== '' && searchParams[key] !== null) {
@@ -53,7 +73,7 @@ const Page = () => {
     if (name === 'page' || name === 'size') {
       queryParam = { ...queryParam, [name]: _value };
     } else if (name ===  null) {
-      queryParam = { ...queryParam, page: 1, size: PageSizeOptions[0]};
+      queryParam = { ...queryParam, page: 0, size: PageSizeOptions[0]};
     } else {
       return;
     }
@@ -86,7 +106,7 @@ const Page = () => {
     }
     setSearchParams(params);
     
-    SampleService.getStarsSearch(params)
+    JpaSampleService.getStarsSearch(params)
       .then((response) => {
         setPageInfoRes({
           page: response.data.pagable?.pageNumber-1,
@@ -127,6 +147,13 @@ const Page = () => {
           </StylSearchBtnArea>
         </StylSearchGroup>
       </StylSearchArea>
+      <StylButtonGroup
+        btn1Label="EXCEL(ALL)"
+        btn1OnClick={() => handleAllExcelDown()}
+        btn2Label="EXCEL"
+        btn2OnClick={() => handleSearchExcelDown()}
+      >
+      </StylButtonGroup>
       <StyTable>
         <colgroup>
           <col width={80} />

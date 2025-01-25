@@ -20,7 +20,7 @@ import {
   ScientistSearchRes,
 } from '@/types/MybatisSampleType';
 
-import SampleService from '@/services/MybatisSampleService';
+import MybatisSampleService from '@/services/MybatisSampleService';
 import CodeService from "@/services/CodeService";
 
 const Page = () => {
@@ -53,6 +53,25 @@ const Page = () => {
     setCentury(codes);
   };
 
+  const handleAllExcelDown = () => {
+    MybatisSampleService.getScientistsAllExcelDown();
+  };
+
+  const handleSearchExcelDown = () => {
+    const parsedParams = Object.keys(searchParams).reduce((acc, key) => {
+      if (key in query) {
+        let value = query[key];
+        if (key === 'page' || key === 'size') {
+          acc[key] = Array.isArray(value) ? Number(value[0]) : Number(value) || 0;
+        } else {
+          acc[key] = Array.isArray(value) ? value[0] : value || '';
+        }
+      }
+      return acc;
+    }, {} as ScientistSearchReq);
+    MybatisSampleService.getScientistsSearchExcelDown(parsedParams);
+  };
+
   const handleRouteAndSearch = (name: string = null, _value: any = null) => {
     let queryParam = Object.keys(searchParams).reduce((obj, key) => {
       if (searchParams[key] !== '' && searchParams[key] !== null) {
@@ -72,25 +91,6 @@ const Page = () => {
       pathname: `/mybatis-sample/scientist`,
       query: queryString.stringify(queryParam),
     });
-  };
-
-  const handleAllExcelDown = () => {
-    SampleService.getScientistsAllExcelDown();
-  };
-
-  const handleSearchExcelDown = () => {
-    const parsedParams = Object.keys(searchParams).reduce((acc, key) => {
-      if (key in query) {
-        let value = query[key];
-        if (key === 'page' || key === 'size') {
-          acc[key] = Array.isArray(value) ? Number(value[0]) : Number(value) || 0;
-        } else {
-          acc[key] = Array.isArray(value) ? value[0] : value || '';
-        }
-      }
-      return acc;
-    }, {} as ScientistSearchReq);
-    SampleService.getScientistsSearchExcelDown(parsedParams);
   };
 
   useEffect(() => {
@@ -116,7 +116,7 @@ const Page = () => {
     }
     setSearchParams(params);
     
-    SampleService.getScientistsSearch(params)
+    MybatisSampleService.getScientistsSearch(params)
       .then((response) => {
         setPageInfoRes(response.data.pageInfo);
         setScientistSearchResList(response.data.pageData);

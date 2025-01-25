@@ -14,7 +14,7 @@ import {
   ScientistModifyReq,
 } from '@/types/MybatisSampleType';
 import CodeService from "@/services/CodeService";
-import SampleService from '@/services/MybatisSampleService';
+import MybatisSampleService from '@/services/MybatisSampleService';
 
 const Page = () => {
   const router = useRouter();
@@ -51,7 +51,7 @@ const Page = () => {
   };
   
   const handleSave = () => {
-    SampleService.putScientist(scientistModifyReq)
+    MybatisSampleService.putScientist(scientistModifyReq)
       .then((response) => {
         router.push({
           pathname: `${router.query.id}`,
@@ -61,7 +61,7 @@ const Page = () => {
   };
   
   const handleDelete = () => {
-    SampleService.deleteScientist(scientistSearchRes.id)
+    MybatisSampleService.deleteScientist(scientistSearchRes.id)
       .then((response) => {
         handleList();
       });
@@ -76,7 +76,7 @@ const Page = () => {
       router.replace('/mybatis-sample/scientist');
       return;
     }
-    SampleService.getScientist(id)
+    MybatisSampleService.getScientist(id)
       .then((response) => {
         if ('title' in response.data && 'detail' in response.data) {
           storeAlert.dispatch(actAlertShow(response.data.title, response.data.detail));

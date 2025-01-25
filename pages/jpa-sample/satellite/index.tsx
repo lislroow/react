@@ -19,7 +19,7 @@ import {
   SatelliteSearchRes,
 } from '@/types/JpaSampleType';
 
-import SampleService from '@/services/JpaSampleService';
+import JpaSampleService from '@/services/JpaSampleService';
 import CodeService from "@/services/CodeService";
 
 const Page = () => {
@@ -86,7 +86,7 @@ const Page = () => {
     }
     setSearchParams(params);
     
-    SampleService.getSatellitesSearch(params)
+    JpaSampleService.getSatellitesSearch(params)
       .then((response) => {
         setPageInfoRes({
           page: response.data.pagable?.pageNumber-1,

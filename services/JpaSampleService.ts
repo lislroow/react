@@ -1,4 +1,4 @@
-import { http } from '@/components/http';
+import { excelDown, http } from '@/components/http';
 import {
   PlanetSearchReq,
   PlanetAddReq,
@@ -52,6 +52,12 @@ const putSatellite = (data: SatelliteModifyReq) => {
 
 
 // star
+const getStarsAllExcelDown = () => {
+  excelDown('/story-api/excel-down/v1/jpa-sample/stars/all');
+}
+const getStarsSearchExcelDown = (data: StarSearchReq) => {
+  excelDown('/story-api/excel-down/v1/jpa-sample/stars/search', data);
+}
 const getStarsSearch = (data: StarSearchReq) => {
   return http.get('/story-api/v1/jpa-sample/stars/search', {params: data});
 }
@@ -69,7 +75,7 @@ const putStar = (data: StarModifyReq) => {
 }
 
 
-const SampleService = {
+const JpaSampleService = {
   getPlanetsSearch,
   getPlanet,
   postPlanet,
@@ -82,6 +88,8 @@ const SampleService = {
   deleteSatellite,
   putSatellite,
 
+  getStarsAllExcelDown,
+  getStarsSearchExcelDown,
   getStarsSearch,
   getStar,
   postStar,
@@ -89,4 +97,4 @@ const SampleService = {
   putStar,
 };
 
-export default SampleService;
+export default JpaSampleService;
