@@ -5,6 +5,7 @@ import queryString from 'query-string';
 import styles from '@/css/global.module.css';
 import StylPagination from '@/styles/PaginationStyled';
 import StylFormSelect, { SelectItem } from "@/styles/FormSelectStyled";
+import StylButtonGroup from "@/styles/ButtonGroupStyled";
 import { StylSearchArea, StylSearchGroup, StylSearchItem, StylSearchBtnArea } from "@/styles/SearchStyled";
 import { StyTable, StyTdRow, StyThRow, Td, Th } from '@/styles/TableStyled';
 import { StylLink } from "@/styles/GeneralStyled";
@@ -73,6 +74,25 @@ const Page = () => {
     });
   };
 
+  const handleAllExcelDown = () => {
+    SampleService.getScientistsAllExcelDown();
+  };
+
+  const handleSearchExcelDown = () => {
+    const parsedParams = Object.keys(searchParams).reduce((acc, key) => {
+      if (key in query) {
+        let value = query[key];
+        if (key === 'page' || key === 'size') {
+          acc[key] = Array.isArray(value) ? Number(value[0]) : Number(value) || 0;
+        } else {
+          acc[key] = Array.isArray(value) ? value[0] : value || '';
+        }
+      }
+      return acc;
+    }, {} as ScientistSearchReq);
+    SampleService.getScientistsSearchExcelDown(parsedParams);
+  };
+
   useEffect(() => {
     init();
 
@@ -96,7 +116,7 @@ const Page = () => {
     }
     setSearchParams(params);
     
-    SampleService.getScientistsSearch(params)
+    SampleService.getSearchScientists(params)
       .then((response) => {
         setPageInfoRes(response.data.pageInfo);
         setScientistSearchResList(response.data.pageData);
@@ -139,6 +159,13 @@ const Page = () => {
           </StylSearchBtnArea>
         </StylSearchGroup>
       </StylSearchArea>
+      <StylButtonGroup
+        btn1Label="EXCEL(ALL)"
+        btn1OnClick={() => handleAllExcelDown()}
+        btn2Label="EXCEL"
+        btn2OnClick={() => handleSearchExcelDown()}
+      >
+      </StylButtonGroup>
       <StyTable>
         <colgroup>
           <col width={80} />
@@ -154,7 +181,7 @@ const Page = () => {
             <Th>no.</Th>
             <Th>name</Th>
             <Th>year of birth</Th>
-            <Th>year of death4444</Th>
+            <Th>year of death</Th>
             <Th>field of study</Th>
             <Th>modify</Th>
             <Th>modify</Th>

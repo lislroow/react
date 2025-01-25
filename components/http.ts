@@ -16,6 +16,37 @@ export const getLastActiveTime = (): number => {
   return storage.getLastActiveTime();
 };
 
+export const excelDown = (url: string, data?: any) => {
+  axios
+    .get(url, {
+      responseType: 'blob',
+      params: data,
+    })
+    .then((response) => {
+      const blob = new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+      const downloadUrl = URL.createObjectURL(blob);
+
+      const contentDisposition = response.headers['content-disposition'];
+      let filename = 'download.xlsx';
+      if (contentDisposition) {
+        const filenameMatch = contentDisposition.match(/filename\*?="?([^"]+)"?/);
+        if (filenameMatch) {
+          filename = decodeURIComponent(filenameMatch[1].replace(/UTF-8''/, ''));
+        }
+      }
+
+      const link = document.createElement('a');
+      link.href = downloadUrl;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      URL.revokeObjectURL(downloadUrl);
+      document.body.removeChild(link);
+    })
+    .catch((error) => {
+      console.error('Error downloading the file:', error);
+    });
+}
 
 const transformResponse = function (res: any) {
   if (res) {
@@ -97,3 +128,5 @@ http.interceptors.response.use((res: AxiosResponse) => {
     return Promise.reject(res);
   }
 }, interceptor(http));
+
+

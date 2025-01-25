@@ -1,11 +1,19 @@
-import { http } from '@/components/http';
+import { http, excelDown } from '@/components/http';
 import {
   ScientistSearchReq,
   ScientistAddReq,
   ScientistModifyReq,
 } from '@/types/MybatisSampleType';
 
-const getScientistsSearch = (data: ScientistSearchReq) => {
+const getScientistsAllExcelDown = () => {
+  excelDown('/story-api/excel-down/v1/mybatis-sample/scientists/all');
+}
+
+const getScientistsSearchExcelDown = (data: ScientistSearchReq) => {
+  excelDown('/story-api/excel-down/v1/mybatis-sample/scientists/search', data);
+}
+
+const getSearchScientists = (data: ScientistSearchReq) => {
   return http.get('/story-api/v1/mybatis-sample/scientists/search', {params: data});
 }
 
@@ -26,7 +34,9 @@ const putScientist = (data: ScientistModifyReq) => {
 }
 
 const SampleService = {
-  getScientistsSearch,
+  getScientistsAllExcelDown,
+  getScientistsSearchExcelDown,
+  getSearchScientists,
   getScientist,
   postScientist,
   deleteScientist,
