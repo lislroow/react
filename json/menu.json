@@ -33,5 +33,10 @@
       "itemId":"/jpa-sample/planet",
       "title":"[jpa] planet",
       "pathname":"/jpa-sample/planet"
+   },
+   {
+      "itemId":"/fund/fund-mst",
+      "title":"[fund] fund-mst",
+      "pathname":"/fund/fund-mst"
    }
  ]
