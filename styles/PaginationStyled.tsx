@@ -34,7 +34,7 @@ const StylPagination: React.FC<PaginationAttr> = ({
     <>
       <ul className={`pagination ${props.className}`}>
         {(
-          <li className="itemBtn prevBtn first pageBtn" onClick={() => onClick(firstNumber-(page % pageSize) < pageSize ? 0 : firstNumber-(page % pageSize))}>{'◀'}</li>
+          <li className="itemBtn prevBtn first pageBtn" onClick={() => onClick(firstNumber-(page % pageSize) < 1 ? 0 : firstNumber+(page % pageSize) - pageSize)}>{'◀'}</li>
         )}
         {(
           <li className="itemBtn pageBtn" onClick={() => onClick(page < 1 ? 0 : page-1)}>{'◁'}</li>
