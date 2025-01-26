@@ -46,7 +46,7 @@ const StylPagination: React.FC<PaginationAttr> = ({
           <li className="itemBtn nextBtn pageBtn" onClick={() => onClick(page + 1 >= numPages ? numPages -1 : page + 1)}>{'▷'}</li>
         )}
         {(
-          <li className="itemBtn nextBtn last pageBtn" onClick={() => onClick(lastNumber+(page % pageSize) > numPages ? numPages+1 : lastNumber+(page % pageSize))}>{'▶'}</li>
+          <li className="itemBtn nextBtn last pageBtn" onClick={() => onClick(lastNumber+(page % pageSize) >= numPages ? numPages-1 : lastNumber+(page % pageSize))}>{'▶'}</li>
         )}
       </ul>
       <style jsx>{`
