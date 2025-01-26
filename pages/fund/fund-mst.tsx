@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import queryString from 'query-string';
 
+import { ResponsiveLine } from '@nivo/line';
+
 import styles from '@/css/global.module.css';
 import StylPagination from '@/styles/PaginationStyled';
 import { StylSearchArea, StylSearchGroup, StylSearchItem, StylSearchBtnArea } from "@/styles/SearchStyled";
@@ -31,9 +33,27 @@ const Page = () => {
   const [ searchParams, setSearchParams ] = useState<FundMstSearchReq>(searchPlanetReqDef);
   const [ pageInfoRes, setPageInfoRes ] = useState<PageInfoRes>();
   const [ fundMstSearchResList, setFundMstSearchResList ] = useState<FundMstSearchRes[]>([]);
+  const [ fundIrRes, setFundIrRes ] = useState<any>([]);
 
   const init = async () => {
   };
+
+  const handleFindFundIrs = (fundCd: string) => {
+    FundService.getIrLineChart(fundCd)
+      .then((response) => {
+        const formattedData = [
+          {
+            id: fundCd,
+            data: response.data.map((item: { basYmd: string; basPrice: number }) => ({
+              x: item.basYmd,
+              y: item.basPrice
+            }))
+          }
+        ];
+        setFundIrRes(formattedData);
+      });
+  };
+
 
   const handleRouteAndSearch = (name: string = null, _value: any = null) => {
     let queryParam = Object.keys(searchParams).reduce((obj, key) => {
@@ -149,11 +169,13 @@ const Page = () => {
         <tbody>
           {fundMstSearchResList?.length > 0 ? (
             fundMstSearchResList.map((item, index) => {
+              const handleRowDoubleClick = () => {
+                handleFindFundIrs(item.fundCd);
+              };
               return (
-                <StyTdRow key={index}>
+                <StyTdRow key={index} onDoubleClick={handleRowDoubleClick}>
                   <Td textAlign="right">
                     {pageInfoRes.total - (searchParams?.page * searchParams?.size) - index}
-                    {/* {JSON.stringify(pageInfoRes)} */}
                   </Td>
                   <Td textAlign="center">
                     {item.fundCd}
@@ -194,6 +216,23 @@ const Page = () => {
         size={searchParams?.size ?? PageSizeOptions[0]}
         onClick={(value: number) => handleRouteAndSearch('page', value)}
       />
+      <div style={{ height: 350 }}>
+        <ResponsiveLine
+          data={fundIrRes}
+          margin={{ top: 50, right: 50, bottom: 50, left: 60 }}
+          xScale={{ type: 'point' }} // x값이 범주형(문자열)임을 명시
+          yScale={{ type: 'linear', min: 'auto', max: 'auto' }}
+          axisLeft={{ tickSize: 5, tickPadding: 5 }}
+          axisBottom={{
+            tickSize: 5,
+            tickPadding: 5,
+            tickValues: fundIrRes[0]?.data.length > 10
+              ? fundIrRes[0]?.data.filter((_, index) => index % Math.ceil(fundIrRes[0]?.data.length / 10) === 0).map(item => item.x)
+              : fundIrRes[0]?.data.map(item => item.x),
+          }}
+          colors={{ scheme: 'nivo' }}
+        />
+      </div>
     </div>
   )
 }

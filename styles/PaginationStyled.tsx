@@ -55,7 +55,7 @@ const StylPagination: React.FC<PaginationAttr> = ({
           display: flex;
           flex-grow: 1;
           justify-content: center;
-          margin: 4rem 0 2rem;
+          margin: 1rem 0 1rem;
         }
         .pagination > .itemBtn {
           background-color: #fff;
