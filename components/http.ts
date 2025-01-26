@@ -44,7 +44,11 @@ export const excelDown = (url: string, data?: any) => {
       document.body.removeChild(link);
     })
     .catch((error) => {
-      console.error('Error downloading the file:', error);
+      if (error.status === 503) {
+        storeAlert.dispatch(actAlertShow("503", "service unavailable"));
+      } else {
+        storeAlert.dispatch(actAlertShow("ERROR", "excel 다운로드에 실패했습니다."));
+      }
     });
 }
 

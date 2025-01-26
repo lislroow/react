@@ -9,11 +9,14 @@ const getFundMstsSearch = (data: FundMstSearchReq) => {
 const getIrLineChart = (fundCd: string) => {
   return http.get(`/story-api/v1/fund/ir/line-chart/${fundCd}`);
 }
-
+const getFundMstsAllExcelDown = () => {
+  excelDown('/story-api/excel-down/v1/fund/fund-mst/all');
+}
 
 const FundService = {
   getFundMstsSearch,
   getIrLineChart,
+  getFundMstsAllExcelDown,
 };
 
 export default FundService;

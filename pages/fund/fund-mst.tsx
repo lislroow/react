@@ -8,6 +8,7 @@ import styles from '@/css/global.module.css';
 import StylPagination from '@/styles/PaginationStyled';
 import { StylSearchArea, StylSearchGroup, StylSearchItem, StylSearchBtnArea } from "@/styles/SearchStyled";
 import { StyTable, StyTdRow, StyThRow, Td, Th } from '@/styles/TableStyled';
+import StylButtonGroup from "@/styles/ButtonGroupStyled";
 
 import {
   PageSizeOptions,
@@ -52,6 +53,10 @@ const Page = () => {
         ];
         setFundIrRes(formattedData);
       });
+  };
+
+  const handleAllExcelDown = () => {
+    FundService.getFundMstsAllExcelDown();
   };
 
 
@@ -143,6 +148,10 @@ const Page = () => {
           </StylSearchBtnArea>
         </StylSearchGroup>
       </StylSearchArea>
+      <StylButtonGroup
+        btn1Label="EXCEL(ALL)"
+        btn1OnClick={() => handleAllExcelDown()}
+      />
       <StyTable>
         <colgroup>
           <col width={80} />

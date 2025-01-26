@@ -152,8 +152,7 @@ const Page = () => {
         btn1OnClick={() => handleAllExcelDown()}
         btn2Label="EXCEL"
         btn2OnClick={() => handleSearchExcelDown()}
-      >
-      </StylButtonGroup>
+      />
       <StyTable>
         <colgroup>
           <col width={80} />
