@@ -23,6 +23,7 @@ const Page = () => {
   const router = useRouter();
   const { query } = router;
   const searchPlanetReqDef: FundMstSearchReq = {
+    fundCd: '',
     fundFnm: '',
     page: 0,
     size: PageSizeOptions[0],
@@ -100,7 +101,15 @@ const Page = () => {
       <StylSearchArea>
         <StylSearchGroup>
           <StylSearchItem>
-            <div className="param-title">name</div>
+            <div className="param-title">fund cd</div>
+            <input type="text" className="el_input_select2" placeholder="name"
+              value={searchParams?.fundCd ?? ''}
+              onKeyDown={(e) => e.key === 'Enter' && handleRouteAndSearch()}
+              onChange={(e) => setSearchParams({
+                ...searchParams,
+                fundCd: e.target.value,
+              })} />
+            <div className="param-title">fund name</div>
             <input type="text" className="el_input_select2" placeholder="name"
               value={searchParams?.fundFnm ?? ''}
               onKeyDown={(e) => e.key === 'Enter' && handleRouteAndSearch()}

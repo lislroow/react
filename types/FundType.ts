@@ -1,5 +1,6 @@
 // satellite
 export interface FundMstSearchReq {
+  fundCd?: string;
   fundFnm?: string;
   page?: number;
   size?: number;
