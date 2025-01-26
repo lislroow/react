@@ -197,7 +197,7 @@ const Page = () => {
       </StyTable>
       <StylPagination
         total={pageInfoRes?.total ?? 0}
-        page={searchParams.page ??  1}
+        page={searchParams.page ??  0}
         size={searchParams?.size ?? PageSizeOptions[0]}
         onClick={(value: number) => handleRouteAndSearch('page', value)}
       />

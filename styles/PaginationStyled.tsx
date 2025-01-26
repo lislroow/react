@@ -7,17 +7,17 @@ export interface PaginationAttr {
 }
 
 const StylPagination: React.FC<PaginationAttr> = ({
-  total = 10,
-  size = 1,
+  total = 0,
   page,
+  size,
   onClick,
   ...props
 }) => {
   const pageSize = 10;
   const numPages = Math.ceil(total / size);
-  const pageGroup = Math.ceil(page + 1/ pageSize);
+  const pageGroup = Math.ceil((page + 1) / pageSize);
   const lastNumber = pageGroup * pageSize > numPages ? numPages : pageGroup * pageSize;
-  const firstNumber = lastNumber - (pageSize - 1) > 0 ? lastNumber - (pageSize - 1) : 0;
+  const firstNumber = lastNumber - (pageSize - 1) > 0 ? lastNumber - (pageSize) : 0;
 
   const pageEmt = () => {
     const tempList = [];
@@ -34,19 +34,19 @@ const StylPagination: React.FC<PaginationAttr> = ({
     <>
       <ul className={`pagination ${props.className}`}>
         {(
-          <li className="itemBtn prevBtn first pageBtn" onClick={() => onClick(0)}>{'◀'}</li>
+          <li className="itemBtn prevBtn first pageBtn" onClick={() => onClick(firstNumber-(page % pageSize) < pageSize ? 0 : firstNumber-(page % pageSize))}>{'◀'}</li>
         )}
         {(
           <li className="itemBtn pageBtn" onClick={() => onClick(page < 1 ? 0 : page-1)}>{'◁'}</li>
         )}
         {pageList.map((i) => (
-          <li className={`itemBtn ${page === i ? 'active' : null}`} key={i} onClick={() => onClick(i)}>{i+1}</li>
+          <li className={`itemBtn ${page === i ? 'active' : ''}`} key={i} onClick={() => onClick(i)}>{i+1}</li>
         ))}
         {(
           <li className="itemBtn nextBtn pageBtn" onClick={() => onClick(page + 1 >= numPages ? numPages -1 : page + 1)}>{'▷'}</li>
         )}
         {(
-          <li className="itemBtn nextBtn last pageBtn" onClick={() => onClick(numPages-1)}>{'▶'}</li>
+          <li className="itemBtn nextBtn last pageBtn" onClick={() => onClick(lastNumber+(page % pageSize) > numPages ? numPages+1 : lastNumber+(page % pageSize))}>{'▶'}</li>
         )}
       </ul>
       <style jsx>{`

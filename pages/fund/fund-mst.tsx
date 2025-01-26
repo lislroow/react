@@ -29,7 +29,7 @@ const Page = () => {
   };
   const [ searchParams, setSearchParams ] = useState<FundMstSearchReq>(searchPlanetReqDef);
   const [ pageInfoRes, setPageInfoRes ] = useState<PageInfoRes>();
-  const [ starSearchResList, setFundMstSearchResList ] = useState<FundMstSearchRes[]>([]);
+  const [ fundMstSearchResList, setFundMstSearchResList ] = useState<FundMstSearchRes[]>([]);
 
   const init = async () => {
   };
@@ -81,8 +81,8 @@ const Page = () => {
     FundService.getFundMstsSearch(params)
       .then((response) => {
         setPageInfoRes({
-          page: response.data.pagable?.pageNumber-1,
-          size: response.data.pagable?.offest,
+          page: response.data.pagable?.pageNumber,
+          size: response.data.pagable?.pageSize,
           start: -1,
           end: -1,
           total: response.data.totalElements,
@@ -91,6 +91,9 @@ const Page = () => {
       });
   }, [query]);
   
+
+  useEffect(() => {
+  }, [pageInfoRes, fundMstSearchResList]);
   
   return (
     <div className="contents">
@@ -135,12 +138,13 @@ const Page = () => {
           </StyThRow>
         </thead>
         <tbody>
-          {starSearchResList?.length > 0 ? (
-            starSearchResList.map((item, index) => {
+          {fundMstSearchResList?.length > 0 ? (
+            fundMstSearchResList.map((item, index) => {
               return (
                 <StyTdRow key={index}>
                   <Td textAlign="right">
-                    {pageInfoRes.total - index}
+                    {pageInfoRes.total - (searchParams?.page * searchParams?.size) - index}
+                    {/* {JSON.stringify(pageInfoRes)} */}
                   </Td>
                   <Td textAlign="center">
                     {item.fundCd}
@@ -177,7 +181,7 @@ const Page = () => {
       </StyTable>
       <StylPagination
         total={pageInfoRes?.total ?? 0}
-        page={searchParams.page ??  1}
+        page={searchParams?.page ??  0}
         size={searchParams?.size ?? PageSizeOptions[0]}
         onClick={(value: number) => handleRouteAndSearch('page', value)}
       />
